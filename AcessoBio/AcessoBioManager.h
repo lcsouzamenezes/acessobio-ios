@@ -87,14 +87,18 @@ typedef NS_ENUM(NSInteger, DocumentType) {
     UIColor *colorTitleButtonPopupError;
     UIImage *imageIconPopupError;
     
+    NSString *urlDebug;
+    NSString *apikeyDebug;
+    NSString *tokenDebug;
+    
 }
 
 @property (nonatomic, weak) id <AcessoBioDelegate> delegate;
 
 @property (nonatomic, strong) CreateProcess *createProcess;
 
-
 #pragma mark - Instance
+
 - (id)initWithViewController:(id)view url:(NSString*)url apikey: (NSString*)apikey token: (NSString*)token;
 
 
@@ -118,7 +122,6 @@ typedef NS_ENUM(NSInteger, DocumentType) {
 - (void)setColorTitleButtonPopupError : (UIColor *)color;
 - (void)setImageIconPopupError: (UIImage *)image; 
 
-
 #pragma mark - Camera
 
 - (void)openLivenessX;
@@ -137,12 +140,15 @@ typedef NS_ENUM(NSInteger, DocumentType) {
 - (void)facesCompare: (NSString *)cpf;
 
 #pragma mark - Callbacks
+
 - (void)onSuccesLivenessX: (LivenessXResult *)base64;
 -(void)onErrorLivenessX: (NSString *)error;
 - (void)onSuccesCameraFace: (CameraFaceResult *)result;
 - (void)onErrorCameraFace: (NSString *)error;
 
+#pragma mark - Debug
 
+- (void)enableLivenessDebug: (NSString *)url apikey: (NSString *)apikey token: (NSString *)token;
 
 @end
 

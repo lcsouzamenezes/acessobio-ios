@@ -25,4 +25,6 @@
 
 + (UIImage *)crop:(CGRect)rect image :(UIImage *)image;
 
++ (UIImage *)croppIngimage:(UIImage *)imageToCrop toRect:(CGRect)rect;
+
 @end

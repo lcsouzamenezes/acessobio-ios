@@ -16,6 +16,8 @@
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
 
+#import "FaceDetectResult.h"
+
 #import "FixedValues.h"
 
 #import "CameraMain.h"
@@ -30,6 +32,7 @@
 #import <CoreMotion/CoreMotion.h>
 
 #import "PopUpValidationLiveness.h"
+#import "PopUpIntro.h"
 
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
 
@@ -43,18 +46,21 @@
 
 #import "AcessoBioManager.h"
 
+#import "LivenessXServices.h"
+#import "DebugLivenessXServices.h"
+
 typedef NS_ENUM(NSInteger, LivenessStateType) {
-  LivenessStateCenterFace,
-  LivenessStateAwayFace,
-  LivenessStateCloserFace,
+    LivenessStateIntro,
+    LivenessStateCenter,
     LivenessStateDone,
     LivenessStateReset
-
+    
 };
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LivenessXView : CameraMain <AVCaptureVideoDataOutputSampleBufferDelegate> {
+    
     
     BOOL isSelfie;
     UIView *rectangle;
@@ -62,12 +68,12 @@ NS_ASSUME_NONNULL_BEGIN
     UIView *rectangleLeft;
     UIView *rectangleRight;
     UILabel *labelMessage;
-
+    
     
     int countNoFace;
     int countTimeAlert;
     int countNoNose;
-
+    
     BOOL isShowAlert;
     
     UIView *viewLog;
@@ -82,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSTimer * timerCountDown;
     NSInteger countDown;
     BOOL isCountDown;
-        
+    
 #pragma mark - GLOBAL Liveness
     //Step Liveness - Discrimina o passo atual do liveness
     LivenessStateType lStateType;
@@ -90,10 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL isShowAlertToLiveness;
     BOOL isLivenessComplete;
     NSDictionary *dictLivenessResultCenter;
-    NSDictionary *dictLivenessResultAway;
-    NSDictionary *dictLivenessResultCloser;
+    NSDictionary *dictLivenessResultFaceOkIntro;
     NSMutableArray *arrLeftEyeOpenProbability;
-
+    
     float fTotal;
     
     UIViewWithHole *vHole;
@@ -102,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     
     CGRect frameCurrent;
-
+    
     CGRect frameFaceCenter;
     CGRect frameFaceAway;
     CGRect frameFaceCloser;
@@ -111,7 +116,8 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL isErrorAnimated;
     
     BOOL isProccessIA;
-
+    BOOL hasFaceOK;
+    
     UILabel *lbMessage;
     UIView *vAlert;
     UIButton *btClose;
@@ -121,15 +127,15 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL isVerifiedSmillingUpponEnter;
     
     int delayToVerifySmilling;
-
+    
     BOOL isResetRunning;
     BOOL isResetSessionValidate;
     int attemptsValidate;
     
     BOOL isResetSessionSpoofing;
-        
+    
     int attemptsSpoofing;
-
+    
     BOOL isResetSessionNoComputated;
     
     UILabel *lbTitleAlertCustom;
@@ -138,9 +144,8 @@ NS_ASSUME_NONNULL_BEGIN
     NSTimer *timerProcesss;
     
     NSTimer *timerToTakeCenterPhoto;
-    NSTimer *timerToTakeAwayPhoto;
     NSTimer *timerToSmiling;
-
+    
     int durationProcess;
     BOOL isFastProcess;
     
@@ -149,7 +154,6 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL isStartProcessIA;
     
     int timeToTakeCenterPhoto;
-    int timeToTakeAwayPhoto;
     int timeToSmiling;
     
     // Discrimino se é para fazer a captura da foto afastada sem o sorriso (que dificulta a captura).
@@ -170,24 +174,24 @@ NS_ASSUME_NONNULL_BEGIN
     
     int resultFaceDetectBehavior; // 1 = Face Match / 2 = Both substandard / 3 = Not match
     int resultFaceDetect; // // 1 = Face Match / 2 = Both substandard / 3 = Not match
-
+    
     NSString *base64ToUsage;
-
+    
     BOOL facesNoMatchInFaceDetect;
-
+    
     BOOL isValidating;
     
     int SESSION;
-
+    
     int TimeSessionFirst;
     int TimeSessionSecond;
     int TimeSessionThird;
     
     
     BOOL validateFaceDetectOK;
-
+    
     BOOL isRequestWebService;
-
+    
     BOOL isDoneProcess;
     
     BOOL isTakingPhoto;
@@ -196,7 +200,7 @@ NS_ASSUME_NONNULL_BEGIN
     double pPitch;
     double pRoll;
     double pYaw;
-
+    
     double pitchClose;
     double rollClose;
     double yawClose;
@@ -208,16 +212,19 @@ NS_ASSUME_NONNULL_BEGIN
     double pitchInitial;
     double rollInitial;
     double yawInitial;
-
+    
     // Variables about popup reset
     PopUpValidationLiveness *popup;
     BOOL isPopUpShow;
+    
+    PopUpIntro *popupIntro;
+
     
     // Luminosity
     float luminosity;
     float luminosityAway;
     float luminosityClose;
-
+    
     BOOL isStartLuminositySensor;
     
     JGProgressHUD *HUD;
@@ -225,17 +232,35 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *processId;
     
     NSString *billingId;
-
+    
     LivenessXResult *livenessXResult;
+    
+    
+    NSString *strUuid;
+    
+    // Services
+    LivenessXServices *lServices;
+    
+    // Debug global
+    NSString *apiKeyDebug;
+    NSString *urlDebug;
+    NSString *tokenDebug;
+    BOOL isDebug;
+    
+    // FaceOk
+    float confidenceFaceOK;
     
 }
 
-#pragma mark - Methods
 
 - (void)popupHidden;
+- (void)popupIntroHidden;
 
-- (void)setIsDebug : (BOOL)debug;
 - (void)successProcces : (NSString *)processId;
+
+#pragma mark - Debug
+
+- (void)enableDebug : (NSString*)url apikey: (NSString *)apikey token: (NSString *)token;
 
 #pragma mark - Propertys
 
@@ -257,12 +282,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark liveness
 
+@property (strong, nonatomic) NSString *base64FaceOkIntro;
 @property (strong, nonatomic) NSString *base64AwayWithoutSmilling;
-
 @property (strong, nonatomic) NSString *base64Center;
 @property (strong, nonatomic) NSString *base64Away;
 @property (strong, nonatomic) NSString *base64Closer;
 
+@property (strong, nonatomic) UIImage *imgFaceOkIntro;
 @property (strong, nonatomic) UIImage *imgCenter;
 @property (strong, nonatomic) UIImage *imgAway;
 @property (strong, nonatomic) UIImage *imgCloser;
@@ -300,6 +326,21 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIColor *colorTitleButtonPopupError;
 
 @property (strong, nonatomic) UIImage *imageIconPopupError;
+
+
+- (void)onSuccessFaceDetectInitial : (FaceDetectResult *) faceDetectResult;
+- (void)onErrorFaceDetectInitial: (NSString *)error;
+
+- (void)onSuccessFaceDetectBehavior : (FaceDetectResult*) faceDetectResult;
+- (void)onErrorFaceDetectBehavior: (NSString *)error;
+
+- (void)onSuccessSendBilling;
+- (void)onErrorSendBilling: (NSString *)error;
+
+- (void)onSucessCreateProcessV3 : (NSString *)pProcessId;
+- (void)onErrorCreateProcessV3: (NSString *)error;
+
+- (void)vibrate;
 
 @end
 

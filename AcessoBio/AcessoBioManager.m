@@ -239,8 +239,10 @@
         dView.type = 4;
     }else if(documentType == DocumentRGFrente || documentType == DocumentRG) {
         dView.type = 501;
-    }else{
+    }else if(documentType == DocumentRGVerso){
         dView.type = 502;
+    }else{
+        dView.type = 999;
     }
     
     dView.acessoBioManager = self;
@@ -266,9 +268,12 @@
         dView.type = 4;
     }else if(documentType == DocumentRGFrente || documentType == DocumentRG) {
         dView.type = 501;
-    }else{
+    }else if(documentType == DocumentRGVerso){
         dView.type = 502;
+    }else{
+        dView.type = 999;
     }
+    
     
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:dView];
     [nav setNavigationBarHidden:YES animated:NO];
@@ -301,10 +306,11 @@
         dView.type = 4;
     }else if(documentTypeFacematch == DocumentRGFrente || documentTypeFacematch == DocumentRG) {
         dView.type = 501;
-    }else{
+    }else if(documentTypeFacematch == DocumentRGVerso){
         dView.type = 502;
+    }else{
+        dView.type = 999;
     }
-    
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:dView];
     [nav setNavigationBarHidden:YES animated:NO];
     [nav setModalPresentationStyle:UIModalPresentationFullScreen];
@@ -350,6 +356,12 @@
     [lView setColorBackgroundButtonPopupError:colorBackgroundButtonPopupError];
     [lView setColorTitleButtonPopupError:colorTitleButtonPopupError];
     [lView setImageIconPopupError:imageIconPopupError];
+    
+    // Verifico se o modo debug foi acionado
+    if(urlDebug.length > 0) {
+        [lView enableDebug:urlDebug apikey:apikeyDebug token:tokenDebug];
+    }
+    
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:lView];
     [nav setNavigationBarHidden:YES animated:NO];
     [nav setModalPresentationStyle:UIModalPresentationFullScreen];
@@ -503,6 +515,12 @@
     
 }
 
-
+- (void)enableLivenessDebug: (NSString *)url apikey: (NSString *)apikey token: (NSString *)token {
+    
+    urlDebug = url;
+    apikeyDebug = apikey;
+    tokenDebug = token;
+    
+}
 
 @end

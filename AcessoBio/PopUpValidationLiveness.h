@@ -19,15 +19,14 @@ typedef NS_ENUM(NSInteger, PopupType) {
 
 @interface PopUpValidationLiveness : UIView {
     PopupType popupType;
-    LivenessXView *pFaceInsertView;
+    LivenessXView *lView;
     UIButton *btTryAgain;
     UIColor *colorButtonPopupError;
     UIImageView *iconPopupError;
     float baseValue;
 }
 
-- (id)initWithType : (PopupType) pPopupType faceInsertView : (LivenessXView *)faceInsertView;
-- (void)setType : (PopupType) pPopupType faceInsertView : (LivenessXView *)faceInsertView;
+- (void)setType : (PopupType) pPopupType lView : (LivenessXView *)lView;
 
 - (void)setBackgroundColorButton : (UIColor *)color;
 - (void)setTitleColorButton : (UIColor *)color;

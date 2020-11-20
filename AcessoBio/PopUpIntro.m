@@ -1,24 +1,19 @@
 //
-//  PopUpValidationLiveness.m
-//  CaptureAcesso
+//  PopUpIntro.m
+//  AcessoBio
 //
-//  Created by Daniel Zanelatto on 31/03/20.
-//  Copyright © 2020 Matheus  domingos. All rights reserved.
+//  Created by  Matheus Domingos on 18/10/20.
 //
 
-#import "PopUpValidationLiveness.h"
+#import "PopUpIntro.h"
 #import "LivenessXView.h"
-@implementation PopUpValidationLiveness
+
+@implementation PopUpIntro
 
 
-- (void)setType : (PopupType) pPopupType lView : (LivenessXView *)lView  {
-    popupType = pPopupType;
-    lView = lView;
-    [self initLayout];
-    [self shake];
-}
-
-- (void)initLayout {
+- (void)initLayout: (LivenessXView *)pLView {
+    
+    lView = pLView;
     
     [self.layer setMasksToBounds:YES];
     [self.layer setCornerRadius:20.0];
@@ -26,18 +21,12 @@
     [self setBackgroundColor:[UIColor whiteColor]];
     
     iconPopupError = [[UIImageView alloc]initWithFrame:CGRectMake(((self.frame.size.width / 2) - 50), 30, 100, 120)];
-    if(popupType == PopupTypeFaceError) {
-        [iconPopupError setImage:[UIImage imageNamed:@"ic_popup_face_error"]];
-    }else if(popupType == PopupTypeLightError) {
-        [iconPopupError setImage:[UIImage imageNamed:@"ic_popup_light_error"]];
-    }else if(popupType == PopupTypeGeneric){
-        [iconPopupError setImage:[UIImage imageNamed:@"ic_popup_light_error"]];
-    }
+    [iconPopupError setImage:[UIImage imageNamed:@"intro_center_image"]];
     [iconPopupError setContentMode:UIViewContentModeScaleAspectFit];
     [self addSubview:iconPopupError];
     
     UILabel *lbTitle = [[UILabel alloc]initWithFrame:CGRectMake(40, (iconPopupError.frame.origin.y + iconPopupError.frame.size.height + 20), self.frame.size.width - 80, 20)];
-    [lbTitle setText:@"Ops, não deu certo"];
+    [lbTitle setText:@"Vamos começar?"];
     [lbTitle setTextAlignment:NSTextAlignmentCenter];
     [lbTitle setTextColor:[UIColor darkGrayColor]];
     [lbTitle setNumberOfLines:0];
@@ -45,16 +34,7 @@
     [self addSubview:lbTitle];
     
     UILabel *lbDescription = [[UILabel alloc]initWithFrame:CGRectMake(30, lbTitle.frame.origin.y + 5, self.frame.size.width - 60, 60)];
-    [lbDescription setText:@"Siga as dicas abaixo para facilitar"];
-    
-    /*if(popupType == PopupTypeFaceError) {
-        [lbDescription setText:@"Algo deu errado no teste"];
-    }else if(popupType == PopupTypeLightError) {
-        [lbDescription setText:@"Tente em um local mais iluminado!"];
-    }else if(popupType == PopupTypeGeneric) {
-        [lbDescription setText:@"Obedeça as instruções e esteja em um ambiente bem iluminado."];
-    }*/
-    
+    [lbDescription setText:@"Siga as dicas abaixo para facilitar:"];
     
     [lbDescription setTextAlignment:NSTextAlignmentCenter];
     [lbDescription setTextColor:[UIColor darkGrayColor]];
@@ -71,16 +51,22 @@
     [self createAttentionItem:baseValue icon:[UIImage imageNamed:@"ic_reset_hat"] textItem:@"Não utilize chapéu ou gorros"];
     [self createAttentionItem:baseValue icon:[UIImage imageNamed:@"ic_reset_glass"] textItem:@"Retire os óculos escuros ou de grau"];
 
-     btTryAgain = [[UIButton alloc]initWithFrame:CGRectMake(40, (baseValue + 20), self.frame.size.width - 80, 45)];
-    [btTryAgain addTarget:self action:@selector(removePopup) forControlEvents:UIControlEventTouchUpInside];
-    [btTryAgain setTitle:@"Tentar novamente" forState:UIControlStateNormal];
- //   [btTryAgain setTitleColor:colorButtonPopupError forState:UIControlStateNormal];
-//    [btTryAgain setBackgroundColor:color];
-    [btTryAgain.layer setMasksToBounds:YES];
-    [btTryAgain.layer setCornerRadius:22.75];
-    [self addSubview:btTryAgain];
+    btOK = [[UIButton alloc]initWithFrame:CGRectMake(40, (baseValue + 20), self.frame.size.width - 80, 45)];
+    [btOK addTarget:self action:@selector(removePopup) forControlEvents:UIControlEventTouchUpInside];
+    [btOK setTitle:@"" forState:UIControlStateNormal];
+    [btOK.layer setMasksToBounds:YES];
+    [btOK.layer setCornerRadius:22.75];
+    [btOK setEnabled:NO];
+    [self addSubview:btOK];
+    
+    spin = [[UIActivityIndicatorView alloc]initWithFrame:btOK.frame];
+    [spin setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+    [spin startAnimating];
+    [self addSubview:spin];
     
 }
+
+
 
 - (void)createAttentionItem :(float)y icon:(UIImage *)icon textItem: (NSString *)textItem{
     
@@ -103,7 +89,6 @@
 }
 
 - (void) shake {
-    [lView vibrate];
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.x"];
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     animation.duration = 0.6;
@@ -111,21 +96,28 @@
     [self.layer addAnimation:animation forKey:@"shake"];
 }
 
+- (void)enableButton {
+    [btOK setTitle:@"Entendi" forState:UIControlStateNormal];
+    [btOK setEnabled:YES];
+    [spin stopAnimating];
+}
+
 - (void)removePopup {
-    [lView popupHidden];
+    [lView popupIntroHidden];
 }
 
 - (void)setBackgroundColorButton : (UIColor *)color {
    // colorButtonPopupError = color;
-    [btTryAgain setBackgroundColor:color];
+    [btOK setBackgroundColor:color];
 }
 
 - (void)setTitleColorButton : (UIColor *)color {
-    [btTryAgain setTitleColor:color forState:UIControlStateNormal];
+    [btOK setTitleColor:color forState:UIControlStateNormal];
 }
 
 - (void)setImageIconPopupError : (UIImage *)image {
     [iconPopupError setImage:image];
 }
+
 
 @end

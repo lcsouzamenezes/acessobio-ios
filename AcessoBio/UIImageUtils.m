@@ -225,4 +225,49 @@ typedef union {
     
 }
 
++ (UIImage *)croppIngimage:(UIImage *)imageToCrop toRect:(CGRect)rect
+{
+    CGImageRef imageRef = CGImageCreateWithImageInRect([imageToCrop CGImage], rect);
+    UIImage *cropped = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    return cropped;
+}
+
+/*
+ 
+ BOOL isDarkImage(UIImage* inputImage){
+ 
+ 
+ BOOL isDark = FALSE;
+ 
+ CFDataRef imageData = CGDataProviderCopyData(CGImageGetDataProvider(inputImage.CGImage));
+ const UInt8 *pixels = CFDataGetBytePtr(imageData);
+ 
+ int darkPixels = 0;
+ 
+ int length = CFDataGetLength(imageData);
+ int const darkPixelThreshold = (inputImage.size.width*inputImage.size.height)*.65;
+ 
+ for(int i=0; i<length; i+=4)
+ {
+ int r = pixels[i];
+ int g = pixels[i+1];
+ int b = pixels[i+2];
+ 
+ //luminance calculation gives more weight to r and b for human eyes
+ float luminance = (0.299*r + 0.587*g + 0.114*b);
+ if (luminance<150) darkPixels ++;
+ }
+ 
+ if (darkPixels >= darkPixelThreshold)
+ isDark = YES;
+ 
+ CFRelease(imageData);
+ 
+ return isDark;
+ 
+ }
+ */
+
 @end

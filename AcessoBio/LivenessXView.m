@@ -11,17 +11,14 @@
 #import <sys/utsname.h> // import it in your header or implementation file.
 #import "ValidateLiveness.h"
 
-
-NSString *apiKeyDebug = @"";
-NSString *urlDebug = @"";
-NSString *userDebug = @"";
-NSString *passwordDebug = @"";
-
-BOOL isDebug = NO;
+#import <AudioToolbox/AudioServices.h>
 
 float topOffsetPercentLivenessX = 30.0f;
 float sizeBetweenTopAndBottomPercentLivenessX = 50.0f;
 float marginOfSidesLivenessX = 80.0f;
+
+const int WAITING_SESSION_INACTIVE = 40;
+const int WAITING_ENABLE_BUTTON_INTRO = 4;
 
 @interface LivenessXView ()
 
@@ -56,29 +53,25 @@ float marginOfSidesLivenessX = 80.0f;
     options.trackingEnabled = YES;
     options.minFaceSize = 0.1;
     options.classificationMode = FIRVisionFaceDetectorClassificationModeAll;
-    
     // Initialize the face detector.
     FIRVision *vision = [FIRVision vision];
     self.faceDetector = [vision faceDetectorWithOptions:options];
     
+    lServices = [[LivenessXServices alloc]initWithAuth:self pUrl:self.URL apikey:self.APIKEY token:self.TOKEN];
     
-    [self.btTakePic setHidden:YES];
     [self setNewValuesToParamsLiveness];
     
-    
-    [self initVariables];
-    
-    [self initialActionOfChangeState:NO];
-    [self addFullBrightnessToScreen];
-    
-    [self gyroscope];
+    [self initLiveness];
     
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"resultadoIAClose" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"resultadoIAAway" object:nil];
+    
+    [self.motionManager stopDeviceMotionUpdates];
+    
+    // [[NSNotificationCenter defaultCenter] removeObserver:self name:@"resultadoIAClose" object:nil];
+    // [[NSNotificationCenter defaultCenter] removeObserver:self name:@"resultadoIAAway" object:nil];
     
 }
 
@@ -86,21 +79,52 @@ float marginOfSidesLivenessX = 80.0f;
     
 }
 
-#pragma mark - Close
+- (void)enableDebug : (NSString*)url apikey: (NSString *)apikey token: (NSString *)token {
+    isDebug = YES;
+    urlDebug = url;
+    apiKeyDebug = apikey;
+    tokenDebug = token;
+}
+
+
+#pragma mark - Exit
+
+- (void)close{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Close Button
 
 - (void)addCloseButton {
     
-    btClose = [[UIButton alloc]initWithFrame:CGRectMake(7, 20, 70, 70)];
+    float y = 20.0f;
+    if(IS_IPHONE_XR || IS_IPHONE_X_OR_MORE) {
+        y = 40.0f;
+    }
+    
+    btClose = [[UIButton alloc]initWithFrame:CGRectMake(7, y, 70, 70)];
     [btClose setImage:[UIImage imageNamed:@"ic_close"] forState:UIControlStateNormal];
     [btClose addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btClose];
     
 }
 
-- (void)close{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+#pragma mark - Init Liveness
 
+- (void)initLiveness {
+    
+    lStateType = LivenessStateIntro;
+    
+    [self initHoleView];
+    [self popupIntroShow];
+    [self addCloseButton];
+    [self createTimerProcess];
+    
+    [self addFullBrightnessToScreen];
+    [self gyroscope];
+    [self initVariables];
+    
+}
 
 #pragma mark - Init variables
 
@@ -125,7 +149,6 @@ float marginOfSidesLivenessX = 80.0f;
     
 }
 
-
 #pragma mark - Flash
 
 - (void)fireFlash {
@@ -136,7 +159,7 @@ float marginOfSidesLivenessX = 80.0f;
         [vFlash setBackgroundColor:[UIColor whiteColor]];
         [vFlash setAlpha:0.9];
         
-        if(lStateType != LivenessStateCenterFace) {
+        if(lStateType != LivenessStateCenter) {
             
             spinFlash = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             if (@available(iOS 13.0, *)) {
@@ -150,14 +173,11 @@ float marginOfSidesLivenessX = 80.0f;
             spinFlash.center = self.view.center;
             [spinFlash startAnimating];
             
-            //  [self.view addSubview:spinFlash];
-            
             HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
             HUD.indicatorView = [[JGProgressHUDPieIndicatorView alloc] init]; //Or JGProgressHUDRingIndicatorView
             HUD.progress = 0.3f;
             HUD.textLabel.text = @"Aguarde...";
             [HUD showInView:vFlash];
-            
             
         }
         
@@ -229,41 +249,9 @@ float marginOfSidesLivenessX = 80.0f;
      name:UIDeviceOrientationDidChangeNotification
      object:[UIDevice currentDevice]];
     
-    //    //Registrando IA Face
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //                                             selector:@selector(getResultadoIAClose:)
-    //                                                 name:@"resultadoIAClose" object:nil];
-    //
-    //
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //                                             selector:@selector(getResultadoIAAway:)
-    //                                                 name:@"resultadoIAAway" object:nil];
-    
 }
 
 #pragma mark - Resultado IA
-//- (void)getResultadoIAClose:(NSNotification *)notification {
-//
-//    NSDictionary *dictIA = notification.userInfo;
-//    dictLivenessResultCenter = dictIA;
-//
-//    _faceIA = [FaceIA new];
-//    CIImage *cImage = [[CIImage alloc]initWithImage:self.imgAway];
-//    [_faceIA detectSceneWithImage:cImage away:YES];
-//
-//
-//}
-//
-//- (void)getResultadoIAAway:(NSNotification *)notification {
-//
-//    NSDictionary *dictIA = notification.userInfo;
-//    dictLivenessResultAway = dictIA;
-//
-//
-//    [self validateLiveness];
-//
-//}
-
 
 - (FIRVisionDetectorImageOrientation)
 imageOrientationFromDeviceOrientation:(UIDeviceOrientation)deviceOrientation
@@ -299,33 +287,43 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
 }
 
 
-- (void)getResultadoIACloseObjc:(NSDictionary *)dictIA {
+- (void)getResultadoIACenterObjc:(NSDictionary *)dictIA {
     
     dictLivenessResultCenter = dictIA;
-    [self readModelOBJC:self.imgAwayWithoutSmile isAway:YES];
-    
-}
-
-- (void)getResultadoIAAwayObjc:(NSDictionary *)dictIA {
-    
-    dictLivenessResultAway = dictIA;
     [self validateLiveness];
     
 }
 
+- (void)getResultadoIAFaceOkIntro:(NSDictionary *)dictIA {
+    
+    dictLivenessResultFaceOkIntro = dictIA;
+    
+    BOOL fotoboaFaceOk = [[dictLivenessResultFaceOkIntro valueForKey:@"fotoboa"] boolValue];
+    confidenceFaceOK = [[dictLivenessResultFaceOkIntro valueForKey:@"confidence"] floatValue];
+    
+    if(!fotoboaFaceOk) {
+        if(confidenceFaceOK > 0.8) {
+            confidenceFaceOK = 1 - confidenceFaceOK;
+        }else{
+            fotoboaFaceOk = YES;
+        }
+    }
+    
+    if(!fotoboaFaceOk) {
+        [self vibrate];
+    }
+    
+}
 
 #pragma mark - Read Model IA
 
-
-- (void)readModelOBJC: (UIImage *) image isAway: (BOOL)isAway {
+- (void)readModelOBJC: (UIImage *) image isFaceOkIntro: (BOOL)isFaceOkIntro {
     
     if (@available(iOS 11.0, *)) {
-        
         
         MLModel *model;
         VNCoreMLModel *m;
         VNCoreMLRequest *request;
-        
         
         NSBundle *bundle = [NSBundle mainBundle];
         NSURL *centerModelURL = [bundle URLForResource: @"CenterModelCrop" withExtension: @"mlmodel"];
@@ -342,11 +340,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         NSURL *urlCenterModel = [MLModel compileModelAtURL:centerModelURL error:&err];
         NSURL *urlAwayModel = [MLModel compileModelAtURL:mobAwayModelURL error:&err];
         
-        if(isAway) {
-            model = [[[MobAwayLiveness alloc] initWithContentsOfURL:urlAwayModel error:&err] model];
-        }else{
-            model = [[[CenterModelCrop alloc] initWithContentsOfURL:urlCenterModel error:&err] model];
-        }
+        model = [[[MobAwayLiveness alloc] initWithContentsOfURL:urlAwayModel error:&err] model];
         
         m = [VNCoreMLModel modelForMLModel: model error:nil];
         request = [[VNCoreMLRequest alloc] initWithModel: m completionHandler: (VNRequestCompletionHandler) ^(VNRequest *request, NSError *error){
@@ -364,10 +358,10 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
                 
                 NSDictionary *resultDict = @{@"confidence" : [NSNumber numberWithFloat:topResult.confidence], @"fotoboa": [NSNumber numberWithInt:intIdentifier]};
                 
-                if(isAway) {
-                    [self getResultadoIAAwayObjc:resultDict];
+                if(isFaceOkIntro) {
+                    [self getResultadoIAFaceOkIntro:resultDict];
                 }else{
-                    [self getResultadoIACloseObjc:resultDict];
+                    [self getResultadoIACenterObjc:resultDict];
                 }
                 
             });
@@ -399,7 +393,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
     [self removeFlash];
     
-    self->frameCurrent = frameFaceCenter;
+    self->frameCurrent = frameFaceAway;
     
     UIColor *colorBackground = [UIColor colorWithRed:57.0f/255.0f green:74.0f/255.0f blue:98.0f/255.0f  alpha:0.9f];
     
@@ -407,7 +401,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         colorBackground = self.colorBackground;
     }
     
-    vHole = [[UIViewWithHole alloc] initWithFrame:self.view.frame backgroundColor:colorBackground andTransparentRect:frameFaceCenter cornerRadius:0];
+    vHole = [[UIViewWithHole alloc] initWithFrame:self.view.frame backgroundColor:colorBackground andTransparentRect:frameCurrent cornerRadius:0];
     [self.view addSubview:vHole];
     [self addImageAcessoBio];
     
@@ -476,8 +470,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
 
 - (void) setupCamera:(BOOL) isSelfie {
     [super setupCamera:isSelfie];
-    
-    [self.view addSubview:self.btTakePic];
     
 }
 
@@ -642,26 +634,15 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         if(!self->isProccessIA) {
             
             if(!isTakingPhoto) {
+                
                 isTakingPhoto = YES;
                 
+                // [self fireFlash];
                 
-                if(self->isPhotoAwayToCapture) {
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                     [self take];
-                    
-                }else{
-                    
-                    if(lStateType == LivenessStateCenterFace) {
-                    }
-                    
-                    [self fireFlash];
-                    
-                    
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC);
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        [self take];
-                    });
-                    
-                }
+                });
                 
                 
             }
@@ -698,18 +679,27 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
             NSString* base64;
             base64 = [UIImageUtils getBase64Image: capturedImage]; // Utilizar esse base64 para a validação no WebService
             
-            if(self->isPhotoAwayToCapture) {
-                self->isPhotoAwayToCapture = NO;
-                self->isTakingPhoto  = NO;
-                self->_base64AwayWithoutSmilling = base64;
-                self.imgAwayWithoutSmile = capturedImage;
-            }else{
-                //Como é assincrono, eu defino como processando a IA e disparo uma action dps de 3 segundos verificando se a thread UI foi liberada. Caso nao, eu libero.
+            if(self->lStateType == LivenessStateIntro) {
                 
-                self->isTakingPhoto  = NO;
-                self->isProccessIA = YES;
-                [self performSelector:@selector(resetVariableProcessIA) withObject:nil afterDelay:3.0];;
                 [self actionAfterTakePicture:base64 image:capturedImage];
+                
+            }else {
+                
+                if(self->isPhotoAwayToCapture) {
+                    self->isPhotoAwayToCapture = NO;
+                    self->isTakingPhoto  = NO;
+                    self->_base64AwayWithoutSmilling = base64;
+                    self.imgAwayWithoutSmile = capturedImage;
+                }else{
+                    
+                    //Como é assincrono, eu defino como processando a IA e disparo uma action dps de 3 segundos verificando se a thread UI foi liberada. Caso nao, eu libero.
+                    
+                    self->isTakingPhoto  = NO;
+                    self->isProccessIA = YES;
+                    [self performSelector:@selector(resetVariableProcessIA) withObject:nil afterDelay:3.0];;
+                    [self actionAfterTakePicture:base64 image:capturedImage];
+                }
+                
             }
             
         }
@@ -723,33 +713,13 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
     isShowAlertToLiveness = NO;
     
-    switch (lType) {
-            
-        case LivenessStateCenterFace:
-            
-            lStateType = LivenessStateAwayFace;
-            timeToTakeCenterPhoto = durationProcess;
-            [self changeHoleView:self->frameFaceAway delayInSeconds:0.7];
-            
-            break;
-            
-        case LivenessStateAwayFace:
-            
-            if(!isStartProcessIA) {
-                
-                isStartProcessIA = YES;
-                lStateType = LivenessStateDone;
-                // [self createCustomAlert:@"Validando" message:@""];
-                
-                [self readModelOBJC:self.imgCenter isAway:NO];
-                
-            }
-            
-            break;
-            
-            
-        default:
-            break;
+    if(!isStartProcessIA) {
+        
+        isStartProcessIA = YES;
+        lStateType = LivenessStateDone;
+        // [self createCustomAlert:@"Validando" message:@""];
+        [self readModelOBJC:self.imgCenter isFaceOkIntro:NO];
+        
     }
     
 }
@@ -769,25 +739,12 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     BOOL fotoboaCenter = [[dictLivenessResultCenter valueForKey:@"fotoboa"] boolValue];
     float confidenceCenter = [[dictLivenessResultCenter valueForKey:@"confidence"] floatValue];
     
-    BOOL fotoboaAway = [[dictLivenessResultAway valueForKey:@"fotoboa"] boolValue];
-    float confidenceAway = [[dictLivenessResultAway valueForKey:@"confidence"] floatValue];
-    
     if(!fotoboaCenter) {
         if(confidenceCenter > 0.8) {
             confidenceCenter = 1 - confidenceCenter;
         }else{
             fotoboaCenter = YES;
         }
-    }
-    
-    if(!fotoboaAway) {
-                
-        if(confidenceAway > 0.8) {
-            confidenceAway = 1 - confidenceAway;
-        }else{
-            fotoboaAway = YES;
-        }
-        
     }
     
     int timeLastSession = 0;
@@ -805,8 +762,8 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     NSDictionary *dictValidate = @{
         @"photoCloseLive": [NSNumber numberWithBool:fotoboaCenter],
         @"photoCloseConfidence": [NSNumber numberWithFloat:confidenceCenter],
-        @"photoAwayLive": [NSNumber numberWithBool:fotoboaAway],
-        @"photoAwayConfidence" : [NSNumber numberWithFloat:confidenceAway],
+        @"photoAwayLive": [NSNumber numberWithBool:fotoboaCenter],
+        @"photoAwayConfidence" : [NSNumber numberWithFloat:confidenceCenter],
         @"isSmilling" : [NSNumber numberWithBool:self.isLivenessSmilling],
         @"isBlinking" : [NSNumber numberWithBool:self.isLivenessBlinking],
         @"userBlinks" : [NSNumber numberWithInt:userBlinks],
@@ -863,43 +820,58 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
 }
 
-- (void)validatTimeToProcess {
+- (void)managerTimersInTheProcess {
     
     if(!isRequestWebService) {
         
-        durationProcess ++ ;
+        durationProcess ++;
         
-        if(SESSION == 0) {
-            TimeSessionFirst++;
-        }else if(SESSION == 1) {
-            TimeSessionSecond++;
-        }else if(SESSION == 2){
-            TimeSessionThird++;
-        }
-        
-        if(durationProcess > 10) {
-            isFastProcess = NO;
+        if(lStateType == LivenessStateIntro) {
+            
+            if(durationProcess == WAITING_ENABLE_BUTTON_INTRO) {
+                [popupIntro enableButton];
+            }
+            
+            if (durationProcess == WAITING_SESSION_INACTIVE) {
+                [self exitError:@"Tempo de sessão expirada por inatividade."];
+            }
+            
         }else{
-            isFastProcess = YES;
+            
+            if(SESSION == 0) {
+                TimeSessionFirst++;
+            }else if(SESSION == 1) {
+                TimeSessionSecond++;
+            }else if(SESSION == 2){
+                TimeSessionThird++;
+            }
+            
+            if(durationProcess > 10) {
+                isFastProcess = NO;
+            }else{
+                isFastProcess = YES;
+            }
+            
         }
         
     }
     
-    
 }
 
 - (void) addImageAcessoBio {
+    
     if(IS_IPHONE_X || IS_IPHONE_6P){
         ivAcessoBio = [[UIImageView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT - 70, 100, 40)];
         
     }else{
         ivAcessoBio = [[UIImageView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT - 50, 100, 40)];
-        
     }
+    
     [ivAcessoBio setImage:[UIImage imageNamed:@"ic_bio"]];
     [ivAcessoBio setContentMode:UIViewContentModeScaleAspectFit];
     [ivAcessoBio setTag:-99];
     [self.view addSubview:ivAcessoBio];
+    
 }
 
 -(void)validateBlinking {
@@ -983,25 +955,18 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
                             [self->arrLeftEyeOpenProbability addObject:[NSNumber numberWithFloat:faceFeature.leftEyeOpenProbability]];
                         }
                         
-                        switch (self->lStateType) {
-                            case LivenessStateCenterFace:
-                                if(self->isShowAlertLiveness) {
-                                    return;
-                                }
-                                [self analyzeFaceCenter:faceFeature];
-                                break;
-                            case LivenessStateAwayFace:
-                                if(self->isShowAlertLiveness) {
-                                    return;
-                                }
-                                if(!self->isShowAlertToLiveness){
-                                    self->isShowAlertToLiveness = YES;
-                                }
-                                [self analyzeFaceAway:faceFeature];
-                                break;
-                                
-                            default:
-                                break;
+                        if(self->isShowAlertLiveness) {
+                            return;
+                        }
+                        
+                        if(!self->isShowAlertToLiveness){
+                            self->isShowAlertToLiveness = YES;
+                        }
+                        
+                        if(self->lStateType == LivenessStateIntro) {
+                            [self analyzeFaceCenter:faceFeature];
+                        }else {
+                            [self analyzeFaceAway:faceFeature];
                         }
                         
                         
@@ -1029,7 +994,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
 }
 
 - (void)analyzeFaceCenter  : (FIRVisionFace *)faceFeature{
-    
     
     FIRVisionFaceLandmark *leftEyeLandmark = [faceFeature landmarkOfType:FIRFaceLandmarkTypeLeftEye];
     
@@ -1149,9 +1113,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         
         
         float minimumDistance = 150;
-        if(IS_IPHONE_X || IS_IPHONE_6P) {
-            minimumDistance = 150;
-        }
         
         
         if(X_RIGHT_EAR_POINT < leftMargin || X_LEFT_EAR_POINT > rightMargin) {
@@ -1410,7 +1371,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     }
     
     delayToVerifySmilling ++;
-    
     if(delayToVerifySmilling == 20) {
         if(self.base64AwayWithoutSmilling.length == 0) {
             isPhotoAwayToCapture = YES;
@@ -1522,19 +1482,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
             [self->lbMessage setTextColor:colorLbMessage];
             
             
-            if(self->lStateType == LivenessStateCenterFace){
-                
-                if([alert containsString:@"Bring the face closer"]) {
-                    [self setMessageStatus:@"Aproxime o rosto"];
-                }else if ([alert containsString:@"Put your face away"]){
-                    [self setMessageStatus:@"Afaste o rosto"];
-                }else{
-                    [self setMessageStatus:@"Enquadre o seu rosto"];
-                }
-                
-
-                
-            }else if(self->lStateType == LivenessStateAwayFace){
+            if(self->lStateType == LivenessStateCenter){
                 
                 if([alert containsString:@"Center face"]){
                     [self setMessageStatus:@"Enquadre o seu rosto"];
@@ -1576,10 +1524,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         
         [self resetSmilling];
         
-        
-        [self.btTakePic setAlpha:0.5];
-        [self.btTakePic setEnabled:NO];
-        
         UIColor *colorBorder  = [UIColor whiteColor];
         if(self.colorSilhoutteError != nil) {
             colorBorder = self.colorSilhoutteError;
@@ -1587,12 +1531,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         
         self->vHole.shapeLayer.strokeColor = [colorBorder CGColor];
         
-        /*
-         [self->rectangle setBackgroundColor:[UIColor redColor]];
-         [self->rectangleTop setBackgroundColor:[UIColor redColor]];
-         [self->rectangleLeft setBackgroundColor:[UIColor redColor]];
-         [self->rectangleRight setBackgroundColor:[UIColor redColor]];
-         */
     });
     
 }
@@ -1623,14 +1561,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         
         self->vHole.shapeLayer.strokeColor = [colorBorder CGColor];
         
-        [self.btTakePic setAlpha:0.5];
-        [self.btTakePic setEnabled:NO];
-        /*
-         [self->rectangle setBackgroundColor:[UIColor grayColor]];
-         [self->rectangleTop setBackgroundColor:[UIColor grayColor]];
-         [self->rectangleLeft setBackgroundColor:[UIColor grayColor]];
-         [self->rectangleRight setBackgroundColor:[UIColor grayColor]];
-         */
     });
     
 }
@@ -1640,7 +1570,17 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     dispatch_async(dispatch_get_main_queue(), ^{
         
         
-        if(self->lStateType == LivenessStateAwayFace) {
+        if(self->lStateType == LivenessStateIntro) {
+            
+            if(!self->hasFaceOK) {
+                self->hasFaceOK = YES;
+                [self capture];
+            }
+            
+            return;
+        }
+        
+        if(self->lStateType == LivenessStateCenter) {
             
             if(self.isLivenessSmilling || self.isFinishiWithoutTheSmile) {
                 [self capture];
@@ -1658,40 +1598,26 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
             
             if(!self->isCountDown) {
                 [self createTimer];
-                // [self performSelector:@selector(createTimer) withObject:nil afterDelay:0.5];;
                 self->isCountDown = YES;
             }
             
             
         }
         
-        
         if(!self->isProccessIA) {
             
-            if(self->lStateType != LivenessStateAwayFace) {
+            if(self->lStateType != LivenessStateCenter) {
                 [self->vAlert setHidden:YES];
                 [self setMessageStatus:@"Não se mexa..."];
             }
             
         }
         
-        [self.btTakePic setAlpha:1];
-        [self.btTakePic setEnabled:YES];
-        
         UIColor *colorSuccess = [self getColorGreen];
-        
         if(self.colorSilhoutteSuccess != nil) {
             colorSuccess = self.colorSilhoutteSuccess;
         }
-        
         self->vHole.shapeLayer.strokeColor = [colorSuccess CGColor];
-        
-        /*
-         [self->rectangle setBackgroundColor:[self getColorPrimary]];
-         [self->rectangleTop setBackgroundColor:[self getColorPrimary]];
-         [self->rectangleLeft setBackgroundColor:[self getColorPrimary]];
-         [self->rectangleRight setBackgroundColor:[self getColorPrimary]];
-         */
         
     });
     
@@ -1705,29 +1631,24 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     lbMessage.text = @"";
     isResetRunning = NO;
     
-    self.base64Closer = @"";
-    self.base64Center = @"";
-    self.base64Away = @"";
-    self.base64AwayWithoutSmilling = @"";
-    
+    [self resetBase64s];
     [self resetSmilling];
     [self resetBlinking];
     
-    if(timerToTakeCenterPhoto) {
-        [timerToTakeCenterPhoto invalidate];
-        timerToTakeCenterPhoto = nil;
-    }
-    
-    if(timerToTakeAwayPhoto) {
-        [timerToTakeAwayPhoto invalidate];
-        timerToTakeAwayPhoto = nil;
-    }
+    [self invalidateTimerToTakeCenterPhoto];
     
     resultFaceDetect = 0;
     resultFaceDetectBehavior = 0;
     
-    lStateType = LivenessStateCenterFace;
+    lStateType = LivenessStateCenter;
     
+}
+
+- (void)resetBase64s{
+    self.base64Closer = @"";
+    self.base64Center = @"";
+    self.base64Away = @"";
+    self.base64AwayWithoutSmilling = @"";
 }
 
 - (void)resetBlinking {
@@ -1811,9 +1732,20 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     self->timerCountDown = nil;
 }
 
+
+- (void)createTimerProcess {
+    if(timerProcesss == nil) {
+        timerProcesss = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                         target:self
+                                                       selector:@selector(managerTimersInTheProcess)
+                                                       userInfo:nil
+                                                        repeats:YES];
+    }
+}
+
 - (void)createTimer {
     
-    if(lStateType != LivenessStateCenterFace) {
+    if(lStateType != LivenessStateCenter) {
         countDown = 0;
     }
     
@@ -1822,17 +1754,12 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
                                                           selector:@selector(countDown)
                                                           userInfo:nil
                                                            repeats:YES];
-    
 }
 
 - (void)countDown {
     
     if(!isShowAlertLiveness) {
         
-        if(lStateType == LivenessStateCenterFace) {
-            // [lbCountPic setHidden:NO];
-            // [lbCountPic setText:[NSString stringWithFormat:@"%lu",countDown]];
-        }
         
         if(countDown == 1) {
             //                if(!self->isSuccessAnimated) {
@@ -1882,8 +1809,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
             newCamera = [self cameraWithPosition:AVCaptureDevicePositionBack];
         }
         
-        
-        
         //Add input to session
         NSError *err = nil;
         AVCaptureDeviceInput *newVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:newCamera error:&err];
@@ -1906,35 +1831,27 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
 - (void)actionAfterTakePicture : (NSString *)base64 image:(UIImage *)image {
     
     isTakingPhoto = NO;
+    [self removeFlash];
     
-    switch (lStateType) {
-        case LivenessStateCenterFace:
-            
-            [self removeFlash];
-            _base64Center = base64;
-            _imgCenter = image;
-            pitchClose = pPitch;
-            rollClose = pRoll;
-            yawClose = pYaw;
-            luminosityClose = luminosity;
-            
-            break;
-        case LivenessStateAwayFace:
-            
-            _base64Away = base64;
-            _imgAway = image;
-            pitchAway = pPitch;
-            rollAway = pRoll;
-            yawAway = pYaw;
-            luminosityAway = luminosity;
-            
-            break;
-            
-        default:
-            break;
+    if(lStateType == LivenessStateIntro) {
+        
+        [popupIntro enableButton];
+        _base64FaceOkIntro = base64;
+        _imgFaceOkIntro = image;
+        [self readModelOBJC:_imgFaceOkIntro isFaceOkIntro:YES];
+        
+    } else {
+        
+        _base64Center = base64;
+        _imgCenter = image;
+        pitchClose = pPitch;
+        rollClose = pRoll;
+        yawClose = pYaw;
+        luminosityClose = luminosity;
+        
+        [self changeState:lStateType];
+        
     }
-    
-    [self changeState:lStateType];
     
 }
 
@@ -1988,24 +1905,23 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
 }
 
 - (void)invalidateAllTimers {
-    
+    [self invalidateTimerProcess];
+    [self invalidateTimerToTakeCenterPhoto];
+    [self invalidateTimerToSmiling];
+}
+
+- (void)invalidateTimerProcess {
     if(timerProcesss != nil) {
         [timerProcesss invalidate];
         timerProcesss = nil;
     }
-    
+}
+
+- (void)invalidateTimerToTakeCenterPhoto {
     if(timerToTakeCenterPhoto != nil) {
         [timerToTakeCenterPhoto invalidate];
         timerToTakeCenterPhoto = nil;
     }
-    
-    if(timerToTakeAwayPhoto != nil) {
-        [timerToTakeAwayPhoto invalidate];
-        timerToTakeAwayPhoto = nil;
-    }
-    
-    [self invalidateTimerToSmiling];
-    
 }
 
 - (void)invalidateTimerToSmiling {
@@ -2015,7 +1931,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     }
 }
 
-
 - (void)initialActionOfChangeState : (BOOL)fromReset {
     
     if(!isDoneProcess) {
@@ -2024,38 +1939,22 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
             [self dismissViewControllerAnimated:YES completion:nil];
         }else{
             
-            if(self->lStateType == LivenessStateCenterFace) {
-                
-                if(timerProcesss == nil) {
-                    timerProcesss = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(validatTimeToProcess) userInfo:nil repeats:YES];
-                }
-                
-                
-                timerToTakeCenterPhoto = nil;
-                timerToTakeAwayPhoto = nil;
-                
-                timerToTakeCenterPhoto = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(incrementTimeToTakeCenterPhoto) userInfo:nil repeats:YES];
-                
-                [self initHoleView];
-                [self createViewAlert];
-                [self addCloseButton];
-                
-                if(fromReset) {
-                    [self popupShow];
-                }
-                
-            }else if(self->lStateType == LivenessStateAwayFace){
-                
-                timerToTakeCenterPhoto = nil;
-                timerToTakeAwayPhoto = nil;
-                
-                timerToTakeAwayPhoto = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(incrementTimeToTakeAwayPhoto) userInfo:nil repeats:YES];
-                
+            [self createTimerToTakeCenterPhoto];
+            [self createViewAlert];
+            
+            if(fromReset) {
+                [self popupShow];
             }
             
         }
         
     }
+    
+}
+
+- (void)createTimerToTakeCenterPhoto {
+    timerToTakeCenterPhoto = nil;
+    timerToTakeCenterPhoto = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(incrementTimeToTakeCenterPhoto) userInfo:nil repeats:YES];
     
 }
 
@@ -2070,10 +1969,6 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         timeToTakeCenterPhoto ++;
 }
 
-- (void)incrementTimeToTakeAwayPhoto {
-    if(!isRequestWebService)
-        timeToTakeAwayPhoto ++;
-}
 
 - (void)incrementTimeToSmiling {
     if(!isRequestWebService)
@@ -2084,7 +1979,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
     
     if(popup == nil) {
-       
+        
         vAlert = [[UIView alloc]initWithFrame:CGRectMake(50, (frameFaceCenter.origin.y - 25) , SCREEN_WIDTH - 100, 50)];
         
         UIColor *colorBackgroundBox = [UIColor colorWithRed:24.0f/255.0f green:30.0f/255.0f blue:45.0f/255.0f alpha:1.0];
@@ -2118,9 +2013,9 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
             colorLbMessage = self.colorTextBoxStatus;
         }
         [lbMessage setTextColor:colorLbMessage];
-   
+        
         [lbMessage setBackgroundColor:colorBackgroundBox];
-
+        
         [lbMessage setTextAlignment:NSTextAlignmentCenter];
         [lbMessage setFont:[UIFont boldSystemFontOfSize:17.5]];
         [vAlert addSubview:lbMessage];
@@ -2200,10 +2095,10 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
             [self dismissViewControllerAnimated:YES completion:^{
                 [self.acessiBioManager onSuccesLivenessX:self->livenessXResult];
             }];
-
+            
         }else{
             [self dismissViewControllerAnimated:YES completion:nil];
-
+            
         }
         
     }
@@ -2215,156 +2110,206 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Face Detect
+- (void)exitError: (NSString *)error{
+    [self.acessiBioManager onErrorLivenessX:error];
+    [self invalidateAllTimers];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
-- (void)faceDetect{
+#pragma mark - Services
+
+#pragma mark  Send Billing v3
+
+- (void)sendBillingV3 {
     
-    validateFaceDetectOK = NO;
     isRequestWebService = YES;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
+    NSUUID *uuid = [NSUUID UUID];
+    strUuid = [uuid UUIDString];
     
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
+    NSString *status = [NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isFaceLiveness]];
+    
+    if([status isEqualToString:@"0"]){
+        status = @"2";
+    }
+    
+    BOOL fotoboaCenter = [[dictLivenessResultCenter valueForKey:@"fotoboa"] boolValue];
+    double confidenceCenter = [[dictLivenessResultCenter valueForKey:@"confidence"] doubleValue];
+    
+    if(!fotoboaCenter) {
+        if(confidenceCenter > 0.8) {
+            confidenceCenter = 1 - confidenceCenter;
+        }else{
+            fotoboaCenter = YES;
+        }
+    }
     
     
     if(self.base64AwayWithoutSmilling.length == 0) {
         self.base64AwayWithoutSmilling = self.base64Away;
     }
     
-    NSDictionary *dict = @{
-        @"imageBase641" : _base64Center,
-        @"imageBase642" : _base64AwayWithoutSmilling
+    NSMutableArray *fields = [NSMutableArray new];
+    [fields addObject:[self getDictField:@"isLive" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isFaceLiveness]]]];
+    [fields addObject:[self getDictField:@"Score" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:fTotal]]]];
+    [fields addObject:[self getDictField:@"isLiveClose" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:fotoboaCenter]]]];
+    [fields addObject:[self getDictField:@"ScoreClose" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:confidenceCenter]]]];
+    [fields addObject:[self getDictField:@"isLiveAway" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:fotoboaCenter]]]];
+    [fields addObject:[self getDictField:@"ScoreAway" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:confidenceCenter]]]];
+    [fields addObject:[self getDictField:@"IsBlinking" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isLivenessBlinking]]]];
+    [fields addObject:[self getDictField:@"IsSmilling" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isLivenessSmilling]]]];
+    [fields addObject:[self getDictField:@"DeviceModel" value:[self deviceName]]];
+    [fields addObject:[self getDictField:@"IsResetSession" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithBool:isResetSessionValidate]]]];
+    [fields addObject:[self getDictField:@"AttemptsValidate" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:attemptsValidate]]]];
+    [fields addObject:[self getDictField:@"IsResetSessionSpoofing" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithBool:isResetSessionSpoofing]]]];
+    [fields addObject:[self getDictField:@"AttemptsSpoofing" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:attemptsSpoofing]]]];
+    [fields addObject:[self getDictField:@"TimeTotal" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:durationProcess]]]];
+    [fields addObject:[self getDictField:@"Blinks" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:userBlinks]]]];
+    [fields addObject:[self getDictField:@"TimeSmilling" value: [NSString stringWithFormat:@"%@",  [NSNumber numberWithInt:timeToSmiling]]]];
+    [fields addObject:[self getDictField:@"TimeSessionFirst" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:TimeSessionFirst]]]];
+    [fields addObject:[self getDictField:@"TimeSessionSecond" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:TimeSessionSecond]]]];
+    [fields addObject:[self getDictField:@"TimeSessionThird" value: [NSString stringWithFormat:@"%@",  [NSNumber numberWithInt:TimeSessionThird]]]];
+    [fields addObject:[self getDictField:@"ScoreFaceDetect" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:scoreFacedetect]]]];
+    [fields addObject:[self getDictField:@"DevicePitch" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:pitchAway]]]];
+    [fields addObject:[self getDictField:@"DeviceRoll" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:rollAway]]]];
+    [fields addObject:[self getDictField:@"DeviceYaw" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:yawAway]]]];
+    [fields addObject:[self getDictField:@"DevicePitchClose" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:pitchClose]]]];
+    [fields addObject:[self getDictField:@"DeviceRollClose" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:rollClose]]]];
+    [fields addObject:[self getDictField:@"DeviceYawClose" value:[NSString stringWithFormat:@"%@",  [NSNumber numberWithDouble:yawClose]]]];
+    [fields addObject:[self getDictField:@"DevicePitchInitial" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:pitchInitial]]]];
+    [fields addObject:[self getDictField:@"DeviceRollInitial" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:rollInitial]]]];
+    [fields addObject:[self getDictField:@"DeviceYawInitial" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:yawInitial]]]];
+    [fields addObject:[self getDictField:@"DeviceLuminosity" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:luminosityAway]]]];
+    [fields addObject:[self getDictField:@"DeviceLuminosityClose" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:luminosityClose]]]];
+    
+    NSDictionary *params = @{
+        @"id" : strUuid,
+        @"status" : status,
+        @"fields": fields
     };
     
+    //    Para logar o json
+    //     NSString *jsonRequest = [self bv_jsonStringWithPrettyPrint:params];
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/detect", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        NSDictionary *result = responseObject;
-        
-        int FaceResult = [[result valueForKey:@"FaceResult"] intValue];
-        BOOL Similars = [[result valueForKey:@"Similars"] boolValue];
-        double SimilarScore = [[result valueForKey:@"SimilarScore"] doubleValue];
-        
-        if(FaceResult == 0){
-            self->resultFaceDetect = 2;
-        }else if (!Similars) {
-            self->resultFaceDetect = 3;
-        }else{
-            self->scoreFacedetect = SimilarScore;
-            self->resultFaceDetect = 1;
-        }
-        
-        
-        if(FaceResult != 0) {
-            if(FaceResult == 1){
-                self->base64ToUsage = self->_base64Center;
-            }else if(FaceResult == 2){
-                self->base64ToUsage = self->_base64AwayWithoutSmilling;
-            }
-        }
-        
-        [self validateFaceDetect];
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        if(self.debug) {
-            NSLog(@"Error: %@", error);
-        }
-        
-        self->isRequestWebService = NO;
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        
-        if(self.debug) {
-            NSLog(@"%@",errResponse);
-        }
-        
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetect" description:description]];
-        }else{
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetect" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-        
-    }];
+    [lServices sendBillingV3:params];
+    
+    if(isDebug) {
+        [self sendLiveness];
+    }
     
 }
+
+- (void)onSuccessSendBilling {
+    
+    self->billingId = strUuid;
+    
+    if(self.acessiBioManager.createProcess == nil || !self->_isFaceLiveness) {
+        
+        NSString *baseWithBilling = [NSString stringWithFormat:@"data:%@/image/jpeg;base64,%@", self->billingId, self->base64ToUsage];
+        
+        LivenessXResult *livenessXResult = [LivenessXResult new];
+        [livenessXResult setBase64:self->base64ToUsage];
+        [livenessXResult setIsLiveness:self->_isFaceLiveness];
+        [self.acessiBioManager onSuccesLivenessX:livenessXResult];
+        [self doneProcess];
+        
+    }else{
+        [self createProcessV3];
+    }
+    
+}
+
+- (void)onErrorSendBilling: (NSString *)error {
+    
+    if(self.debug) {
+        NSLog(@"Error: %@", error);
+    }
+    
+    self->isRequestWebService = NO;
+    [self.acessiBioManager onErrorLivenessX:error];
+    [self exitError];
+    
+}
+
+#pragma mark Face Detect
+
+- (void)faceDetect{
+    
+    validateFaceDetectOK = NO;
+    isRequestWebService = YES;
+    [lServices faceDetectInital:_base64Center base64Away:_base64FaceOkIntro];
+    
+}
+
+- (void)onSuccessFaceDetectInitial : (FaceDetectResult *) faceDetectResult {
+    
+    if(faceDetectResult.FaceResult == 0){
+        self->resultFaceDetect = 2;
+    }else if (!faceDetectResult.Similars) {
+        self->resultFaceDetect = 3;
+    }else{
+        self->scoreFacedetect = faceDetectResult.SimilarScore;
+        self->resultFaceDetect = 1;
+    }
+    
+    
+    if(faceDetectResult.FaceResult != 0) {
+        if(faceDetectResult.FaceResult == 1){
+            self->base64ToUsage = self->_base64Center;
+        }else if(faceDetectResult.FaceResult == 2){
+            self->base64ToUsage = self->_base64AwayWithoutSmilling;
+        }
+    }
+    
+    [self validateFaceDetect];
+    
+}
+
+- (void)onErrorFaceDetectInitial: (NSString *)error {
+    
+    if(self.debug) {
+        NSLog(@"Error: %@", error);
+    }
+    
+    self->isRequestWebService = NO;
+    [self.acessiBioManager onErrorLivenessX:error];
+    [self exitError];
+    
+}
+
+
+#pragma mark faceDetectBehavior
 
 - (void)faceDetectBehavior {
     
     isRequestWebService = YES;
+    [lServices faceDetectBehavior:_base64AwayWithoutSmilling base64Away:_base64Center];
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
+}
+
+- (void)onSuccessFaceDetectBehavior : (FaceDetectResult *) faceDetectResult {
     
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
+    if(faceDetectResult.FaceResult == 0){
+        self->resultFaceDetectBehavior = 2;
+    }else if (!faceDetectResult.Similars) {
+        self->resultFaceDetectBehavior = 3;
+    }else{
+        self->resultFaceDetectBehavior = 1;
+    }
     
+    [self validateFaceDetect];
     
-    NSDictionary *dict = @{
-        @"imageBase641" : self.base64AwayWithoutSmilling,
-        @"imageBase642" : self.base64Away
-    };
+}
+
+- (void)onErrorFaceDetectBehavior: (NSString *)error {
     
+    if(self.debug) {
+        NSLog(@"Error: %@", error);
+    }
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/detect", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        NSDictionary *result = responseObject;
-        
-        int FaceResult = [[result valueForKey:@"FaceResult"] intValue];
-        BOOL Similars = [[result valueForKey:@"Similars"] boolValue];
-        
-        if(FaceResult == 0){
-            self->resultFaceDetectBehavior = 2;
-        }else if (!Similars) {
-            self->resultFaceDetectBehavior = 3;
-        }else{
-            self->resultFaceDetectBehavior = 1;
-        }
-        
-        [self validateFaceDetect];
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        if(self.debug) {
-            NSLog(@"Error: %@", error);
-        }
-        
-        self->isRequestWebService = NO;
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        
-        if(self.debug) {
-            NSLog(@"%@",errResponse);
-        }
-        
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetectBehavior" description:description]];
-        }else{
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetectBehavior" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-        
-    }];
-    
+    self->isRequestWebService = NO;
+    [self.acessiBioManager onErrorLivenessX:error];
+    [self exitError];
     
 }
 
@@ -2427,211 +2372,14 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
 }
 
-
-#pragma mark - Send Billing v3
-
-- (void)sendBillingV3 {
-    
-    isRequestWebService = YES;
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    
-    NSUUID *uuid = [NSUUID UUID];
-    NSString *strUuid = [uuid UUIDString];
-    NSString *status = [NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isFaceLiveness]];
-    
-    if([status isEqualToString:@"0"]){
-        status = @"2";
-    }
-    
-    
-    BOOL fotoboaCenter = [[dictLivenessResultCenter valueForKey:@"fotoboa"] boolValue];
-    double confidenceCenter = [[dictLivenessResultCenter valueForKey:@"confidence"] doubleValue];
-    
-    BOOL fotoboaAway = [[dictLivenessResultAway valueForKey:@"fotoboa"] boolValue];
-    double confidenceAway = [[dictLivenessResultAway valueForKey:@"confidence"] doubleValue];
-    
-    if(!fotoboaCenter) {
-        if(confidenceCenter > 0.8) {
-            confidenceCenter = 1 - confidenceCenter;
-        }else{
-            fotoboaCenter = YES;
-        }
-    }
-    
-    if(!fotoboaAway) {
-                
-        if(confidenceAway > 0.8) {
-            confidenceAway = 1 - confidenceAway;
-        }else{
-            fotoboaAway = YES;
-        }
-        
-    }
-    
-    
-    if(self.base64AwayWithoutSmilling.length == 0) {
-        self.base64AwayWithoutSmilling = self.base64Away;
-    }
-
-    NSMutableArray *fields = [NSMutableArray new];
-    [fields addObject:[self getDictField:@"isLive" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isFaceLiveness]]]];
-    [fields addObject:[self getDictField:@"Score" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:fTotal]]]];
-    [fields addObject:[self getDictField:@"isLiveClose" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:fotoboaCenter]]]];
-    [fields addObject:[self getDictField:@"ScoreClose" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:confidenceCenter]]]];
-    [fields addObject:[self getDictField:@"isLiveAway" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:fotoboaAway]]]];
-    [fields addObject:[self getDictField:@"ScoreAway" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:confidenceAway]]]];
-    [fields addObject:[self getDictField:@"IsBlinking" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isLivenessBlinking]]]];
-    [fields addObject:[self getDictField:@"IsSmilling" value:[NSString stringWithFormat:@"%@", [NSNumber numberWithBool:self.isLivenessSmilling]]]];
-    [fields addObject:[self getDictField:@"DeviceModel" value:[self deviceName]]];
-//    [fields addObject:[self getDictField:@"Base64Center" value: self.base64Center]];
-//    [fields addObject:[self getDictField:@"Base64Away" value: self.base64AwayWithoutSmilling]];
-    [fields addObject:[self getDictField:@"IsResetSession" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithBool:isResetSessionValidate]]]];
-    [fields addObject:[self getDictField:@"AttemptsValidate" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:attemptsValidate]]]];
-    [fields addObject:[self getDictField:@"IsResetSessionSpoofing" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithBool:isResetSessionSpoofing]]]];
-    [fields addObject:[self getDictField:@"AttemptsSpoofing" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:attemptsSpoofing]]]];
-    [fields addObject:[self getDictField:@"TimeTotal" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:durationProcess]]]];
-    [fields addObject:[self getDictField:@"Blinks" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:userBlinks]]]];
-    [fields addObject:[self getDictField:@"TimeSmilling" value: [NSString stringWithFormat:@"%@",  [NSNumber numberWithInt:timeToSmiling]]]];
-    [fields addObject:[self getDictField:@"TimeSessionFirst" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:TimeSessionFirst]]]];
-    [fields addObject:[self getDictField:@"TimeSessionSecond" value:  [NSString stringWithFormat:@"%@", [NSNumber numberWithInt:TimeSessionSecond]]]];
-    [fields addObject:[self getDictField:@"TimeSessionThird" value: [NSString stringWithFormat:@"%@",  [NSNumber numberWithInt:TimeSessionThird]]]];
-    [fields addObject:[self getDictField:@"ScoreFaceDetect" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:scoreFacedetect]]]];
-    [fields addObject:[self getDictField:@"DevicePitch" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:pitchAway]]]];
-    [fields addObject:[self getDictField:@"DeviceRoll" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:rollAway]]]];
-    [fields addObject:[self getDictField:@"DeviceYaw" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:yawAway]]]];
-    [fields addObject:[self getDictField:@"DevicePitchClose" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:pitchClose]]]];
-    [fields addObject:[self getDictField:@"DeviceRollClose" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:rollClose]]]];
-    [fields addObject:[self getDictField:@"DeviceYawClose" value:[NSString stringWithFormat:@"%@",  [NSNumber numberWithDouble:yawClose]]]];
-    [fields addObject:[self getDictField:@"DevicePitchInitial" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:pitchInitial]]]];
-    [fields addObject:[self getDictField:@"DeviceRollInitial" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:rollInitial]]]];
-    [fields addObject:[self getDictField:@"DeviceYawInitial" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:yawInitial]]]];
-    [fields addObject:[self getDictField:@"DeviceLuminosity" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:luminosityAway]]]];
-    [fields addObject:[self getDictField:@"DeviceLuminosityClose" value: [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:luminosityClose]]]];
-    
-    NSDictionary *params = @{
-        @"id" : strUuid,
-        @"status" : status,
-        @"fields": fields
-    };
-    
-    //    Para logar o json
-   //     NSString *jsonRequest = [self bv_jsonStringWithPrettyPrint:params];
-    
-    
-    
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/liveness/billing", self.URL] parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        self->billingId = strUuid;
-        
-        if(self.acessiBioManager.createProcess == nil || !self->_isFaceLiveness) {
-            
-            NSString *baseWithBilling = [NSString stringWithFormat:@"data:%@/image/jpeg;base64,%@", self->billingId, self->base64ToUsage];
-            
-            LivenessXResult *livenessXResult = [LivenessXResult new];
-            [livenessXResult setBase64:self->base64ToUsage];
-            [livenessXResult setIsLiveness:self->_isFaceLiveness];
-            [self.acessiBioManager onSuccesLivenessX:livenessXResult];
-            [self doneProcess];
-            
-        }else{
-            [self createProcessV3];
-        }
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        if(self.debug) {
-            NSLog(@"Error: %@", error);
-        }
-        self->isRequestWebService = NO;
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        
-        if(self.debug) {
-            NSLog(@"%@",errResponse);
-        }
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"sendBillingV3" description:description]];
-        }else{
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"sendBillingV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-        //  [self forceDoneProcess];
-        
-    }];
-    
-}
-
 #pragma mark - Liveness Request
 
 -(void) sendLiveness  {
     
     isRequestWebService = YES;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:apiKeyDebug forHTTPHeaderField:@"X-AcessoBio-APIKEY"];
-    [manager.requestSerializer setValue:AuthToken forHTTPHeaderField:@"Authentication"];
-    
-    NSDictionary *dict = @{@"liveness" : [self getDictLiveness]};
-    
-    NSString *strURL = [NSString stringWithFormat:@"%@/services/v2/credService.svc/", urlDebug];
-    
-    [manager POST:[NSString stringWithFormat:@"%@app/liveness/%@", strURL, processId] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        if(self.debug) {
-            NSLog(@"JSON: %@", responseObject);
-        }
-        self->isRequestWebService = NO;
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        self->isRequestWebService = NO;
-        
-        if(self.debug) {
-            NSLog(@"Error: %@", error);
-        }
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        if(self.debug) {
-            NSLog(@"%@",errResponse);
-        }
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            
-            
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Ops"
-                                                                                     message:description
-                                                                              preferredStyle:UIAlertControllerStyleAlert];
-            //We add buttons to the alert controller by creating UIAlertActions:
-            UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Ok"
-                                                               style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction * action) {
-                //                                                                    [self.view callFaceInsert];
-            }];;
-            [alertController addAction:actionOk];
-            [self presentViewController:alertController animated:YES completion:nil];
-            
-        }
-        
-    }];
+    DebugLivenessXServices *debugLivenessService = [[DebugLivenessXServices alloc] initWithAuth:self pUrl:urlDebug apikey:apiKeyDebug token:tokenDebug];
+    [debugLivenessService sendLiveness:[self getDictLiveness] processId:_proccessId];
     
 }
 
@@ -2640,25 +2388,12 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     BOOL fotoboaCenter = [[dictLivenessResultCenter valueForKey:@"fotoboa"] boolValue];
     double confidenceCenter = [[dictLivenessResultCenter valueForKey:@"confidence"] doubleValue];
     
-    BOOL fotoboaAway = [[dictLivenessResultAway valueForKey:@"fotoboa"] boolValue];
-    double confidenceAway = [[dictLivenessResultAway valueForKey:@"confidence"] doubleValue];
-    
     if(!fotoboaCenter) {
         if(confidenceCenter > 0.8) {
             confidenceCenter = 1 - confidenceCenter;
         }else{
             fotoboaCenter = YES;
         }
-    }
-    
-    if(!fotoboaAway) {
-                
-        if(confidenceAway > 0.8) {
-            confidenceAway = 1 - confidenceAway;
-        }else{
-            fotoboaAway = YES;
-        }
-        
     }
     
     if(self.base64AwayWithoutSmilling.length == 0) {
@@ -2669,8 +2404,8 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
                              @"Score": [NSNumber numberWithFloat:fTotal],
                              @"isLiveClose" : [NSNumber numberWithBool:fotoboaCenter],
                              @"ScoreClose" : [NSNumber numberWithDouble:confidenceCenter],
-                             @"isLiveAway" : [NSNumber numberWithBool:fotoboaAway],
-                             @"ScoreAway":[NSNumber numberWithDouble:confidenceAway],
+                             @"isLiveAway" : [NSNumber numberWithBool:fotoboaCenter],
+                             @"ScoreAway":[NSNumber numberWithDouble:confidenceCenter],
                              @"IsBlinking" :  [NSNumber numberWithBool:self.isLivenessBlinking],
                              @"IsSmilling":  [NSNumber numberWithBool:self.isLivenessSmilling],
                              @"UserName": self.acessiBioManager.createProcess.name,
@@ -2704,54 +2439,17 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
                              @"DeviceYawInitial": [NSNumber numberWithDouble:yawInitial],
                              @"DeviceLuminosity" :[NSNumber numberWithDouble:luminosityAway],
                              @"DeviceLuminosityClose": [NSNumber numberWithDouble:luminosityClose],
+                             @"Log" : @"",
+                             @"Origin" : @"Liveness X1",
+                             @"ScoreFaceOK": [NSNumber numberWithFloat:confidenceFaceOK],
+                             @"Base64FaceOK" : _base64FaceOkIntro
+                             
     };
-    
     
     return params;
     
 }
 
-- (void)getAuthToken {
-    
-    isRequestWebService = YES;
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    manager.requestSerializer = serializer;
-    [self setHeadersAuthToken:manager.requestSerializer xLoginL:userDebug xPassword:passwordDebug];
-    
-    [manager GET:[NSString stringWithFormat:@"%@/services/v2/credService.svc/user/authToken", urlDebug] parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        if(self.debug) {
-            NSLog(@"JSON: %@", responseObject);
-        }
-        NSDictionary *GetAuthTokenResult = [responseObject valueForKey:@"GetAuthTokenResult"];
-        self->AuthToken = [GetAuthTokenResult valueForKey:@"AuthToken"];
-        
-        [self sendLiveness];
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        if(self.debug) {
-            NSLog(@"Error: %@", error);
-        }
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if(self.debug) {
-            NSLog(@"%@",json);
-        }
-    }];
-}
-
-
-- (void)setHeadersAuthToken : (AFHTTPRequestSerializer *)serializer xLoginL:(NSString *)xLogin xPassword: (NSString *)xPassword {
-    [serializer  setValue:@"f968978f-1417-4d11-8dc4-59477deb3d36" forHTTPHeaderField:@"X-AcessoBio-APIKEY"];
-    [serializer setValue:xLogin forHTTPHeaderField:@"X-Login"];
-    [serializer setValue:xPassword forHTTPHeaderField:@"X-Password"];
-}
 
 -(NSString*) bv_jsonStringWithPrettyPrint: (NSDictionary *)dict {
     NSError *error;
@@ -2777,69 +2475,39 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
     isRequestWebService = YES;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    
     NSString *baseWithBilling = [NSString stringWithFormat:@"data:%@/image/jpeg;base64,%@", billingId, base64ToUsage];
-    
     NSDictionary *dict = @{
-        @"subject" : @{@"Code": self.acessiBioManager.createProcess.code, @"Name":self.acessiBioManager.createProcess.name },
+        @"subject" : @{
+                @"Code": self.acessiBioManager.createProcess.code,
+                @"Name":self.acessiBioManager.createProcess.name
+        },
         @"onlySelfie" : [NSNumber numberWithBool:YES],
         @"imagebase64": baseWithBilling
     };
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        NSDictionary *result = responseObject;
-        self->processId = [result valueForKey:@"Id"];
-        
-        if(isDebug) {
-            [self getAuthToken];
-        }
-        
-        self->livenessXResult = [LivenessXResult new];
-        [self->livenessXResult setBase64:self->base64ToUsage];
-        [self->livenessXResult setIsLiveness:self->_isFaceLiveness];
-        [self->livenessXResult setProcessId:self->processId];
-        
-        [self doneProcess];
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        if(self.debug) {
-            NSLog(@"Error: %@", error);
-        }
-        self->isRequestWebService = NO;
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        if(self.debug) {
-            NSLog(@"%@",errResponse);
-        }
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:description]];
-        }else{
-            [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-        
-    }];
+    [lServices createProcessV3:dict];
+    
     
 }
 
-
+- (void)onSucessCreateProcessV3 : (NSString *)pProcessId {
+    
+    self->livenessXResult = [LivenessXResult new];
+    [self->livenessXResult setBase64:self->base64ToUsage];
+    [self->livenessXResult setIsLiveness:self->_isFaceLiveness];
+    [self->livenessXResult setProcessId:pProcessId];
+    
+    self->processId = livenessXResult.processId;
+    
+    [self doneProcess];
+    
+}
 
 #pragma mark - Sensors
+
+- (void)vibrate {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
 
 - (void)sensors {
     [self gyroscope];
@@ -2857,12 +2525,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
                                                         withHandler:^(CMDeviceMotion *motion, NSError *error)
      {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            /*
-             CGFloat x = motion.gravity.x;
-             CGFloat y = motion.gravity.y;
-             CGFloat z = motion.gravity.z;
-             */
-            
+
             if(self.motionManager.deviceMotion != nil) {
                 
                 CMQuaternion quat = self.motionManager.deviceMotion.attitude.quaternion;
@@ -2876,9 +2539,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
                 self->pPitch = pitch;
                 self->pRoll = roll;
                 self->pYaw = yaw;
-                
-                //NSLog(@"%f", yaw);
-                
+                                
                 if(self->pitchInitial == 0) {
                     self->pitchInitial = pitch;
                     self->rollInitial = roll;
@@ -2916,60 +2577,13 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         
     }
     
-    
 }
-
-/*
- 
- BOOL isDarkImage(UIImage* inputImage){
- 
- 
- BOOL isDark = FALSE;
- 
- CFDataRef imageData = CGDataProviderCopyData(CGImageGetDataProvider(inputImage.CGImage));
- const UInt8 *pixels = CFDataGetBytePtr(imageData);
- 
- int darkPixels = 0;
- 
- int length = CFDataGetLength(imageData);
- int const darkPixelThreshold = (inputImage.size.width*inputImage.size.height)*.65;
- 
- for(int i=0; i<length; i+=4)
- {
- int r = pixels[i];
- int g = pixels[i+1];
- int b = pixels[i+2];
- 
- //luminance calculation gives more weight to r and b for human eyes
- float luminance = (0.299*r + 0.587*g + 0.114*b);
- if (luminance<150) darkPixels ++;
- }
- 
- if (darkPixels >= darkPixelThreshold)
- isDark = YES;
- 
- CFRelease(imageData);
- 
- return isDark;
- 
- }
- */
-
-
-- (UIImage *)croppIngimage:(UIImage *)imageToCrop toRect:(CGRect)rect
-{
-    
-    CGImageRef imageRef = CGImageCreateWithImageInRect([imageToCrop CGImage], rect);
-    UIImage *cropped = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-    
-    return cropped;
-}
-
 
 #pragma mark - Popup's
 
 - (void)popupShow {
+    
+    [self vibrate];
     
     isPopUpShow = YES;
     
@@ -2979,20 +2593,20 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     [self addVHole:CGRectZero];
     
     popup = [[PopUpValidationLiveness alloc]initWithFrame:CGRectMake(((SCREEN_WIDTH/2) - 165), ((SCREEN_HEIGHT/2) - 265) , 330, 530)];
-    [popup setType:PopupTypeGeneric faceInsertView:self];
+    [popup setType:PopupTypeGeneric lView:self];
     
     UIColor *colorBackgroundPopup = [UIColor whiteColor];
     if(self.colorBackgroundPopupError != nil) {
         colorBackgroundPopup = self.colorBackgroundPopupError;
     }
     [popup setBackgroundColor:colorBackgroundPopup];
-
+    
     UIColor *colorBackgroundButtonPopupError = [UIColor colorWithRed:41.0f/255.0f green:128.0f/255.0f blue:255.0f/255.0f alpha:1.0];
     if(self.colorBackgroundButtonPopupError != nil) {
         colorBackgroundButtonPopupError = self.colorBackgroundButtonPopupError;
     }
     [popup setBackgroundColorButton:colorBackgroundButtonPopupError];
-
+    
     UIColor *colorTitleButtonPopupError = [UIColor whiteColor];
     if(self.colorTitleButtonPopupError != nil) {
         colorTitleButtonPopupError = self.colorTitleButtonPopupError;
@@ -3017,6 +2631,55 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     popup = nil;
     
 }
+
+- (void)popupIntroShow {
+    
+    [vAlert setHidden:YES];
+    [self removeFlash];
+    
+    [self addVHole:CGRectZero];
+    
+    popupIntro = [[PopUpIntro alloc]initWithFrame:CGRectMake(((SCREEN_WIDTH/2) - 165), ((SCREEN_HEIGHT/2) - 265) , 330, 530)];
+    [popupIntro initLayout:self];
+    
+    UIColor *colorBackgroundPopup = [UIColor whiteColor];
+    if(self.colorBackgroundPopupError != nil) {
+        colorBackgroundPopup = self.colorBackgroundPopupError;
+    }
+    [popupIntro setBackgroundColor:colorBackgroundPopup];
+    
+    UIColor *colorBackgroundButtonPopupError = [UIColor colorWithRed:41.0f/255.0f green:128.0f/255.0f blue:255.0f/255.0f alpha:1.0];
+    if(self.colorBackgroundButtonPopupError != nil) {
+        colorBackgroundButtonPopupError = self.colorBackgroundButtonPopupError;
+    }
+    [popupIntro setBackgroundColorButton:colorBackgroundButtonPopupError];
+    
+    UIColor *colorTitleButtonPopupError = [UIColor whiteColor];
+    if(self.colorTitleButtonPopupError != nil) {
+        colorTitleButtonPopupError = self.colorTitleButtonPopupError;
+    }
+    [popupIntro setTitleColorButton:colorTitleButtonPopupError];
+    
+    if(self.imageIconPopupError != nil) {
+        [popupIntro setImageIconPopupError:self.imageIconPopupError];
+    }
+    
+    [self.view addSubview:popupIntro];
+    
+}
+
+- (void)popupIntroHidden {
+    
+    [popupIntro removeFromSuperview];
+    popupIntro = nil;
+    
+    lStateType = LivenessStateCenter;
+    [self changeHoleView:frameCurrent delayInSeconds:0];
+    [self initialActionOfChangeState:NO];
+
+    
+}
+
 
 #pragma mark - General
 

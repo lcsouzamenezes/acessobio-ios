@@ -1502,7 +1502,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     [self addVHole:CGRectZero];
     
     popup = [[PopUpValidationLiveness alloc]initWithFrame:CGRectMake(((SCREEN_WIDTH/2) - 165), ((SCREEN_HEIGHT/2) - 180) , 330, 370)];
-    [popup setType:PopupTypeGeneric faceInsertView:self];
+    [popup setType:PopupTypeGeneric lView:self];
     [popup setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:popup];
     
