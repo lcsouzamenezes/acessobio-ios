@@ -19,7 +19,6 @@
 		16DBCD832461EE3C0040D4E8 /* UIColorExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DBCD762461EE3B0040D4E8 /* UIColorExtensions.m */; platformFilter = ios; };
 		16DBCD852461EE3C0040D4E8 /* CenterModelCrop.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 16DBCD782461EE3B0040D4E8 /* CenterModelCrop.mlmodel */; platformFilter = ios; };
 		16DBCD862461EE3C0040D4E8 /* CameraMain.h in Headers */ = {isa = PBXBuildFile; fileRef = 16DBCD792461EE3B0040D4E8 /* CameraMain.h */; platformFilter = ios; };
-		97E59BE1256714BD0090575A /* ic_takepicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E59BE0256714BD0090575A /* ic_takepicture.png */; };
 		E669E3F52469922900110BAC /* AcessoBioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E669E3EF2469922800110BAC /* AcessoBioManager.m */; platformFilter = ios; };
 		E669E3F62469922900110BAC /* AcessoBioManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E669E3F02469922800110BAC /* AcessoBioManager.h */; platformFilter = ios; };
 		E669E3F72469922900110BAC /* CameraFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = E669E3F12469922900110BAC /* CameraFaceView.m */; platformFilter = ios; };
@@ -65,7 +64,6 @@
 		16DBCD762461EE3B0040D4E8 /* UIColorExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColorExtensions.m; sourceTree = "<group>"; };
 		16DBCD782461EE3B0040D4E8 /* CenterModelCrop.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = CenterModelCrop.mlmodel; sourceTree = "<group>"; };
 		16DBCD792461EE3B0040D4E8 /* CameraMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraMain.h; sourceTree = "<group>"; };
-		97E59BE0256714BD0090575A /* ic_takepicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_takepicture.png; sourceTree = "<group>"; };
 		E669E3EF2469922800110BAC /* AcessoBioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcessoBioManager.m; sourceTree = "<group>"; };
 		E669E3F02469922800110BAC /* AcessoBioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcessoBioManager.h; sourceTree = "<group>"; };
 		E669E3F12469922900110BAC /* CameraFaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraFaceView.m; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 		16DBCD642461ED970040D4E8 /* AcessoBio */ = {
 			isa = PBXGroup;
 			children = (
-				97E59BE0256714BD0090575A /* ic_takepicture.png */,
 				E69DB92E24E1E0FC001A1C2A /* OCRResult.h */,
 				E69DB92D24E1E0FB001A1C2A /* OCRResult.m */,
 				E69DB92924E1E0BC001A1C2A /* DocumentInsertView.h */,
@@ -259,7 +256,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6D86EA724E07AAB00B24B12 /* frame_rg_frente.png in Resources */,
-				97E59BE1256714BD0090575A /* ic_takepicture.png in Resources */,
 				E67B7A5A2471B9CD00918066 /* ic_close.png in Resources */,
 				E67B7A53247195C000918066 /* ic_popup_face_error.png in Resources */,
 				E6D86EA624E07AAB00B24B12 /* frame_cnh.png in Resources */,

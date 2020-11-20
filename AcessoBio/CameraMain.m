@@ -124,7 +124,7 @@
     }
     
     self.btTakePic = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 40, SCREEN_HEIGHT - 100, 80, 80)];
-    [self.btTakePic setImage:[UIImage imageNamed:@"ic_takepicture"] forState:UIControlStateNormal];
+    [self.btTakePic setImage:[UIImage imageNamed:@"icon_take_pic"] forState:UIControlStateNormal];
     [self.btTakePic setAlpha:0.5];
     [self.btTakePic setEnabled:NO];
     [self.view addSubview:self.btTakePic];

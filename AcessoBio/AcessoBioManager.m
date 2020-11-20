@@ -239,10 +239,8 @@
         dView.type = 4;
     }else if(documentType == DocumentRGFrente || documentType == DocumentRG) {
         dView.type = 501;
-    }else if(documentType == DocumentRGVerso){
-        dView.type = 502;
     }else{
-        dView.type = 999;
+        dView.type = 502;
     }
     
     dView.acessoBioManager = self;
@@ -268,10 +266,8 @@
         dView.type = 4;
     }else if(documentType == DocumentRGFrente || documentType == DocumentRG) {
         dView.type = 501;
-    }else if(documentType == DocumentRGVerso){
-        dView.type = 502;
     }else{
-        dView.type = 999;
+        dView.type = 502;
     }
     
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:dView];
@@ -305,10 +301,8 @@
         dView.type = 4;
     }else if(documentTypeFacematch == DocumentRGFrente || documentTypeFacematch == DocumentRG) {
         dView.type = 501;
-    }else if(documentTypeFacematch == DocumentRGVerso){
-        dView.type = 502;
     }else{
-        dView.type = 999;
+        dView.type = 502;
     }
     
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:dView];

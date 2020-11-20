@@ -44,8 +44,19 @@
     
     UIImageView *iv = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - (heightViewBottom - valueLessMask) )];
     [iv setContentMode:UIViewContentModeScaleToFill];
+    
+    if(self.type == 4) {
+        [iv setImage:[UIImage imageNamed:@"frame_cnh"]];
+    }else if (self.type == 501) {
+        [iv setImage:[UIImage imageNamed:@"frame_rg_frente"]];
+    }else if (self.type == 502){
+        [iv setImage:[UIImage imageNamed:@"frame_rg_verso"]];
+    }else{
+        [iv setHidden:YES];
+    }
+    
     [self.view addSubview:iv];
-
+    
     UIView *viewBottom = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT - heightViewBottom, SCREEN_WIDTH, heightViewBottom)];
     [viewBottom setBackgroundColor:[self getColorPrimary]];
     [self.view addSubview:viewBottom];
@@ -55,52 +66,19 @@
     [lbStatus setTextColor:[UIColor whiteColor]];
     [lbStatus setTextAlignment:NSTextAlignmentCenter];
     [lbStatus setFont:[UIFont fontWithName:@"Avenir-Book" size:18.0]];
-
-    
+    [lbStatus setText:@"Enquadre a CNH aberta"];
     [self.view addSubview:lbStatus];
-    
-    
-    if(self.type == 4) {
-        [iv setImage:[UIImage imageNamed:@"frame_cnh"]];
-        [lbStatus setText:@"Enquadre a CNH aberta"];
-    }else if (self.type == 501) {
-        [iv setImage:[UIImage imageNamed:@"frame_rg_frente"]];
-        [lbStatus setText:@"Enquadre o RG frente aberto"];
-    }else if (self.type == 502){
-        [iv setImage:[UIImage imageNamed:@"frame_rg_verso"]];
-        [lbStatus setText:@"Enquadre o RG verso aberto"];
-    }else{
-        [iv setHidden:YES];
-        [lbStatus setText:@"Enquadre o documento"];
-    }
-    
     
     [self.btTakePic setEnabled:YES];
     [self.btTakePic setAlpha:1.0];
     [self.btTakePic setFrame:CGRectMake((SCREEN_WIDTH/2) - 35, SCREEN_HEIGHT - heightViewBottom - 35, 70, 70)];
-    [self.btTakePic.layer setMasksToBounds:YES];
-    [self.btTakePic.layer setCornerRadius:self.btTakePic.frame.size.height/2];
     [self.btTakePic addTarget:self action:@selector(invokeTakePicture) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.view addSubview:self.btTakePic];
     
-    [self addCloseButton];
     
-}
-
-
-#pragma mark - Close
-
-- (void)addCloseButton {
     
-    btClose = [[UIButton alloc]initWithFrame:CGRectMake(7, 20, 70, 70)];
-    [btClose setImage:[UIImage imageNamed:@"ic_close"] forState:UIControlStateNormal];
-    [btClose addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btClose];
     
-}
-
-- (void)close {
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) invokeTakePicture {

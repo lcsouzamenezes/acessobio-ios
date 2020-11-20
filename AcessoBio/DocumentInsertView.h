@@ -29,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DocumentInsertView : CameraMain {
     JGProgressHUD *HUD;
-    UIButton *btClose;
 }
 
 @property (assign, nonatomic)NSInteger type; 
