@@ -2240,7 +2240,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     };
     
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/detect", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/detect", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         NSDictionary *result = responseObject;
         
@@ -2318,7 +2318,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     };
     
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/detect", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/detect", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         NSDictionary *result = responseObject;
         
@@ -2525,7 +2525,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
     
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/liveness/billing", self.URL] parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/liveness/billing", self.URL] parameters:params headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         self->billingId = strUuid;
         
@@ -2590,7 +2590,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
     NSString *strURL = [NSString stringWithFormat:@"%@/services/v2/credService.svc/", urlDebug];
     
-    [manager POST:[NSString stringWithFormat:@"%@app/liveness/%@", strURL, processId] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@app/liveness/%@", strURL, processId] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         if(self.debug) {
             NSLog(@"JSON: %@", responseObject);
@@ -2720,7 +2720,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     manager.requestSerializer = serializer;
     [self setHeadersAuthToken:manager.requestSerializer xLoginL:userDebug xPassword:passwordDebug];
     
-    [manager GET:[NSString stringWithFormat:@"%@/services/v2/credService.svc/user/authToken", urlDebug] parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/services/v2/credService.svc/user/authToken", urlDebug] parameters:nil headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         if(self.debug) {
             NSLog(@"JSON: %@", responseObject);
@@ -2792,7 +2792,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         @"imagebase64": baseWithBilling
     };
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         NSDictionary *result = responseObject;
         self->processId = [result valueForKey:@"Id"];

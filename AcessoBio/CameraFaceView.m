@@ -1338,7 +1338,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         @"imagebase64": _base64Center
     };
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         NSDictionary *result = responseObject;
         NSString * processId = [result valueForKey:@"Id"];
@@ -1417,7 +1417,7 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     };
     
     NSString *strURL = [NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/compare", self.URL];
-    [manager POST:strURL parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:strURL parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         
         [self dismissHUB];

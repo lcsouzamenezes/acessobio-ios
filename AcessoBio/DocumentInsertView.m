@@ -177,7 +177,7 @@
         @"base64": base64
     };
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/documents/ocr", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/documents/ocr", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         [self dismissHUB];
         
@@ -252,7 +252,7 @@
         @"Base64Selfie": strBaseFace,
     };
     
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/match", self.URL] parameters:dict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/match", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         [self dismissHUB];
         
