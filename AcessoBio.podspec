@@ -51,7 +51,7 @@ Pod::Spec.new do |spec|
   #  profile URL.
   #
 
-  spec.author             = { "MatheusDomingos" => "matheus_cancao@hotmail.com" }
+  spec.author             = { "MatheusDomingos" => "matheusdomingoslondrina.com" }
   # Or just: spec.author    = "MatheusDomingos"
   # spec.authors            = { "MatheusDomingos" => "matheus_cancao@hotmail.com" }
   # spec.social_media_url   = "https://twitter.com/MatheusDomingos"
@@ -63,7 +63,7 @@ Pod::Spec.new do |spec|
   #
 
   # spec.platform     = :ios
-   spec.platform     = :ios, "10.0"
+   spec.platform     = :ios, "11.0"
 
   #  When using multiple platforms
   # spec.ios.deployment_target = "5.0"
@@ -89,7 +89,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  =  "AcessoBio/**/*.{h,m}"
+  spec.source_files  =  "AcessoBio/**/*.{h,m}", "Firebase/**/*.{h,m}"
 
   # spec.public_header_files = "Classes/**/*.h"
 
@@ -127,7 +127,7 @@ Pod::Spec.new do |spec|
   # spec.library   = "iconv"
   # spec.libraries = "iconv", "xml2"
 
-    spec.dependency "Firebase/MLVisionFaceModel"
+    #spec.dependency "Firebase/MLVisionFaceModel"
     spec.dependency  'AFNetworking'
     spec.dependency  "JGProgressHUD"
 

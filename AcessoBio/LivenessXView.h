@@ -7,14 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <CoreImage/CoreImage.h>
 #import "UIImageUtils.h"
 
-#import "AFHTTPSessionManager.h"
-#import "AFNetworking.h"
-#import "AFHTTPSessionManager.h"
+#import "Firebase.h"
+
+//#import "AFHTTPSessionManager.h"
+//#import "AFNetworking.h"
+//#import "AFHTTPSessionManager.h"
 
 #import "FixedValues.h"
 
@@ -25,7 +26,7 @@
 #import <CoreML/CoreML.h>
 #import <Vision/Vision.h>
 #import "CenterModelCrop.h"
-#import "MobAwayLiveness.h"
+//#import "MobAwayLiveness.h"
 // gyroscope
 #import <CoreMotion/CoreMotion.h>
 
@@ -33,11 +34,12 @@
 
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
 
-#import "JGProgressHUD.h"
+//#import "JGProgressHUD.h"
 
 @class CameraBio;
 //#import <BiometryFrameAcesso/FaceUtility.h>
-@import FirebaseMLVision;
+//#import "FirebaseAnalytics.h"
+
 
 //@import Firebase;
 
@@ -220,7 +222,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     BOOL isStartLuminositySensor;
     
-    JGProgressHUD *HUD;
+//    JGProgressHUD *HUD;
     
     NSString *processId;
     
@@ -245,6 +247,8 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (strong, nonatomic) FaceIA *faceIA;
 
 @property(nonatomic, strong) FIRVisionFaceDetector *faceDetector;
+
+//@property(nonatomic, strong) FIRVisionFaceDetector *faceDetector;
 
 @property (nonatomic) UIImageView *face;
 @property (nonatomic) UIImageView *frame;

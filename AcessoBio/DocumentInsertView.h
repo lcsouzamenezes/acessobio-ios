@@ -10,10 +10,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreImage/CoreImage.h>
 #import "CameraMain.h"
-#import "AFHTTPSessionManager.h"
-#import "AFNetworking.h"
-#import "AFHTTPSessionManager.h"
-#import "JGProgressHUD.h"
+
+// intra-dependencies
+//#import "AFHTTPSessionManager.h"
+//#import "AFNetworking.h"
+//#import "AFHTTPSessionManager.h"
+//#import "JGProgressHUD.h"
 
 @class AcessoBioManager;
 
@@ -28,7 +30,7 @@ typedef NS_ENUM(NSInteger, OperationType) {
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DocumentInsertView : CameraMain {
-    JGProgressHUD *HUD;
+  //  JGProgressHUD *HUD;
     UIButton *btClose;
 }
 

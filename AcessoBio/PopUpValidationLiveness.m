@@ -8,6 +8,7 @@
 
 #import "PopUpValidationLiveness.h"
 #import "LivenessXView.h"
+
 @implementation PopUpValidationLiveness
 
 - (id)initWithType : (PopupType) pPopupType faceInsertView : (LivenessXView *)faceInsertView {

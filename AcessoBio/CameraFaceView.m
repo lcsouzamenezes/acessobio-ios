@@ -138,11 +138,11 @@ float marginOfSides_CameraFace = 80.0f;
         spinFlash.center = self.view.center;
         [spinFlash startAnimating];
         
-        HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        HUD.indicatorView = [[JGProgressHUDPieIndicatorView alloc] init]; //Or JGProgressHUDRingIndicatorView
-        HUD.progress = 0.8f;
-        HUD.textLabel.text = @"Aguarde...";
-        [HUD showInView:vFlash];
+//        HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+//        HUD.indicatorView = [[JGProgressHUDPieIndicatorView alloc] init]; //Or JGProgressHUDRingIndicatorView
+//        HUD.progress = 0.8f;
+//        HUD.textLabel.text = @"Aguarde...";
+//        [HUD showInView:vFlash];
         
         [self.view addSubview:vFlash];
         
@@ -152,10 +152,10 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)removeFlash {
     
-    if(HUD != nil) {
-        [HUD dismiss];
-        HUD = nil;
-    }
+//    if(HUD != nil) {
+//        [HUD dismiss];
+//        HUD = nil;
+//    }
     
     // [spinFlash stopAnimating];
     //   [spinFlash removeFromSuperview];
@@ -1306,9 +1306,9 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
 
 - (void)doneProcess {
     
-    if(HUD != nil) {
-        HUD.progress = 1.0f;
-    }
+//    if(HUD != nil) {
+//        HUD.progress = 1.0f;
+//    }
     
     if(!isDoneProcess){
         isDoneProcess = YES;
@@ -1325,73 +1325,73 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     
     isRequestWebService = YES;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    
-    NSDictionary *dict = @{
-        @"subject" : @{@"Code": self.acessiBioManager.createProcess.code, @"Name": self.acessiBioManager.createProcess.name},
-        @"onlySelfie" : [NSNumber numberWithBool:YES],
-        @"imagebase64": _base64Center
-    };
-    
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        NSDictionary *result = responseObject;
-        NSString * processId = [result valueForKey:@"Id"];
-        
-        self->HUD.progress = 0.8f;
-        self->isValidating = NO;
-        
-        CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
-        [cameraFaceResult setBase64:self->_base64Center];
-        [cameraFaceResult setProcessId:processId];
-        [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
-        
-        [self removeFlash];
-        [self doneProcess];
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        self->isRequestWebService = NO;
-        self->isValidating = NO;
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        NSLog(@"%@",errResponse);
-        
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        //[self resetSession];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            NSString *code = [NSString stringWithFormat:@"%lu", [[error valueForKey:@"Code"]integerValue]];
-            [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:[NSString stringWithFormat:@"Code: %@ - %@", code, description ]]];
-        }else{
-            [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-        
-        
-    }];
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
+//
+//    manager.requestSerializer = serializer;
+//    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
+//    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
+//
+//    NSDictionary *dict = @{
+//        @"subject" : @{@"Code": self.acessiBioManager.createProcess.code, @"Name": self.acessiBioManager.createProcess.name},
+//        @"onlySelfie" : [NSNumber numberWithBool:YES],
+//        @"imagebase64": _base64Center
+//    };
+//
+//    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+//
+//        NSDictionary *result = responseObject;
+//        NSString * processId = [result valueForKey:@"Id"];
+//
+//        self->HUD.progress = 0.8f;
+//        self->isValidating = NO;
+//
+//        CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
+//        [cameraFaceResult setBase64:self->_base64Center];
+//        [cameraFaceResult setProcessId:processId];
+//        [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
+//
+//        [self removeFlash];
+//        [self doneProcess];
+//
+//    } failure:^(NSURLSessionTask *operation, NSError *error) {
+//
+//        self->isRequestWebService = NO;
+//        self->isValidating = NO;
+//
+//        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+//        NSLog(@"%@",errResponse);
+//
+//        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
+//        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//
+//        //[self resetSession];
+//
+//        if([json isKindOfClass:[NSDictionary class]]) {
+//            NSDictionary *error = [json valueForKey:@"Error"];
+//            NSString *description = [error valueForKey:@"Description"];
+//            NSString *code = [NSString stringWithFormat:@"%lu", [[error valueForKey:@"Code"]integerValue]];
+//            [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:[NSString stringWithFormat:@"Code: %@ - %@", code, description ]]];
+//        }else{
+//            [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+//        }
+//
+//        [self exitError];
+//
+//
+//    }];
     
     
 }
 
 - (void)showHUB {
-    HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleExtraLight];
-    HUD.textLabel.text = @"Aguarde...";
-    [HUD showInView:self.view];
+//    HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleExtraLight];
+//    HUD.textLabel.text = @"Aguarde...";
+//    [HUD showInView:self.view];
 }
 
 - (void)dismissHUB {
-    [HUD dismissAnimated:YES];
+//    [HUD dismissAnimated:YES];
 }
 
 
@@ -1404,62 +1404,62 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
     cpf = [cpf stringByReplacingOccurrencesOfString:@"." withString:@""];
     cpf = [cpf stringByReplacingOccurrencesOfString:@"-" withString:@""];
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    
-    NSDictionary *dict = @{
-        @"code": cpf,
-        @"imagebase64": base64
-    };
-    
-    NSString *strURL = [NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/compare", self.URL];
-    [manager POST:strURL parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        
-        [self dismissHUB];
-        
-        NSDictionary *dictresponse = responseObject;
-        
-        BOOL status = NO;
-        
-        if([[dictresponse valueForKey:@"Status"] integerValue] == 1) {
-            status = YES;
-        }
-        
-        [self.acessiBioManager onSuccessFacesCompare:status];
-        
-        [self removeFlash];
-        [self doneProcess];
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        
-        [self dismissHUB];
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        NSLog(@"%@",errResponse);
-        
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            NSNumber * Code = [error valueForKey:@"Code"] ;
-            
-            [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
-            
-        }else{
-            [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-     
-     }];
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
+//    
+//    manager.requestSerializer = serializer;
+//    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
+//    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
+//    
+//    NSDictionary *dict = @{
+//        @"code": cpf,
+//        @"imagebase64": base64
+//    };
+//    
+//    NSString *strURL = [NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/compare", self.URL];
+//    [manager POST:strURL parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+//        NSLog(@"JSON: %@", responseObject);
+//        
+//        [self dismissHUB];
+//        
+//        NSDictionary *dictresponse = responseObject;
+//        
+//        BOOL status = NO;
+//        
+//        if([[dictresponse valueForKey:@"Status"] integerValue] == 1) {
+//            status = YES;
+//        }
+//        
+//        [self.acessiBioManager onSuccessFacesCompare:status];
+//        
+//        [self removeFlash];
+//        [self doneProcess];
+//        
+//    } failure:^(NSURLSessionTask *operation, NSError *error) {
+//        NSLog(@"Error: %@", error);
+//        
+//        [self dismissHUB];
+//        
+//        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+//        NSLog(@"%@",errResponse);
+//        
+//        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
+//        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//        
+//        if([json isKindOfClass:[NSDictionary class]]) {
+//            NSDictionary *error = [json valueForKey:@"Error"];
+//            NSString *description = [error valueForKey:@"Description"];
+//            NSNumber * Code = [error valueForKey:@"Code"] ;
+//            
+//            [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
+//            
+//        }else{
+//            [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+//        }
+//        
+//        [self exitError];
+//     
+//     }];
     
 }
 

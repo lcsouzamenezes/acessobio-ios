@@ -150,13 +150,13 @@
 }
 
 - (void)showHUB {
-    HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleExtraLight];
-    HUD.textLabel.text = @"Aguarde...";
-    [HUD showInView:self.view];
+//    HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleExtraLight];
+//    HUD.textLabel.text = @"Aguarde...";
+//    [HUD showInView:self.view];
 }
 
 - (void)dismissHUB {
-    [HUD dismissAnimated:YES];
+   // [HUD dismissAnimated:YES];
 }
 
 #pragma mark - OCR
@@ -165,68 +165,68 @@
     
     [self showHUB];
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    
-    NSDictionary *dict = @{
-        @"type": [NSString stringWithFormat:@"%lu", self.type],
-        @"base64": base64
-    };
-    
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/documents/ocr", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        [self dismissHUB];
-        
-        NSDictionary *result = responseObject;
-        
-        OCRResult *ocrResult = [OCRResult new];
-        ocrResult.BirthDate = [result valueForKey:@"BirthDate"];
-        ocrResult.Category = [result valueForKey:@"Category"];
-        ocrResult.Code = [result valueForKey:@"Code"];
-        ocrResult.ExpeditionCity = [result valueForKey:@"ExpeditionCity"];
-        ocrResult.ExpeditionDate = [result valueForKey:@"ExpeditionDate"];
-        ocrResult.ExpirationDate = [result valueForKey:@"ExpirationDate"];
-        ocrResult.FatherName = [result valueForKey:@"FatherName"];
-        ocrResult.FirstLicenseDate = [result valueForKey:@"FirstLicenseDate"];
-        ocrResult.MirrorNumber = [result valueForKey:@"MirrorNumber"];
-        ocrResult.MotherName = [result valueForKey:@"MotherName"];
-        ocrResult.Name = [result valueForKey:@"Name"];
-        ocrResult.RegistrationNumber = [result valueForKey:@"RegistrationNumber"];
-        ocrResult.Renach = [result valueForKey:@"Renach"];
-        ocrResult.RG = [result valueForKey:@"RG"];
-        ocrResult.SecurityCode = [result valueForKey:@"SecurityCode"];
-        
-        [self.acessoBioManager onSuccessOCR:ocrResult];
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        [self dismissHUB];
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            NSNumber * Code = [error valueForKey:@"Code"] ;
-            
-            [self.acessoBioManager onErrorOCR:[self strErrorFormatted:@"ocr " description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
-            
-        }else{
-            [self.acessoBioManager onErrorOCR:[self strErrorFormatted:@"ocr " description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-        
-    }];
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
+//
+//    manager.requestSerializer = serializer;
+//    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
+//    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
+//
+//    NSDictionary *dict = @{
+//        @"type": [NSString stringWithFormat:@"%lu", self.type],
+//        @"base64": base64
+//    };
+//
+//    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/documents/ocr", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+//
+//        [self dismissHUB];
+//
+//        NSDictionary *result = responseObject;
+//
+//        OCRResult *ocrResult = [OCRResult new];
+//        ocrResult.BirthDate = [result valueForKey:@"BirthDate"];
+//        ocrResult.Category = [result valueForKey:@"Category"];
+//        ocrResult.Code = [result valueForKey:@"Code"];
+//        ocrResult.ExpeditionCity = [result valueForKey:@"ExpeditionCity"];
+//        ocrResult.ExpeditionDate = [result valueForKey:@"ExpeditionDate"];
+//        ocrResult.ExpirationDate = [result valueForKey:@"ExpirationDate"];
+//        ocrResult.FatherName = [result valueForKey:@"FatherName"];
+//        ocrResult.FirstLicenseDate = [result valueForKey:@"FirstLicenseDate"];
+//        ocrResult.MirrorNumber = [result valueForKey:@"MirrorNumber"];
+//        ocrResult.MotherName = [result valueForKey:@"MotherName"];
+//        ocrResult.Name = [result valueForKey:@"Name"];
+//        ocrResult.RegistrationNumber = [result valueForKey:@"RegistrationNumber"];
+//        ocrResult.Renach = [result valueForKey:@"Renach"];
+//        ocrResult.RG = [result valueForKey:@"RG"];
+//        ocrResult.SecurityCode = [result valueForKey:@"SecurityCode"];
+//
+//        [self.acessoBioManager onSuccessOCR:ocrResult];
+//
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//
+//
+//    } failure:^(NSURLSessionTask *operation, NSError *error) {
+//
+//        [self dismissHUB];
+//
+//        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+//        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
+//        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//
+//        if([json isKindOfClass:[NSDictionary class]]) {
+//            NSDictionary *error = [json valueForKey:@"Error"];
+//            NSString *description = [error valueForKey:@"Description"];
+//            NSNumber * Code = [error valueForKey:@"Code"] ;
+//
+//            [self.acessoBioManager onErrorOCR:[self strErrorFormatted:@"ocr " description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
+//
+//        }else{
+//            [self.acessoBioManager onErrorOCR:[self strErrorFormatted:@"ocr " description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+//        }
+//
+//        [self exitError];
+//
+//    }];
     
 }
 
@@ -236,61 +236,61 @@
     
     [self showHUB];
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    
-    manager.requestSerializer = serializer;
-    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    
-    
-    NSString *strBaseFace = [NSString stringWithFormat:@"%@", self.base64SelfieToFaceMatch];
-    
-    
-    NSDictionary *dict = @{
-        @"Base64Documento": base64Document,
-        @"Base64Selfie": strBaseFace,
-    };
-    
-    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/match", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        [self dismissHUB];
-        
-        NSDictionary *result = responseObject;
-        
-        FacematchResult *facematchResult = [FacematchResult new];
-        
-        facematchResult.Base64Document = base64Document;
-        facematchResult.Base64Selfie = self.base64SelfieToFaceMatch;
-        facematchResult.Status = [[result valueForKey:@"Status"] boolValue];
-        
-        [self.acessoBioManager onSuccessFacematch:facematchResult];
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        [self dismissHUB];
-        
-        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        if([json isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *error = [json valueForKey:@"Error"];
-            NSString *description = [error valueForKey:@"Description"];
-            NSNumber * Code = [error valueForKey:@"Code"] ;
-            
-            [self.acessoBioManager onErrorFacematch:[self strErrorFormatted:@"facematch " description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
-            
-        }else{
-            [self.acessoBioManager onErrorFacematch:[self strErrorFormatted:@"facematch " description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-        }
-        
-        [self exitError];
-        
-    }];
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
+//    
+//    manager.requestSerializer = serializer;
+//    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
+//    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
+//    
+//    
+//    NSString *strBaseFace = [NSString stringWithFormat:@"%@", self.base64SelfieToFaceMatch];
+//    
+//    
+//    NSDictionary *dict = @{
+//        @"Base64Documento": base64Document,
+//        @"Base64Selfie": strBaseFace,
+//    };
+//    
+//    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/match", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+//        
+//        [self dismissHUB];
+//        
+//        NSDictionary *result = responseObject;
+//        
+//        FacematchResult *facematchResult = [FacematchResult new];
+//        
+//        facematchResult.Base64Document = base64Document;
+//        facematchResult.Base64Selfie = self.base64SelfieToFaceMatch;
+//        facematchResult.Status = [[result valueForKey:@"Status"] boolValue];
+//        
+//        [self.acessoBioManager onSuccessFacematch:facematchResult];
+//        
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//        
+//        
+//    } failure:^(NSURLSessionTask *operation, NSError *error) {
+//        
+//        [self dismissHUB];
+//        
+//        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+//        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
+//        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//        
+//        if([json isKindOfClass:[NSDictionary class]]) {
+//            NSDictionary *error = [json valueForKey:@"Error"];
+//            NSString *description = [error valueForKey:@"Description"];
+//            NSNumber * Code = [error valueForKey:@"Code"] ;
+//            
+//            [self.acessoBioManager onErrorFacematch:[self strErrorFormatted:@"facematch " description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
+//            
+//        }else{
+//            [self.acessoBioManager onErrorFacematch:[self strErrorFormatted:@"facematch " description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+//        }
+//        
+//        [self exitError];
+//        
+//    }];
     
 }
 
