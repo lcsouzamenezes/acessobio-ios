@@ -265,38 +265,38 @@ float marginOfSidesLivenessX = 80.0f;
 //}
 
 
-- (FIRVisionDetectorImageOrientation)
-imageOrientationFromDeviceOrientation:(UIDeviceOrientation)deviceOrientation
-cameraPosition:(AVCaptureDevicePosition)cameraPosition {
-    switch (deviceOrientation) {
-        case UIDeviceOrientationPortrait:
-            if (cameraPosition == AVCaptureDevicePositionFront) {
-                return FIRVisionDetectorImageOrientationLeftTop;
-            } else {
-                return FIRVisionDetectorImageOrientationRightTop;
-            }
-        case UIDeviceOrientationLandscapeLeft:
-            if (cameraPosition == AVCaptureDevicePositionFront) {
-                return FIRVisionDetectorImageOrientationBottomLeft;
-            } else {
-                return FIRVisionDetectorImageOrientationTopLeft;
-            }
-        case UIDeviceOrientationPortraitUpsideDown:
-            if (cameraPosition == AVCaptureDevicePositionFront) {
-                return FIRVisionDetectorImageOrientationRightBottom;
-            } else {
-                return FIRVisionDetectorImageOrientationLeftBottom;
-            }
-        case UIDeviceOrientationLandscapeRight:
-            if (cameraPosition == AVCaptureDevicePositionFront) {
-                return FIRVisionDetectorImageOrientationTopRight;
-            } else {
-                return FIRVisionDetectorImageOrientationBottomRight;
-            }
-        default:
-            return FIRVisionDetectorImageOrientationTopLeft;
-    }
-}
+//- (FIRVisionDetectorImageOrientation)
+//imageOrientationFromDeviceOrientation:(UIDeviceOrientation)deviceOrientation
+//cameraPosition:(AVCaptureDevicePosition)cameraPosition {
+//    switch (deviceOrientation) {
+//        case UIDeviceOrientationPortrait:
+//            if (cameraPosition == AVCaptureDevicePositionFront) {
+//                return FIRVisionDetectorImageOrientationLeftTop;
+//            } else {
+//                return FIRVisionDetectorImageOrientationRightTop;
+//            }
+//        case UIDeviceOrientationLandscapeLeft:
+//            if (cameraPosition == AVCaptureDevicePositionFront) {
+//                return FIRVisionDetectorImageOrientationBottomLeft;
+//            } else {
+//                return FIRVisionDetectorImageOrientationTopLeft;
+//            }
+//        case UIDeviceOrientationPortraitUpsideDown:
+//            if (cameraPosition == AVCaptureDevicePositionFront) {
+//                return FIRVisionDetectorImageOrientationRightBottom;
+//            } else {
+//                return FIRVisionDetectorImageOrientationLeftBottom;
+//            }
+//        case UIDeviceOrientationLandscapeRight:
+//            if (cameraPosition == AVCaptureDevicePositionFront) {
+//                return FIRVisionDetectorImageOrientationTopRight;
+//            } else {
+//                return FIRVisionDetectorImageOrientationBottomRight;
+//            }
+//        default:
+//            return FIRVisionDetectorImageOrientationTopLeft;
+//    }
+//}
 
 
 - (void)getResultadoIACloseObjc:(NSDictionary *)dictIA {
@@ -952,10 +952,10 @@ cameraPosition:(AVCaptureDevicePosition)cameraPosition {
         FIRVisionImageMetadata *metadata = [[FIRVisionImageMetadata alloc] init];
         AVCaptureDevicePosition cameraPosition =
         AVCaptureDevicePositionBack;  // Set to the capture device you used.
-        metadata.orientation =
-        [self imageOrientationFromDeviceOrientation:UIDevice.currentDevice.orientation
-                                     cameraPosition:cameraPosition];
-        
+//        metadata.orientation =
+//        [self imageOrientationFromDeviceOrientation:UIDevice.currentDevice.orientation
+//                                     cameraPosition:cameraPosition];
+//        
         FIRVisionImage *image = [[FIRVisionImage alloc] initWithBuffer:sampleBuffer];
         image.metadata = metadata;
         

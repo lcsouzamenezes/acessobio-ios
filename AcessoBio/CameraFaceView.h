@@ -41,6 +41,14 @@
 //#import <BiometryFrameAcesso/FaceUtility.h>
 //#import <Firebase.h>
 #import "Firebase.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVision.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionImage.h"
+//
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFaceDetector.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFace.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFaceDetectorOptions.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionImageMetadata.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionPoint.h"
 //@import FirebaseMLVision;
 //@import Firebase;
 

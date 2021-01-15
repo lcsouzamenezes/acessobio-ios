@@ -89,7 +89,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  =  "AcessoBio/**/*.{h,m}", "Firebase/**/*.{h,m}"
+  spec.source_files  =  "AcessoBio/**/*.{h,m}"
 
   # spec.public_header_files = "Classes/**/*.h"
 
@@ -121,6 +121,9 @@ Pod::Spec.new do |spec|
   #  the lib prefix of their name.
   #
 
+  spec.ios.vendored_frameworks = "Firebase/FirebaseMLVision.framework", "Firebase/FirebaseMLCommon.framework", "GoogleAPIClientForREST.xcframework", "GoogleToolboxForMac.xcframework", "Protobuf.xcframework", "GTMSessionFetcher.xcframework", "FirebaseAnalytics.xcframework", "FirebaseCore.xcframework","FirebaseCoreDiagnostics.xcframework","FirebaseInstallations.xcframework", "GoogleAppMeasurement.xcframework","GoogleDataTransport.xcframework","GoogleUtilities.xcframework", "nanopb.xcframework", "PromisesObjC.xcframework", "Webkit.framework"
+
+  
   # spec.framework  = "SomeFramework"
   # spec.frameworks = "SomeFramework", "AnotherFramework"
 

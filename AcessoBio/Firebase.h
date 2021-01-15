@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "FirebaseCore.h"
-#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVision.h"
+//#import "FirebaseCore.h"
 
 #if !defined(__has_include)
   #error "Firebase.h won't import anything if your compiler doesn't support __has_include. Please \

@@ -12,6 +12,21 @@
 #import "UIImageUtils.h"
 
 #import "Firebase.h"
+@import FirebaseMLVision;
+
+
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVision.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionImage.h"
+//
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFaceDetector.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFace.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFaceDetectorOptions.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionImageMetadata.h"
+//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionPoint.h"
+
+
+
+//FIRVisionImageMetadata
 
 //#import "AFHTTPSessionManager.h"
 //#import "AFNetworking.h"
