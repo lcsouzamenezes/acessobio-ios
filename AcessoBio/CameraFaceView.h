@@ -39,19 +39,6 @@
 
 @class CameraBio;
 //#import <BiometryFrameAcesso/FaceUtility.h>
-//#import <Firebase.h>
-#import "Firebase.h"
-//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVision.h"
-//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionImage.h"
-//
-//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFaceDetector.h"
-//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFace.h"
-//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionFaceDetectorOptions.h"
-//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionImageMetadata.h"
-//#import "../Firebase/FirebaseMLVision.framework/Headers/FIRVisionPoint.h"
-//@import FirebaseMLVision;
-//@import Firebase;
-
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -182,7 +169,6 @@ NS_ASSUME_NONNULL_BEGIN
     int TimeSessionSecond;
     int TimeSessionThird;
     
-    
     BOOL validateFaceDetectOK;
 
     BOOL isRequestWebService;
@@ -232,8 +218,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Class Swift to IA process
 //@property (strong, nonatomic) FaceIA *faceIA;
-
-@property(nonatomic, strong) FIRVisionFaceDetector *faceDetector;
 
 @property (nonatomic) UIImageView *face;
 @property (nonatomic) UIImageView *frame;

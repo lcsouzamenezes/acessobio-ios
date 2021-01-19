@@ -121,8 +121,6 @@ Pod::Spec.new do |spec|
   #  the lib prefix of their name.
   #
 
-  spec.ios.vendored_frameworks = "Firebase/FirebaseMLVision.framework", "Firebase/FirebaseMLCommon.framework", "GoogleAPIClientForREST.xcframework", "GoogleToolboxForMac.xcframework", "Protobuf.xcframework", "GTMSessionFetcher.xcframework", "FirebaseAnalytics.xcframework", "FirebaseCore.xcframework","FirebaseCoreDiagnostics.xcframework","FirebaseInstallations.xcframework", "GoogleAppMeasurement.xcframework","GoogleDataTransport.xcframework","GoogleUtilities.xcframework", "nanopb.xcframework", "PromisesObjC.xcframework", "Webkit.framework"
-
   
   # spec.framework  = "SomeFramework"
   # spec.frameworks = "SomeFramework", "AnotherFramework"
@@ -131,8 +129,8 @@ Pod::Spec.new do |spec|
   # spec.libraries = "iconv", "xml2"
 
     #spec.dependency "Firebase/MLVisionFaceModel"
-    spec.dependency  'AFNetworking'
-    spec.dependency  "JGProgressHUD"
+    #spec.dependency  'AFNetworking'
+    #spec.dependency  "JGProgressHUD"
 
     spec.static_framework = true
 
