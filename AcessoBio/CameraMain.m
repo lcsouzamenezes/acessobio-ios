@@ -221,6 +221,24 @@
     return nil;
 }
 
+- (UIImage *)converCIImageToUIImage : (CIImage *)cIImage {
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CGImageRef cgImage = [context createCGImage:cIImage fromRect:[cIImage extent]];
+    UIImage* image = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
+    return image;
+}
+
+- (float)normalizeXPoint : (float)point {
+    float scale = [UIScreen mainScreen].scale;
+    return SCREEN_WIDTH - (point/scale);
+}
+
+- (float)normalizeYPoint : (float)point {
+    float scale = [UIScreen mainScreen].scale;
+    return SCREEN_HEIGHT - (point/scale);
+}
+
 - (CGPoint)scaledPoint:(CGPoint)point
                 xScale:(CGFloat)xscale
                 yScale:(CGFloat)yscale

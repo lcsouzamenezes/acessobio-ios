@@ -63,6 +63,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (AVCaptureDevice *) cameraWithPosition:(AVCaptureDevicePosition) position;
 
+- (UIImage *)converCIImageToUIImage : (CIImage *)cIImage;
+
+- (float)normalizeXPoint : (float)point;
+- (float)normalizeYPoint : (float)point;
+
 - (void) setupCamera:(BOOL) isSelfie;
 
 - (void) startCamera;

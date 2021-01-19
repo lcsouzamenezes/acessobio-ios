@@ -410,9 +410,29 @@ float marginOfSides_CameraFace = 80.0f;
     
     CGFloat widht = 10;
     
+    CGFloat POINT_X = [self normalizeXPoint:point.x];
+    CGFloat POINT_Y = [self normalizeYPoint:point.y];
     
-    float scale = [UIScreen mainScreen].scale;
-    CGFloat POINT_X =  SCREEN_WIDTH - (point.x/2) ;
+    CGRect circleRect = CGRectMake(POINT_X - (widht / 2), POINT_Y - (widht / 2), widht, widht);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UIView *circleView = [[UIView alloc] initWithFrame:circleRect];
+        circleView.layer.cornerRadius = widht/2;
+        circleView.alpha = 0.7;
+        circleView.backgroundColor = color;
+        circleView.tag = -1;
+        [self.view addSubview:circleView];
+        
+    });
+    
+}
+
+- (void)addCircleToPointNoNormalize : (CGPoint) point color : (UIColor *)color{
+    
+    CGFloat widht = 10;
+    
+    CGFloat POINT_X = point.x;
     CGFloat POINT_Y = point.y;
     
     CGRect circleRect = CGRectMake(POINT_X - (widht / 2), POINT_Y - (widht / 2), widht, widht);
@@ -462,7 +482,6 @@ float marginOfSides_CameraFace = 80.0f;
             
             if(!isTakingPhoto) {
                 isTakingPhoto = YES;
-                
                 
                 if(self->isPhotoAwayToCapture) {
                     [self take];
@@ -534,7 +553,6 @@ float marginOfSides_CameraFace = 80.0f;
     
 }
 
-
 - (void) addImageAcessoBio {
     if(IS_IPHONE_X || IS_IPHONE_6P){
         ivAcessoBio = [[UIImageView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT - 70, 100, 40)];
@@ -549,10 +567,7 @@ float marginOfSides_CameraFace = 80.0f;
     [self.view addSubview:ivAcessoBio];
 }
 
-
-
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    
     
     if ([self.renderLock tryLock]) {
         
@@ -589,37 +604,21 @@ float marginOfSides_CameraFace = 80.0f;
                         CIFaceFeature *face = [faceFeatures firstObject];
                         
                         if(face.hasMouthPosition) {
-                            
                             [self verifyFaceCenter:face];
-                            
-//                            if(face.hasLeftEyePosition) {
-//                                NSLog(@"Left eye bounds are %f", face.leftEyePosition.x);
-//
-//                            }
-//
-//                            if(face.hasSmile) {
-//                                NSLog(@"Usuário sorriu");
-//                            }
-                            
                         }else {
-                            
-                            //  countNoNose++;
-                            //if(countNoNose >= 10)
                             [self showGray];
-                            
                         }
-                        
                         
                     }
                     
                 }else{
                     
                     self->countNoFace++;
-                    if(self->countNoFace >= 20)
+                    if(self->countNoFace >= 20) {
                         [self showGray];
+                    }
                     
                 }
-                
                 
             }
             
@@ -628,427 +627,112 @@ float marginOfSides_CameraFace = 80.0f;
         }
         
     }
-    /*
-     
-     if(!isDoneProcess) {
-     
-     FIRVisionImageMetadata *metadata = [[FIRVisionImageMetadata alloc] init];
-     AVCaptureDevicePosition cameraPosition =
-     AVCaptureDevicePositionBack;  // Set to the capture device you used.
-     metadata.orientation =
-     [self imageOrientationFromDeviceOrientation:UIDevice.currentDevice.orientation
-     cameraPosition:cameraPosition];
-     
-     FIRVisionImage *image = [[FIRVisionImage alloc] initWithBuffer:sampleBuffer];
-     image.metadata = metadata;
-     
-     if(_isEnableSmartCapture) {
-     [self.faceDetector
-     processImage:image
-     completion:^(NSArray<FIRVisionFace *> *_Nullable faces, NSError *_Nullable error) {
-     
-     if (self->isPopUpShow) {
-     return;
-     }
-     
-     if([faces count] > 0) {
-     
-     if([faces count] == 1) {
-     
-     self->countNoFace = 0;
-     
-     FIRVisionFace *faceFeature = faces[0];
-     
-     FIRVisionFaceLandmark *noseBaseLandmark = [faceFeature landmarkOfType:FIRFaceLandmarkTypeNoseBase];
-     
-     if(noseBaseLandmark != nil) {
-     
-     if(faceFeature.hasLeftEyeOpenProbability || faceFeature.hasRightEyeOpenProbability) {
-     [self->arrLeftEyeOpenProbability addObject:[NSNumber numberWithFloat:faceFeature.leftEyeOpenProbability]];
-     }
-     
-     
-     [self analyzeFaceCenter:faceFeature];
-     
-     
-     }else{
-     //  countNoNose++;
-     //if(countNoNose >= 10)
-     [self showGray];
-     }
-     }
-     }else{
-     self->countNoFace++;
-     if(self->countNoFace >= 20)
-     [self showGray];
-     
-     }}];
-     }
-     
-     }
-     
-     */
     
-    
-    
-}
-
-- (UIImage *)converCIImageToUIImage : (CIImage *)cIImage {
-    CIContext *context = [CIContext contextWithOptions:nil];
-    CGImageRef cgImage = [context createCGImage:cIImage fromRect:[cIImage extent]];
-    UIImage* image = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-    return image;
 }
 
 
 - (void)verifyFaceCenter : (CIFaceFeature *)face{
     
-    CGPoint leftEyePosition = face.leftEyePosition;
-    
-    [self addCircleToPoint:leftEyePosition color:[UIColor redColor]];
-
-    CGPoint rightEyePosition = face.rightEyePosition;
-    
-    float leftEarPosition = face.bounds.origin.x;
-
-    
     countNoNose = 0;
     
-    CGFloat scale = 2;// [UIScreen mainScreen].scale;
+    float scale = [UIScreen mainScreen].scale;
+    
+    CGPoint leftEyePosition = face.leftEyePosition;
+    [self addCircleToPoint:leftEyePosition color:[UIColor redColor]];
+    
+    CGPoint rightEyePosition = face.rightEyePosition;
+    [self addCircleToPoint:rightEyePosition color:[UIColor greenColor]];
     
     // Olhos
-    CGFloat X_LEFT_EYE_POINT = SCREEN_WIDTH - (leftEyePosition.x/scale);
-    CGFloat Y_LEFT_EYE_POINT = leftEyePosition.y/scale;
+    CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x];
+    CGFloat Y_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.y];
     
-    CGFloat X_RIGHT_EYE_POINT = SCREEN_WIDTH - (rightEyePosition.x/scale);
-    CGFloat Y_RIGHT_EYE_POINT = rightEyePosition.y/scale;
-    
-    CGFloat X_LEFT_EAR_POINT = leftEarPosition;
-
-    
-    //Angulo
-    
-    float normalize_faceAngle = face.faceAngle + 90;
-    CGFloat FACE_ANGLE = normalize_faceAngle;
-   // CGFloat ANGLE_VERTICAL = face.faceAngle;
+    CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x];
+    CGFloat Y_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.y];
     
     
-    NSLog(@"FACE_ANGLE >>> %f", FACE_ANGLE);
-    /*
-     // Orelhas
-     CGFloat X_LEFT_EAR_POINT = SCREEN_WIDTH - (leftEarPosition.x/scale);
-     CGFloat Y_LEFT_EAR_POINT = leftEarPosition.y/scale;
-     
-     CGFloat X_RIGHT_EAR_POINT = SCREEN_WIDTH - (rightEarPosition.x/scale);
-     CGFloat Y_RIGHT_EAR_POINT = rightEarPosition.y/scale;
-     
-     // Nariz
-     CGFloat X_NOSEBASEPOSITION_POINT = SCREEN_WIDTH - (noseBasePosition.x/scale);
-     CGFloat Y_NOSEBASEPOSITION_POINT = noseBasePosition.y/scale;
-     
-     //Angulo
-     CGFloat ANGLE_HORIZONTAL = faceFeature.headEulerAngleY;
-     CGFloat ANGLE_VERTICAL = faceFeature.headEulerAngleZ;
-     */
+    CGFloat X_LEFT_EAR_POINT = face.bounds.origin.x/scale;
+    //CGFloat Y_LEFT_EAR_POINT = leftEarPosition.y/scale;
     
+    CGFloat X_RIGHT_EAR_POINT = (face.bounds.origin.x + face.bounds.size.width)/scale;
+    //CGFloat Y_RIGHT_EAR_POINT = rightEarPosition.y/scale;
     
-        BOOL hasError = NO;
-        NSMutableString *strError = [NSMutableString new];
+    [self addCircleToPoint:CGPointMake(X_LEFT_EAR_POINT, 100) color:[UIColor blueColor]];
+    [self addCircleToPoint:CGPointMake(X_RIGHT_EAR_POINT, 100) color:[UIColor blackColor]];
     
-        /*
-         - Verify wether face is centralized.
-         */
+    // Face Angle
+    CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
     
+    BOOL hasError = NO;
+    NSMutableString *strError = [NSMutableString new];
     
-//            if(self.debug) {
-//                NSLog(@"ORELHA ESQUERDA: %.2f", X_LEFT_EAR_POINT);
-//                NSLog(@"FRAME FACE X: %.2f", frameFaceCenter.origin.x);
-//                NSLog(@"ORELHA DIREITA: %.2f", X_RIGHT_EAR_POINT);
-//                NSLog(@"FRAME FACE X + W: %.2f", frameFaceCenter.origin.x + frameFaceCenter.size.width);
-//                NSLog(@"DISTANCIA OLHOS: %.2f", fabs(X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT) * 2);
-//            }
-//
+    int leftMargin = frameFaceCenter.origin.x;
+    int rightMargin = (frameFaceCenter.origin.x + frameFaceCenter.size.width);
     
-            int leftMargin = frameFaceCenter.origin.x;
-            int rightMargin = (frameFaceCenter.origin.x + frameFaceCenter.size.width);
+    float minimumDistance = 150;
+    if(IS_IPHONE_X || IS_IPHONE_6P) {
+        minimumDistance = 150;
+    }
     
+    float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
     
-//    [self addCircleToPoint:leftEyePosition color:[UIColor greenColor]];
-
-   // NSLog(@"LEFT MARGIN: %d --- LEFT EYE X: %f --- RIGHT EYE: %f", leftMargin, (leftEyePosition.x - SCREEN_WIDTH), rightEyePosition.x);
-    
-            float minimumDistance = 150;
-            if(IS_IPHONE_X || IS_IPHONE_6P) {
-                minimumDistance = 150;
-            }
-    
-//
-//            if(X_RIGHT_EAR_POINT < leftMargin || X_LEFT_EAR_POINT > rightMargin) {
-//                countTimeAlert ++;
-//                // [self showRed];
-//                if(hasError){
-//                    [strError appendString:@" / Put your face away"];
-//                }else{
-//                    [strError appendString:@"Put your face away"];
-//                }
-//                hasError = YES;
-//
-//            }else if(((fabs(X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT)) * 2) < minimumDistance) {
-//                countTimeAlert ++;
-//                // [self showRed];
-//                if(hasError){
-//                    [strError appendString:@" / Bring the face closer"];
-//                }else{
-//                    [strError appendString:@"Bring the face closer"];
-//                }
-//
-//                hasError = YES;
-//
-//            }else if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
-//                countTimeAlert ++;
-//                if(hasError){
-//                    [strError appendString:@" / Inclined face"];
-//                }else{
-//                    [strError appendString:@"Inclined face"];
-//                }
-//                hasError = YES;
-//
-//            }
-//
-//
-//
-//
-//        //[self addLabelToLog:CGPointMake(ANGLE_HORIZONTAL , ANGLE_VERTICAL) type:@"euler"];
-//
-        if(FACE_ANGLE > 20 || FACE_ANGLE < -20) {
-            countTimeAlert ++;
-            //[self showRed];
-            if(hasError){
-                if(FACE_ANGLE > 20) {
-                    [strError appendString:@" / Turn slightly left"];
-                }else if(FACE_ANGLE < -20){
-                    [strError appendString:@" / Turn slightly right"];
-                }
-            }else{
-                if(FACE_ANGLE > 20) {
-                    [strError appendString:@"Turn slightly left"];
-                }else if(FACE_ANGLE < -20){
-                    [strError appendString:@"Turn slightly right"];
-                }
-            }
-            hasError = YES;
-
+    if(X_RIGHT_EAR_POINT > rightMargin || X_LEFT_EAR_POINT < leftMargin) {
+        countTimeAlert ++;
+        if(hasError){
+            [strError appendString:@" / Put your face away"];
+        }else{
+            [strError appendString:@"Put your face away"];
         }
-    
-    
-   //Descomentar
-//        if(hasError) {
-//            [self showAlert:strError];
-//            hasError = NO;
-//        }else{
-//            [self faceOK]; // Face is centralized.
-//        }
-//
-
-    
+        hasError = YES;
+        
+    }else if(distanceBeetwenEyes < minimumDistance) {
+        countTimeAlert ++;
+        if(hasError){
+            [strError appendString:@" / Bring the face closer"];
+        }else{
+            [strError appendString:@"Bring the face closer"];
+        }
+        
+        hasError = YES;
+        
+    }else if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
+        countTimeAlert ++;
+        if(hasError){
+            [strError appendString:@" / Inclined face"];
+        }else{
+            [strError appendString:@"Inclined face"];
+        }
+        hasError = YES;
+        
+    }
+        
+    if(FACE_ANGLE > 20 || FACE_ANGLE < -20) {
+        countTimeAlert ++;
+        if(hasError){
+            if(FACE_ANGLE > 20) {
+                [strError appendString:@" / Turn slightly left"];
+            }else if(FACE_ANGLE < -20){
+                [strError appendString:@" / Turn slightly right"];
+            }
+        }else{
+            if(FACE_ANGLE > 20) {
+                [strError appendString:@"Turn slightly left"];
+            }else if(FACE_ANGLE < -20){
+                [strError appendString:@"Turn slightly right"];
+            }
+        }
+        hasError = YES;
+        
+    }
+        
+    if(hasError) {
+        [self faceIsNotOK:strError];
+        hasError = NO;
+    }else{
+        [self faceIsOK];
+    }
     
 }
-
-//
-//- (void)analyzeFaceCenter  : (FIRVisionFace *)faceFeature{
-//
-//
-//    FIRVisionFaceLandmark *leftEyeLandmark = [faceFeature landmarkOfType:FIRFaceLandmarkTypeLeftEye];
-//
-//    CGPoint leftEyePosition = [self pointFromVisionPoint:leftEyeLandmark.position];
-//
-//    FIRVisionFaceLandmark *rightEyeLandmark = [faceFeature landmarkOfType:FIRFaceLandmarkTypeRightEye];
-//
-//    CGPoint rightEyePosition = [self pointFromVisionPoint:rightEyeLandmark.position];
-//
-//    FIRVisionFaceLandmark *leftEarLandmark = [faceFeature landmarkOfType:FIRFaceLandmarkTypeLeftEar];
-//
-//    CGPoint leftEarPosition = [self pointFromVisionPoint:leftEarLandmark.position];
-//
-//    FIRVisionFaceLandmark *rightEarLandmark = [faceFeature landmarkOfType:FIRFaceLandmarkTypeRightEar];
-//
-//    CGPoint rightEarPosition = [self pointFromVisionPoint:rightEarLandmark.position];
-//
-//    FIRVisionFaceLandmark *noseBaseLandmark = [faceFeature landmarkOfType:FIRFaceLandmarkTypeNoseBase];
-//
-//    CGPoint noseBasePosition = [self pointFromVisionPoint:noseBaseLandmark.position];
-//
-//
-//    countNoNose = 0;
-//
-//    /*
-//     - Get poits position at screen.
-//     */
-//
-//    CGFloat scale = 2;// [UIScreen mainScreen].scale;
-//
-//    // Olhos
-//    CGFloat X_LEFT_EYE_POINT = SCREEN_WIDTH - (leftEyePosition.x/scale);
-//    CGFloat Y_LEFT_EYE_POINT = leftEyePosition.y/scale;
-//
-//    CGFloat X_RIGHT_EYE_POINT = SCREEN_WIDTH - (rightEyePosition.x/scale);
-//    CGFloat Y_RIGHT_EYE_POINT = rightEyePosition.y/scale;
-//
-//    // Orelhas
-//    CGFloat X_LEFT_EAR_POINT = SCREEN_WIDTH - (leftEarPosition.x/scale);
-//    CGFloat Y_LEFT_EAR_POINT = leftEarPosition.y/scale;
-//
-//    CGFloat X_RIGHT_EAR_POINT = SCREEN_WIDTH - (rightEarPosition.x/scale);
-//    CGFloat Y_RIGHT_EAR_POINT = rightEarPosition.y/scale;
-//
-//    // Nariz
-//    CGFloat X_NOSEBASEPOSITION_POINT = SCREEN_WIDTH - (noseBasePosition.x/scale);
-//    CGFloat Y_NOSEBASEPOSITION_POINT = noseBasePosition.y/scale;
-//
-//    //Angulo
-//    CGFloat ANGLE_HORIZONTAL = faceFeature.headEulerAngleY;
-//    CGFloat ANGLE_VERTICAL = faceFeature.headEulerAngleZ;
-//
-//    /*
-//     ------
-//     */
-//
-//    /*
-//     - Plot points to visually with color on the screen.
-//     */
-//
-//
-//    if(self.debug){
-//
-//        [self addCircleToPoint:CGPointMake(X_LEFT_EYE_POINT, Y_LEFT_EYE_POINT) color:[UIColor redColor]];
-//
-//        [self addCircleToPoint:CGPointMake(X_RIGHT_EAR_POINT, Y_RIGHT_EAR_POINT) color:[UIColor yellowColor]];
-//        [self addCircleToPoint:CGPointMake(X_LEFT_EAR_POINT, Y_LEFT_EAR_POINT) color:[UIColor yellowColor]];
-//
-//        [self addCircleToPoint:CGPointMake(X_RIGHT_EYE_POINT, Y_RIGHT_EYE_POINT) color:[UIColor blueColor]];
-//
-//        [self addCircleToPoint:CGPointMake(X_NOSEBASEPOSITION_POINT, Y_NOSEBASEPOSITION_POINT) color:[UIColor greenColor]];
-//
-//
-//
-//        [self addLabelToLog:CGPointMake(X_LEFT_EYE_POINT, Y_LEFT_EYE_POINT) type:@"left_eye"];
-//        [self addLabelToLog:CGPointMake(X_RIGHT_EYE_POINT, Y_RIGHT_EYE_POINT) type:@"right_eye"];
-//
-//        [self addLabelToLog:CGPointMake(X_LEFT_EAR_POINT, Y_LEFT_EAR_POINT) type:@"left_ear"];
-//        [self addLabelToLog:CGPointMake(X_RIGHT_EAR_POINT, Y_RIGHT_EAR_POINT) type:@"right_ear"];
-//
-//        [self addLabelToLog:CGPointMake(X_NOSEBASEPOSITION_POINT, Y_NOSEBASEPOSITION_POINT) type:@"nose_base"];
-//
-//        [self addLabelToLog:CGPointMake((fabs(X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT)) * 2, 0) type:@"space-eye"];
-//
-//    }
-//
-//
-//    /*
-//     ------
-//     */
-//
-//    if(self.debug){
-//        NSLog(@"X_NOSEBASEPOSITION_POINT %.2f - Y_NOSEBASEPOSITION_POINT %.2f", noseBasePosition.x, noseBasePosition.y);
-//    }
-//
-//    BOOL hasError = NO;
-//    NSMutableString *strError = [NSMutableString new];
-//
-//    /*
-//     - Verify wether face is centralized.
-//     */
-//    //if((Y_NOSEBASEPOSITION_POINT > 250  && Y_NOSEBASEPOSITION_POINT < 400) &&
-//
-//
-//    if(leftEyeLandmark != nil && rightEyeLandmark != nil)  {
-//
-//        if(self.debug) {
-//            NSLog(@"ORELHA ESQUERDA: %.2f", X_LEFT_EAR_POINT);
-//            NSLog(@"FRAME FACE X: %.2f", frameFaceCenter.origin.x);
-//            NSLog(@"ORELHA DIREITA: %.2f", X_RIGHT_EAR_POINT);
-//            NSLog(@"FRAME FACE X + W: %.2f", frameFaceCenter.origin.x + frameFaceCenter.size.width);
-//            NSLog(@"DISTANCIA OLHOS: %.2f", fabs(X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT) * 2);
-//        }
-//
-//
-//        int leftMargin = frameFaceCenter.origin.x;
-//        int rightMargin = (frameFaceCenter.origin.x + frameFaceCenter.size.width);
-//
-//
-//        float minimumDistance = 150;
-//        if(IS_IPHONE_X || IS_IPHONE_6P) {
-//            minimumDistance = 150;
-//        }
-//
-//
-//        if(X_RIGHT_EAR_POINT < leftMargin || X_LEFT_EAR_POINT > rightMargin) {
-//            countTimeAlert ++;
-//            // [self showRed];
-//            if(hasError){
-//                [strError appendString:@" / Put your face away"];
-//            }else{
-//                [strError appendString:@"Put your face away"];
-//            }
-//            hasError = YES;
-//
-//        }else if(((fabs(X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT)) * 2) < minimumDistance) {
-//            countTimeAlert ++;
-//            // [self showRed];
-//            if(hasError){
-//                [strError appendString:@" / Bring the face closer"];
-//            }else{
-//                [strError appendString:@"Bring the face closer"];
-//            }
-//
-//            hasError = YES;
-//
-//        }else if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
-//            countTimeAlert ++;
-//            if(hasError){
-//                [strError appendString:@" / Inclined face"];
-//            }else{
-//                [strError appendString:@"Inclined face"];
-//            }
-//            hasError = YES;
-//
-//        }
-//
-//    }
-//
-//
-//    //[self addLabelToLog:CGPointMake(ANGLE_HORIZONTAL , ANGLE_VERTICAL) type:@"euler"];
-//
-//    if(ANGLE_HORIZONTAL > 20 || ANGLE_HORIZONTAL < -20) {
-//        countTimeAlert ++;
-//        //[self showRed];
-//        if(hasError){
-//            if(ANGLE_HORIZONTAL > 20) {
-//                [strError appendString:@" / Turn slightly left"];
-//            }else if(ANGLE_HORIZONTAL < -20){
-//                [strError appendString:@" / Turn slightly right"];
-//            }
-//        }else{
-//            if(ANGLE_HORIZONTAL > 20) {
-//                [strError appendString:@"Turn slightly left"];
-//            }else if(ANGLE_HORIZONTAL < -20){
-//                [strError appendString:@"Turn slightly right"];
-//            }
-//        }
-//        hasError = YES;
-//
-//    }
-//
-//    if(hasError) {
-//        [self showAlert:strError];
-//        hasError = NO;
-//    }else{
-//        [self faceOK]; // Face is centralized.
-//    }
-//
-//}
-
 
 - (void)showAlert : (NSString *)alert {
     
@@ -1085,7 +769,6 @@ float marginOfSides_CameraFace = 80.0f;
             }
             [self->lbMessage setTextColor:colorLbMessage];
             
-            
         });
         
     }
@@ -1110,12 +793,6 @@ float marginOfSides_CameraFace = 80.0f;
         
         self->vHole.shapeLayer.strokeColor = [colorBorder CGColor];
         
-        /*
-         [self->rectangle setBackgroundColor:[UIColor redColor]];
-         [self->rectangleTop setBackgroundColor:[UIColor redColor]];
-         [self->rectangleLeft setBackgroundColor:[UIColor redColor]];
-         [self->rectangleRight setBackgroundColor:[UIColor redColor]];
-         */
     });
     
 }
@@ -1158,7 +835,11 @@ float marginOfSides_CameraFace = 80.0f;
     
 }
 
-- (void)faceOK{
+- (void)faceIsNotOK: (NSString *)error {
+    [self showAlert:error];
+}
+
+- (void)faceIsOK{
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
@@ -1170,32 +851,22 @@ float marginOfSides_CameraFace = 80.0f;
         }
         
         if(!self->isProccessIA) {
-            
             [self->vAlert setHidden:YES];
             [self setMessageStatus:@"Não se mexa..."];
-            
         }
         
         [self.btTakePic setAlpha:1];
         [self.btTakePic setEnabled:YES];
         
         UIColor *colorSuccess = [self getColorGreen];
-        
         if(self.colorSilhoutteSuccess != nil) {
             colorSuccess = self.colorSilhoutteSuccess;
         }
-        
         self->vHole.shapeLayer.strokeColor = [colorSuccess CGColor];
         
     });
     
 }
-
-
-//- (CGPoint)pointFromVisionPoint:(FIRVisionPoint *)visionPoint {
-//    return CGPointMake(visionPoint.x.floatValue, visionPoint.y.floatValue);
-//}
-
 
 #pragma mark - liveness_Session
 
@@ -1224,7 +895,6 @@ float marginOfSides_CameraFace = 80.0f;
     
 }
 
-
 - (void)resetTimer {
     [self->timerCountDown invalidate];
     self->countDown = 1.3;
@@ -1233,33 +903,19 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)createTimer {
-    
-    //    if(lStateType != LivenessStateCenterFace) {
-    //        countDown = 0;
-    //    }
-    
-    
+
     self->timerCountDown = [NSTimer scheduledTimerWithTimeInterval:0.8
                                                             target:self
                                                           selector:@selector(countDown)
                                                           userInfo:nil
                                                            repeats:YES];
     
-    
 }
 
 - (void)countDown {
     
     if(!isShowAlertLiveness) {
-        
-        
-        if(countDown == 1) {
-            //                if(!self->isSuccessAnimated) {
-            //                    self->isSuccessAnimated = YES;
-            //                    [self->vHole startAnimationSuccess];
-            //                }
-        }
-        
+    
         if(countDown == 0) {
             if(!self->isSuccessAnimated) {
                 self->isSuccessAnimated = YES;
@@ -1272,53 +928,6 @@ float marginOfSides_CameraFace = 80.0f;
         countDown --;
         
     }
-    
-    
-    
-}
-
-
-- (void)switchCam {
-    
-    
-    if(self.session)
-    {
-        //Indicate that some changes will be made to the session
-        [self.session beginConfiguration];
-        
-        //Remove existing input
-        AVCaptureInput* currentCameraInput = [self.session.inputs objectAtIndex:0];
-        [self.session removeInput:currentCameraInput];
-        
-        //Get new input
-        AVCaptureDevice *newCamera = nil;
-        if(((AVCaptureDeviceInput*)currentCameraInput).device.position == AVCaptureDevicePositionBack)
-        {
-            newCamera = [self cameraWithPosition:AVCaptureDevicePositionFront];
-        }
-        else
-        {
-            newCamera = [self cameraWithPosition:AVCaptureDevicePositionBack];
-        }
-        
-        
-        
-        //Add input to session
-        NSError *err = nil;
-        AVCaptureDeviceInput *newVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:newCamera error:&err];
-        if(!newVideoInput || err)
-        {
-            NSLog(@"Error creating capture device input: %@", err.localizedDescription);
-        }
-        else
-        {
-            [self.session addInput:newVideoInput];
-        }
-        
-        //Commit all the configuration changes at once
-        [self.session commitConfiguration];
-    }
-    
     
 }
 
@@ -1387,14 +996,11 @@ float marginOfSides_CameraFace = 80.0f;
     
 }
 
-
 - (void)resetVariableProcessIA {
     if(isProccessIA){
         isProccessIA = NO;
     }
 }
-
-
 
 - (void)createViewAlert {
     
