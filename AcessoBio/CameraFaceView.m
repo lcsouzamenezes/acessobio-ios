@@ -111,26 +111,30 @@ float marginOfSides_CameraFace = 80.0f;
         [vFlash setBackgroundColor:[UIColor whiteColor]];
         [vFlash setAlpha:0.9];
         
+        UIColor *colorBackground = [UIColor colorWithRed:57.0f/255.0f green:74.0f/255.0f blue:98.0f/255.0f  alpha:0.9f];
         
-        spinFlash = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        if(self.colorBackground != nil) {
+            colorBackground = self.colorBackground;
+        }
+        [vFlash setBackgroundColor:colorBackground];
+        [self.view addSubview:vFlash];
+        
+        spinFlash = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         if (@available(iOS 13.0, *)) {
             [spinFlash setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleLarge];
         } else {
             // Fallback on earlier versions
             [spinFlash setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-            
         }
-        [spinFlash setColor:[UIColor darkGrayColor]];
+        
+        UIColor *colorSpin  = [UIColor whiteColor];
+        if(self.colorSilhoutteNeutral != nil) {
+            colorSpin = self.colorSilhoutteNeutral;
+        }
+        [spinFlash setColor:colorSpin];
         spinFlash.center = self.view.center;
         [spinFlash startAnimating];
-        
-        //        HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        //        HUD.indicatorView = [[JGProgressHUDPieIndicatorView alloc] init]; //Or JGProgressHUDRingIndicatorView
-        //        HUD.progress = 0.8f;
-        //        HUD.textLabel.text = @"Aguarde...";
-        //        [HUD showInView:vFlash];
-        
-        [self.view addSubview:vFlash];
+        [self.view addSubview:spinFlash];
         
     }
     
@@ -138,13 +142,8 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)removeFlash {
     
-    //    if(HUD != nil) {
-    //        [HUD dismiss];
-    //        HUD = nil;
-    //    }
-    
-    // [spinFlash stopAnimating];
-    //   [spinFlash removeFromSuperview];
+    [spinFlash stopAnimating];
+    [spinFlash removeFromSuperview];
     [vFlash removeFromSuperview];
     vFlash = nil;
     spinFlash = nil;
@@ -638,10 +637,7 @@ float marginOfSides_CameraFace = 80.0f;
     float scale = [UIScreen mainScreen].scale;
     
     CGPoint leftEyePosition = face.leftEyePosition;
-    [self addCircleToPoint:leftEyePosition color:[UIColor redColor]];
-    
     CGPoint rightEyePosition = face.rightEyePosition;
-    [self addCircleToPoint:rightEyePosition color:[UIColor greenColor]];
     
     // Olhos
     CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x];
@@ -656,9 +652,6 @@ float marginOfSides_CameraFace = 80.0f;
     
     CGFloat X_RIGHT_EAR_POINT = (face.bounds.origin.x + face.bounds.size.width)/scale;
     //CGFloat Y_RIGHT_EAR_POINT = rightEarPosition.y/scale;
-    
-    [self addCircleToPoint:CGPointMake(X_LEFT_EAR_POINT, 100) color:[UIColor blueColor]];
-    [self addCircleToPoint:CGPointMake(X_RIGHT_EAR_POINT, 100) color:[UIColor blackColor]];
     
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
@@ -705,7 +698,7 @@ float marginOfSides_CameraFace = 80.0f;
         hasError = YES;
         
     }
-        
+    
     if(FACE_ANGLE > 20 || FACE_ANGLE < -20) {
         countTimeAlert ++;
         if(hasError){
@@ -724,7 +717,7 @@ float marginOfSides_CameraFace = 80.0f;
         hasError = YES;
         
     }
-        
+    
     if(hasError) {
         [self faceIsNotOK:strError];
         hasError = NO;
@@ -903,7 +896,7 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)createTimer {
-
+    
     self->timerCountDown = [NSTimer scheduledTimerWithTimeInterval:0.8
                                                             target:self
                                                           selector:@selector(countDown)
@@ -915,7 +908,7 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)countDown {
     
     if(!isShowAlertLiveness) {
-    
+        
         if(countDown == 0) {
             if(!self->isSuccessAnimated) {
                 self->isSuccessAnimated = YES;
@@ -1123,73 +1116,73 @@ float marginOfSides_CameraFace = 80.0f;
     
     isRequestWebService = YES;
     
-    //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    //    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    //
-    //    manager.requestSerializer = serializer;
-    //    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    //    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    //
-    //    NSDictionary *dict = @{
-    //        @"subject" : @{@"Code": self.acessiBioManager.createProcess.code, @"Name": self.acessiBioManager.createProcess.name},
-    //        @"onlySelfie" : [NSNumber numberWithBool:YES],
-    //        @"imagebase64": _base64Center
-    //    };
-    //
-    //    [manager POST:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL] parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-    //
-    //        NSDictionary *result = responseObject;
-    //        NSString * processId = [result valueForKey:@"Id"];
-    //
-    //        self->HUD.progress = 0.8f;
-    //        self->isValidating = NO;
-    //
-    //        CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
-    //        [cameraFaceResult setBase64:self->_base64Center];
-    //        [cameraFaceResult setProcessId:processId];
-    //        [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
-    //
-    //        [self removeFlash];
-    //        [self doneProcess];
-    //
-    //    } failure:^(NSURLSessionTask *operation, NSError *error) {
-    //
-    //        self->isRequestWebService = NO;
-    //        self->isValidating = NO;
-    //
-    //        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-    //        NSLog(@"%@",errResponse);
-    //
-    //        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-    //        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    //
-    //        //[self resetSession];
-    //
-    //        if([json isKindOfClass:[NSDictionary class]]) {
-    //            NSDictionary *error = [json valueForKey:@"Error"];
-    //            NSString *description = [error valueForKey:@"Description"];
-    //            NSString *code = [NSString stringWithFormat:@"%lu", [[error valueForKey:@"Code"]integerValue]];
-    //            [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:[NSString stringWithFormat:@"Code: %@ - %@", code, description ]]];
-    //        }else{
-    //            [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-    //        }
-    //
-    //        [self exitError];
-    //
-    //
-    //    }];
     
+    NSDictionary *dict = @{
+        @"subject" : @{@"Code": self.acessiBioManager.createProcess.code, @"Name": self.acessiBioManager.createProcess.name},
+        @"onlySelfie" : [NSNumber numberWithBool:YES],
+        @"imagebase64": _base64Center
+    };
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL]];
+    [[[NSURLSession sharedSession] dataTaskWithRequest:[self getRequestMain:url params:dict] completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+        
+        if (data.length > 0 && error == nil)
+        {
+            NSDictionary *response = [NSJSONSerialization JSONObjectWithData:data
+                                                                     options:0
+                                                                       error:NULL];
+            NSDictionary *result = response;
+            NSString * processId = [result valueForKey:@"Id"];
+            
+            self->isValidating = NO;
+            
+            CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
+            [cameraFaceResult setBase64:self->_base64Center];
+            [cameraFaceResult setProcessId:processId];
+            [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
+            
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    [self removeFlash];
+                    [self doneProcess];
+                });
+            });
+            
+        }else {
+            
+            if(self.debug) {
+                NSLog(@"Error: %@", error);
+            }
+            self->isRequestWebService = NO;
+            
+            NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
+            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            
+            if([json isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *error = [json valueForKey:@"Error"];
+                NSString *description = [error valueForKey:@"Description"];
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:description]];
+            }else{
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+            }
+            
+            [self exitError];
+            
+        }
+        
+    }] resume];
     
 }
 
-- (void)showHUB {
-    //    HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleExtraLight];
-    //    HUD.textLabel.text = @"Aguarde...";
-    //    [HUD showInView:self.view];
-}
-
-- (void)dismissHUB {
-    //    [HUD dismissAnimated:YES];
+- (NSMutableURLRequest *)getRequestMain: (NSURL *)url params:(NSDictionary *)params {
+    NSError *error;
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
+    [request addValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
+    [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:&error]];
+    return request;
 }
 
 
@@ -1197,68 +1190,65 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)facesCompare: (NSString *)cpf base64: (NSString *)base64{
     
-    [self showHUB];
+    //[self showHUB];
     
     cpf = [cpf stringByReplacingOccurrencesOfString:@"." withString:@""];
     cpf = [cpf stringByReplacingOccurrencesOfString:@"-" withString:@""];
     
-    //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    //    AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
-    //
-    //    manager.requestSerializer = serializer;
-    //    [manager.requestSerializer setValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    //    [manager.requestSerializer setValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    //
-    //    NSDictionary *dict = @{
-    //        @"code": cpf,
-    //        @"imagebase64": base64
-    //    };
-    //
-    //    NSString *strURL = [NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/compare", self.URL];
-    //    [manager POST:strURL parameters:dict headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-    //        NSLog(@"JSON: %@", responseObject);
-    //
-    //        [self dismissHUB];
-    //
-    //        NSDictionary *dictresponse = responseObject;
-    //
-    //        BOOL status = NO;
-    //
-    //        if([[dictresponse valueForKey:@"Status"] integerValue] == 1) {
-    //            status = YES;
-    //        }
-    //
-    //        [self.acessiBioManager onSuccessFacesCompare:status];
-    //
-    //        [self removeFlash];
-    //        [self doneProcess];
-    //
-    //    } failure:^(NSURLSessionTask *operation, NSError *error) {
-    //        NSLog(@"Error: %@", error);
-    //
-    //        [self dismissHUB];
-    //
-    //        NSString* errResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-    //        NSLog(@"%@",errResponse);
-    //
-    //        NSData *data = [errResponse dataUsingEncoding:NSUTF8StringEncoding];
-    //        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    //
-    //        if([json isKindOfClass:[NSDictionary class]]) {
-    //            NSDictionary *error = [json valueForKey:@"Error"];
-    //            NSString *description = [error valueForKey:@"Description"];
-    //            NSNumber * Code = [error valueForKey:@"Code"] ;
-    //
-    //            [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
-    //
-    //        }else{
-    //            [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
-    //        }
-    //
-    //        [self exitError];
-    //
-    //     }];
+    NSDictionary *dict = @{
+        @"code": cpf,
+        @"imagebase64": base64
+    };
     
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/compare", self.URL]];
+    [[[NSURLSession sharedSession] dataTaskWithRequest:[self getRequestMain:url params:dict] completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+        
+        if (data.length > 0 && error == nil)
+        {
+            NSDictionary *response = [NSJSONSerialization JSONObjectWithData:data
+                                                                     options:0
+                                                                       error:NULL];
+            NSDictionary *dictresponse = response;
+            
+            BOOL status = NO;
+            
+            if([[dictresponse valueForKey:@"Status"] integerValue] == 1) {
+                status = YES;
+            }
+            
+            [self.acessiBioManager onSuccessFacesCompare:status];
+            
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    [self removeFlash];
+                    [self doneProcess];
+                });
+            });
+            
+            }else {
+                
+                NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
+                id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                if([json isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *error = [json valueForKey:@"Error"];
+                    NSString *description = [error valueForKey:@"Description"];
+                    NSNumber * Code = [error valueForKey:@"Code"] ;
+                    
+                    [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
+                    
+                }else{
+                    [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+                }
+                
+                [self exitError];
+                
+            }
+            
+        }
+        
+    ] resume];
+
 }
 
 

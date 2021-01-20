@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "AcessoBio"
-  spec.version      = "1.1.5"
+  spec.version      = "1.2.0"
   spec.summary      = "Esta biblioteca visa implementar as soluções Acesso sob a plataforma iOS."
 
   # This description is used to generate tags and improve search results.
@@ -51,10 +51,10 @@ Pod::Spec.new do |spec|
   #  profile URL.
   #
 
-  spec.author             = { "MatheusDomingos" => "matheusdomingoslondrina.com" }
+  spec.author             = { "MatheusDomingos" => "matheus.domingos@unico.io" }
   # Or just: spec.author    = "MatheusDomingos"
-  # spec.authors            = { "MatheusDomingos" => "matheus_cancao@hotmail.com" }
-  # spec.social_media_url   = "https://twitter.com/MatheusDomingos"
+  # spec.authors            = {}
+  # spec.social_media_url   = "https://www.linkedin.com/in/matheus-domingos-5438097b"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -78,7 +78,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/acesso-io/acessobio-ios.git", :tag => "1.1.5" }
+  spec.source       = { :git => "https://github.com/acesso-io/acessobio-ios.git", :tag => "1.2.0" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -110,8 +110,6 @@ Pod::Spec.new do |spec|
 
    spec.ios.resource_bundle = { 'AcessoBio' => "AcessoBio/AcessoBio/*.{mlmodel}" }
 
-
-
   # spec.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
 
@@ -129,8 +127,8 @@ Pod::Spec.new do |spec|
   # spec.libraries = "iconv", "xml2"
 
     #spec.dependency "Firebase/MLVisionFaceModel"
-    spec.dependency  'AFNetworking'
-    spec.dependency  "JGProgressHUD"
+    #spec.dependency  'AFNetworking'
+    #spec.dependency  "JGProgressHUD"
 
     spec.static_framework = true
 

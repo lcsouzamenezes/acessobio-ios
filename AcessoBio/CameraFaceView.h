@@ -12,13 +12,7 @@
 #import <CoreImage/CoreImage.h>
 #import "UIImageUtils.h"
 
-//#import "AFHTTPSessionManager.h"
-//#import "AFNetworking.h"
-//#import "AFHTTPSessionManager.h"
-
 #import "CameraMain.h"
-
-//#import "CaptureAcesso-Swift.h"
 
 #import "UIViewWithHole.h"
 
@@ -33,12 +27,9 @@
 
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
 
-//#import "JGProgressHUD.h"
-
 #import "AcessoBioManager.h"
 
 @class CameraBio;
-//#import <BiometryFrameAcesso/FaceUtility.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

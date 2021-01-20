@@ -20,7 +20,6 @@
 		16DBCD862461EE3C0040D4E8 /* CameraMain.h in Headers */ = {isa = PBXBuildFile; fileRef = 16DBCD792461EE3B0040D4E8 /* CameraMain.h */; platformFilter = ios; };
 		97E59BE1256714BD0090575A /* ic_takepicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E59BE0256714BD0090575A /* ic_takepicture.png */; };
 		E63F9B1125AE59B700F436D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E63F9B1025AE59B700F436D2 /* WebKit.framework */; };
-		E652C00D25ACEA5B000881A0 /* Firebase.h in Headers */ = {isa = PBXBuildFile; fileRef = E652C00C25ACEA5B000881A0 /* Firebase.h */; };
 		E669E3F52469922900110BAC /* AcessoBioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E669E3EF2469922800110BAC /* AcessoBioManager.m */; platformFilter = ios; };
 		E669E3F62469922900110BAC /* AcessoBioManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E669E3F02469922800110BAC /* AcessoBioManager.h */; platformFilter = ios; };
 		E669E3F72469922900110BAC /* CameraFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = E669E3F12469922900110BAC /* CameraFaceView.m */; platformFilter = ios; };
@@ -70,7 +69,6 @@
 		16DBCD792461EE3B0040D4E8 /* CameraMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraMain.h; sourceTree = "<group>"; };
 		97E59BE0256714BD0090575A /* ic_takepicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_takepicture.png; sourceTree = "<group>"; };
 		E63F9B1025AE59B700F436D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		E652C00C25ACEA5B000881A0 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		E669E3EF2469922800110BAC /* AcessoBioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcessoBioManager.m; sourceTree = "<group>"; };
 		E669E3F02469922800110BAC /* AcessoBioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcessoBioManager.h; sourceTree = "<group>"; };
 		E669E3F12469922900110BAC /* CameraFaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraFaceView.m; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 		16DBCD642461ED970040D4E8 /* AcessoBio */ = {
 			isa = PBXGroup;
 			children = (
-				E652C00C25ACEA5B000881A0 /* Firebase.h */,
 				97E59BE0256714BD0090575A /* ic_takepicture.png */,
 				E69DB92E24E1E0FC001A1C2A /* OCRResult.h */,
 				E69DB92D24E1E0FB001A1C2A /* OCRResult.m */,
@@ -217,7 +214,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E669E4562469C20F00110BAC /* CreateProcess.h in Headers */,
-				E652C00D25ACEA5B000881A0 /* Firebase.h in Headers */,
 				E669E3F92469922900110BAC /* CameraFaceView.h in Headers */,
 				16DBCD7D2461EE3C0040D4E8 /* ValidateLiveness.h in Headers */,
 				E669E3F82469922900110BAC /* LivenessXView.h in Headers */,

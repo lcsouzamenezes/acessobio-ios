@@ -11,12 +11,6 @@
 #import <CoreImage/CoreImage.h>
 #import "UIImageUtils.h"
 
-#import "Firebase.h"
-
-//#import "AFHTTPSessionManager.h"
-//#import "AFNetworking.h"
-//#import "AFHTTPSessionManager.h"
-
 #import "FixedValues.h"
 
 #import "CameraMain.h"
@@ -27,6 +21,7 @@
 #import <Vision/Vision.h>
 #import "CenterModelCrop.h"
 //#import "MobAwayLiveness.h"
+
 // gyroscope
 #import <CoreMotion/CoreMotion.h>
 
