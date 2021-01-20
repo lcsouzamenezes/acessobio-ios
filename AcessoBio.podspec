@@ -129,8 +129,8 @@ Pod::Spec.new do |spec|
   # spec.libraries = "iconv", "xml2"
 
     #spec.dependency "Firebase/MLVisionFaceModel"
-    #spec.dependency  'AFNetworking'
-    #spec.dependency  "JGProgressHUD"
+    spec.dependency  'AFNetworking'
+    spec.dependency  "JGProgressHUD"
 
     spec.static_framework = true
 
