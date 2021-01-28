@@ -514,10 +514,6 @@ Em análise...
 
 * [POC de exemplo em Swift](https://github.com/MatheusDomingos/poc-swift-acessobio) - Projeto de exemplo exibindo como fazer a implementação correta da SDK em Swift. 
 
-## Construido com
-
-* [ML KIt Google](https://firebase.google.com/docs/ml-kit/detect-faces)  - Framework de IA para o reconhecimento facial
-
 ## Versionamento
 
 Nós usamos [Github](https://github.com/) para versionar. Para as versões disponíveis, veja as [tags do repositório](https://github.com/acesso-io/livenessX-ios/releases). 
