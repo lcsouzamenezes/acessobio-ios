@@ -46,28 +46,19 @@ pod init
 ou 
 ```
   pod ‘AcessoBio’, :git => 'https://github.com/acesso-io/acessobio-ios'
-, :tag => ‘1.1.2’
+, :tag => ‘1.2.1’
 ```
 última versão estável.
 
 ![](https://media.giphy.com/media/eK6aukS7LdEOv0NFgC/giphy.gif)
 
-Em seguida, volte ao terminal e adicione a seguinte linha: 
+Por último, volte ao terminal e adicione a seguinte linha: 
 
 ```
 pod install
 ```
 ![](https://media.giphy.com/media/f7Z6XiHwXK1a7lq8VT/giphy.gif)
 
-Ao terminar de instalar, entre no Workspace do Pods, abra a pasta Resources dentro da pasta AcessoBio e localize o arquivo CenterModelCrop.mlmodel e MobAwayLiveness.mlmodel. Clique em cada um deles e remova o target AcessoBio como exibido abaixo:
-
-![](https://media.giphy.com/media/mC0zio06Xs7tENfQSY/giphy.gif)
-
-![](https://media.giphy.com/media/jP5PGFA1q5aDIW3fpd/giphy.gif)
-
-Por ultimo, ainda no Workspace do Pods, clique no target da AcessoBio e adicione ao Compile Sources os modelos CenterModelCrop.mlmodel e MobAwayLiveness.mlmodel como exibido abaixo: 
-
-![](https://media.giphy.com/media/McmsTRW5ZPIOd9n4fX/giphy.gif)
 
 Pronto! A nossa SDK já esta adicionada e pronta para uso. 
 
@@ -101,7 +92,6 @@ Importar, inicializar e receber os callbacks básicos é muito simples, siga os 
     
     AcessoBioManager *acessoBioManager = [[AcessoBioManager alloc] initWithViewController:self
     url:{URL_SERVICE} apikey:{API_KEY} token:{TOKEN}];
-    
     
 }
 
