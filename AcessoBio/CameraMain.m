@@ -229,14 +229,12 @@
     return image;
 }
 
-- (float)normalizeXPoint : (float)point {
-    float scale = [UIScreen mainScreen].scale;
-    return SCREEN_WIDTH - (point/scale);
+- (float)normalizeXPoint : (float)point faceWidth:(float)faceWidth {
+    return (SCREEN_WIDTH - point) + (faceWidth/2);
 }
 
-- (float)normalizeYPoint : (float)point {
-    float scale = [UIScreen mainScreen].scale;
-    return SCREEN_HEIGHT - (point/scale);
+- (float)normalizeYPoint : (float)point faceHeight:(float)faceHeight {
+    return SCREEN_HEIGHT - ((faceHeight/2) + (point/2));
 }
 
 - (CGPoint)scaledPoint:(CGPoint)point

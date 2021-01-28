@@ -65,8 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)converCIImageToUIImage : (CIImage *)cIImage;
 
-- (float)normalizeXPoint : (float)point;
-- (float)normalizeYPoint : (float)point;
+- (float)normalizeXPoint : (float)point faceWidth:(float)faceWidth;
+- (float)normalizeYPoint : (float)point faceHeight:(float)faceHeight;
 
 - (void) setupCamera:(BOOL) isSelfie;
 

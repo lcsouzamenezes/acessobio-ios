@@ -16,20 +16,6 @@ float SCORE_MINIMUM = 74.0f;
 
 + (NSDictionary *)validateLiveness : (NSDictionary *)pDictLiveness{
     
-    /* pDictLiveness *
-     
-     @"photoCloseLive": [NSNumber numberWithBool:fotoboaCenter],
-     @"photoCloseConfidence": [NSNumber numberWithInt:confidenceCenter],
-     @"photoAwayLive": [NSNumber numberWithBool:fotoboaAway],
-     @"photoAwayConfidence" : [NSNumber numberWithInt:confidenceAway],
-     @"isSmilling" : [NSNumber numberWithBool:self.isLivenessSmilling],
-     @"isBlinking" : [NSNumber numberWithBool:self.isLivenessBlinking],
-     @"isFastProcess" : [NSNumber numberWithBool:isFastProcess],
-     @"isFinishiWithoutTheSmile" : [NSNumber numberWithBool:self.isFinishiWithoutTheSmile]
-     };
-     
-     */
-    
     float totalGrade = 0;
     
     // Veridfi
@@ -138,7 +124,7 @@ float SCORE_MINIMUM = 74.0f;
     double photoAwayConfidence = [[pDictLiveness valueForKey:@"photoAwayConfidence"] doubleValue];
     
     // Threshold
-    double threshold = 60;
+    double threshold = 70;
     
     // Variables
     double BP = 0; // blink proportion => time_total / blinks (se o blinks é 0, considerar BP = 0)
@@ -219,16 +205,15 @@ float SCORE_MINIMUM = 74.0f;
     double scoreV2  = ((SC*PSC) + (SA*PSA) + ((pow(DB , fabs(BBP - BP)))*PBP) + (( pow(DS, abs(BTS - TS)))* PTS) + (( pow(DT, abs(BTSe - TSe)))* PTSe))/(PSC+PSA+PBP+PTS+PTSe);
     scoreV2 = scoreV2 * 100;
     
- //   NSLog(@"SCORE >>>>> %.f", scoreV2);
-    
     BOOL isLive = NO;
     
-    if(scoreV2 >= threshold) {
+    if(scoreV2 >= SCORE_MINIMUM) {
         isLive = YES;
     }
-        
+            
     NSDictionary *result = @{@"isLive" : [NSNumber numberWithBool:isLive], @"total": [NSNumber numberWithDouble:scoreV2]};
     return result;
+
 }
 
 @end

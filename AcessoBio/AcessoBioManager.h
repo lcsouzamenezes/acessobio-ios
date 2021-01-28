@@ -5,7 +5,6 @@
 //  Created by Daniel Zanelatto on 13/05/19.
 //  Copyright © 2019 Matheus  domingos. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "LivenessXResult.h"
@@ -15,7 +14,6 @@
 #import "FacematchResult.h"
 #import "CreateProcess.h"
 #import "CreateProcess.h"
-
 
 @class LivenessXView;
 @class CameraFaceView;
@@ -93,10 +91,8 @@ typedef NS_ENUM(NSInteger, DocumentType) {
 
 @property (nonatomic, strong) CreateProcess *createProcess;
 
-
 #pragma mark - Instance
 - (id)initWithViewController:(id)view url:(NSString*)url apikey: (NSString*)apikey token: (NSString*)token;
-
 
 #pragma mark - Custom
 
@@ -117,7 +113,6 @@ typedef NS_ENUM(NSInteger, DocumentType) {
 - (void)setColorBackgroundButtonPopupError : (UIColor *)color;
 - (void)setColorTitleButtonPopupError : (UIColor *)color;
 - (void)setImageIconPopupError: (UIImage *)image; 
-
 
 #pragma mark - Camera
 

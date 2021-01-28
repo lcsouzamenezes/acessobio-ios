@@ -5,7 +5,6 @@
 //  Created by Daniel Zanelatto on 13/05/19.
 //  Copyright © 2019 Matheus  domingos. All rights reserved.
 //
-
 #import "AcessoBioManager.h"
 #import "LivenessXView.h"
 #import "CameraFaceView.h"
@@ -230,7 +229,6 @@
     
 }
 
-
 - (void)openCameraDocuments : (DocumentType) documentType {
     
     dView = [DocumentInsertView new];
@@ -252,7 +250,6 @@
     [viewController presentViewController:nav animated:YES completion:nil];
     
 }
-
 
 - (void)openCameraDocumentOCR : (DocumentType) documentType {
     
@@ -337,7 +334,6 @@
 }
 
 #pragma mark - Instances
-
 - (void)callLivenessXView {
     
     lView = [LivenessXView new];
@@ -363,7 +359,6 @@
     
 }
 
-
 #pragma mark - Utils
 
 - (BOOL)verifyTarget {
@@ -375,8 +370,6 @@
         return NO;
     }
 }
-
-
 
 #pragma mark - Callbacks
 
@@ -445,6 +438,15 @@
     
 }
 
+- (void)onErrorCameraDocument:(NSString *)error{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorCameraDocument:)]) {
+        [self.delegate onErrorCameraDocument:error];
+    }else{
+        NSLog(@"Método onErrorCameraDocument não implementado. Implemente-o e tente novamente...");
+    }
+    
+}
+
 - (void)onSuccessOCR: (OCRResult *)result{
     
     if(dView.type == 501) {
@@ -508,7 +510,5 @@
     }
     
 }
-
-
 
 @end

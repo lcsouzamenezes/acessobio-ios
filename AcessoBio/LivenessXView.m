@@ -49,17 +49,18 @@ float marginOfSidesLivenessX = 80.0f;
     [self setupCamera:isSelfie];
     [self startCamera];
     
-    
     [self.btTakePic setHidden:YES];
     [self setNewValuesToParamsLiveness];
-    
     
     [self initVariables];
     
     [self initialActionOfChangeState:NO];
     [self addFullBrightnessToScreen];
     
+    scaleMain = [UIScreen mainScreen].scale;
+    
     [self gyroscope];
+    
     
 }
 
@@ -242,11 +243,9 @@ float marginOfSidesLivenessX = 80.0f;
     
     if (@available(iOS 11.0, *)) {
         
-        
         MLModel *model;
         VNCoreMLModel *m;
         VNCoreMLRequest *request;
-        
         
         NSBundle *bundle = [NSBundle mainBundle];
         NSURL *centerModelURL = [bundle URLForResource: @"CenterModelCrop" withExtension: @"mlmodel"];
@@ -264,7 +263,7 @@ float marginOfSidesLivenessX = 80.0f;
         NSURL *urlAwayModel = [MLModel compileModelAtURL:mobAwayModelURL error:&err];
         
         if(isAway) {
-            //            model = [[[MobAwayLiveness alloc] initWithContentsOfURL:urlAwayModel error:&err] model];
+            model = [[[CenterModelCrop alloc] initWithContentsOfURL:urlAwayModel error:&err] model];
         }else{
             model = [[[CenterModelCrop alloc] initWithContentsOfURL:urlCenterModel error:&err] model];
         }
@@ -384,10 +383,22 @@ float marginOfSidesLivenessX = 80.0f;
 
 - (void)setParamsRectFaces {
     
-    frameFaceCenter = CGRectMake((SCREEN_WIDTH/2) - 125 ,(SCREEN_HEIGHT/2) - 180, 250, 400);
-    frameFaceAway = CGRectMake((SCREEN_WIDTH/2) - 90 ,(SCREEN_HEIGHT/2) - 140, 180, 280);
-    frameFaceCloser = CGRectMake((SCREEN_WIDTH/2) - 150 ,(SCREEN_HEIGHT/2) - 250, 300, 500);
+    float wCenter = 250.0f;
+    float hCenter = 400.0f;
     
+    float wAway = 180.0f;
+    float hAway = 280.0f;
+
+    frameFaceCenter = CGRectMake((SCREEN_WIDTH/2) - (wCenter / 2) ,(SCREEN_HEIGHT/2) - 180, wCenter, hCenter);
+    
+    if(scaleMain > 2) {
+        wAway = 210.0f;
+        hAway = 310.0f;
+        frameFaceAway = CGRectMake((SCREEN_WIDTH/2) - (wAway / 2) ,(SCREEN_HEIGHT/2) - (hAway / 2), wAway, hAway);
+    }else{
+        frameFaceAway = CGRectMake((SCREEN_WIDTH/2) - (wAway / 2) ,(SCREEN_HEIGHT/2) - (hAway / 2), wAway, hAway);
+    }
+        
 }
 
 #pragma mark - Setup Camera
@@ -952,26 +963,32 @@ float marginOfSidesLivenessX = 80.0f;
 - (void)verifyFaceCenter : (CIFaceFeature *)face{
     countNoNose = 0;
     
-    float scale = [UIScreen mainScreen].scale;
+    float scale = 2;
+
     
     CGPoint leftEyePosition = face.leftEyePosition;
     
     CGPoint rightEyePosition = face.rightEyePosition;
     
     // Olhos
-    CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x];
-    CGFloat Y_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.y];
+    CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x faceWidth:face.bounds.size.width];
+    CGFloat Y_LEFT_EYE_POINT = [self normalizeYPoint:leftEyePosition.y faceHeight:face.bounds.size.height];
     
-    CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x];
-    CGFloat Y_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.y];
+    if(self.debug) {
+        [self addCircleToPoint:CGPointMake(X_LEFT_EYE_POINT, SCREEN_HEIGHT - ((face.bounds.size.height/2) + (leftEyePosition.y/2))) color:[UIColor redColor]];
+    }
+
+    CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x faceWidth:face.bounds.size.width];
+    CGFloat Y_RIGHT_EYE_POINT = [self normalizeYPoint:rightEyePosition.y faceHeight:face.bounds.size.height];
     
+    if(self.debug) {
+        [self addCircleToPoint:CGPointMake(X_RIGHT_EYE_POINT, Y_RIGHT_EYE_POINT) color:[UIColor greenColor]];
+    }
     
     CGFloat X_LEFT_EAR_POINT = face.bounds.origin.x/scale;
-    //CGFloat Y_LEFT_EAR_POINT = leftEarPosition.y/scale;
-    
     CGFloat X_RIGHT_EAR_POINT = (face.bounds.origin.x + face.bounds.size.width)/scale;
-    //CGFloat Y_RIGHT_EAR_POINT = rightEarPosition.y/scale;
     
+
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
     
@@ -981,14 +998,24 @@ float marginOfSidesLivenessX = 80.0f;
     int leftMargin = frameFaceCenter.origin.x;
     int rightMargin = (frameFaceCenter.origin.x + frameFaceCenter.size.width);
     
-    float minimumDistance = 150;
-    if(IS_IPHONE_X || IS_IPHONE_6P) {
-        minimumDistance = 150;
+    float minimumDistance = 150.0f;
+    if(scaleMain > 2) {
+        minimumDistance = 84.0f;
     }
     
     float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
     
-    if(X_RIGHT_EAR_POINT > rightMargin || X_LEFT_EAR_POINT < leftMargin) {
+//    NSLog(@"MINIMUM >>>> %.2f | DISTANCE >>>> %.2f", minimumDistance, distanceBeetwenEyes);
+    
+    if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) || (fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height))) {
+        countTimeAlert ++;
+        if(hasError){
+            [strError appendString:@" / Center face"];
+        }else{
+            [strError appendString:@"Center face"];
+        }
+        hasError = YES;
+    }else if(X_RIGHT_EAR_POINT > rightMargin || X_LEFT_EAR_POINT < leftMargin) {
         countTimeAlert ++;
         if(hasError){
             [strError appendString:@" / Put your face away"];
@@ -1050,25 +1077,22 @@ float marginOfSidesLivenessX = 80.0f;
     
     countNoNose = 0;
     
-    float scale = [UIScreen mainScreen].scale;
-    
+    //float scale = [UIScreen mainScreen].scale;
+    float scale = 2;
+
     CGPoint leftEyePosition = face.leftEyePosition;
     
     CGPoint rightEyePosition = face.rightEyePosition;
     
     // Olhos
-    CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x];
-    CGFloat Y_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.y];
+    CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x faceWidth:face.bounds.size.width];
+    CGFloat Y_LEFT_EYE_POINT = [self normalizeYPoint:leftEyePosition.y faceHeight:face.bounds.size.height];
     
-    CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x];
-    CGFloat Y_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.y];
-    
+    CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x faceWidth:face.bounds.size.width];
+    CGFloat Y_RIGHT_EYE_POINT = [self normalizeYPoint:rightEyePosition.y faceHeight:face.bounds.size.height];
     
     CGFloat X_LEFT_EAR_POINT = face.bounds.origin.x/scale;
-    //CGFloat Y_LEFT_EAR_POINT = leftEarPosition.y/scale;
-    
     CGFloat X_RIGHT_EAR_POINT = (face.bounds.origin.x + face.bounds.size.width)/scale;
-    //CGFloat Y_RIGHT_EAR_POINT = rightEarPosition.y/scale;
     
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
@@ -1076,22 +1100,27 @@ float marginOfSidesLivenessX = 80.0f;
     BOOL hasError = NO;
     NSMutableString *strError = [NSMutableString new];
     
-    int leftMargin = frameFaceAway.origin.x;
-    int rightMargin = (frameFaceAway.origin.x + frameFaceAway.size.width);
+    int compensation = 12;
+    int leftMargin = frameFaceAway.origin.x - compensation;
+    int rightMargin = (frameFaceAway.origin.x + frameFaceAway.size.width) + compensation;
     
-    if(X_RIGHT_EAR_POINT < leftMargin || X_LEFT_EAR_POINT > rightMargin) {
+    float minimumDistance = 150.0f;
+    if(scaleMain > 2) {
+        minimumDistance = 84.0f;
+    }
+    
+    float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
+        
+    if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) || (fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height))) {
         countTimeAlert ++;
-        // [self showRed];
         if(hasError){
             [strError appendString:@" / Center face"];
         }else{
             [strError appendString:@"Center face"];
         }
         hasError = YES;
-        
-    }else   if(((fabs(X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT)) * 2) > 160) {
+    }else if(X_RIGHT_EAR_POINT > rightMargin || X_LEFT_EAR_POINT < leftMargin) {
         countTimeAlert ++;
-        // [self showRed];
         if(hasError){
             [strError appendString:@" / Put your face away"];
         }else{
@@ -1099,9 +1128,8 @@ float marginOfSidesLivenessX = 80.0f;
         }
         hasError = YES;
         
-    }else if(((fabs(X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT)) * 2) < 110) {
+    }else if(distanceBeetwenEyes < minimumDistance) {
         countTimeAlert ++;
-        // [self showRed];
         if(hasError){
             [strError appendString:@" / Bring the face closer"];
         }else{
@@ -1144,7 +1172,7 @@ float marginOfSidesLivenessX = 80.0f;
     
     int timeToWaiting = 30;
     if(IS_IPHONE_6) {
-        timeToWaiting = 20;
+        timeToWaiting = 13;
     }
     
     if(delayToVerifySmilling == (timeToWaiting - 10)) {
@@ -1184,7 +1212,6 @@ float marginOfSidesLivenessX = 80.0f;
             }
             
         }else{
-            
             
             if(!face.hasSmile) {
                 //hasError = YES;
@@ -1394,13 +1421,6 @@ float marginOfSidesLivenessX = 80.0f;
         }
         
         self->vHole.shapeLayer.strokeColor = [colorSuccess CGColor];
-        
-        /*
-         [self->rectangle setBackgroundColor:[self getColorPrimary]];
-         [self->rectangleTop setBackgroundColor:[self getColorPrimary]];
-         [self->rectangleLeft setBackgroundColor:[self getColorPrimary]];
-         [self->rectangleRight setBackgroundColor:[self getColorPrimary]];
-         */
         
     });
     
@@ -1818,8 +1838,6 @@ float marginOfSidesLivenessX = 80.0f;
         
         //   [self startBlinkingLabel:lbMessage];
     }
-    
-    
     
 }
 

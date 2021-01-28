@@ -404,28 +404,28 @@ float marginOfSides_CameraFace = 80.0f;
         }
     }
 }
-
-- (void)addCircleToPoint : (CGPoint) point color : (UIColor *)color{
-    
-    CGFloat widht = 10;
-    
-    CGFloat POINT_X = [self normalizeXPoint:point.x];
-    CGFloat POINT_Y = [self normalizeYPoint:point.y];
-    
-    CGRect circleRect = CGRectMake(POINT_X - (widht / 2), POINT_Y - (widht / 2), widht, widht);
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        UIView *circleView = [[UIView alloc] initWithFrame:circleRect];
-        circleView.layer.cornerRadius = widht/2;
-        circleView.alpha = 0.7;
-        circleView.backgroundColor = color;
-        circleView.tag = -1;
-        [self.view addSubview:circleView];
-        
-    });
-    
-}
+//
+//- (void)addCircleToPoint : (CGPoint) point color : (UIColor *)color{
+//    
+//    CGFloat widht = 10;
+//    
+//    CGFloat POINT_X = [self normalizeXPoint:point.x];
+//    CGFloat POINT_Y = [self normalizeYPoint:point.y];
+//    
+//    CGRect circleRect = CGRectMake(POINT_X - (widht / 2), POINT_Y - (widht / 2), widht, widht);
+//    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        
+//        UIView *circleView = [[UIView alloc] initWithFrame:circleRect];
+//        circleView.layer.cornerRadius = widht/2;
+//        circleView.alpha = 0.7;
+//        circleView.backgroundColor = color;
+//        circleView.tag = -1;
+//        [self.view addSubview:circleView];
+//        
+//    });
+//    
+//}
 
 - (void)addCircleToPointNoNormalize : (CGPoint) point color : (UIColor *)color{
     
@@ -634,17 +634,18 @@ float marginOfSides_CameraFace = 80.0f;
     
     countNoNose = 0;
     
-    float scale = [UIScreen mainScreen].scale;
+    float scaleMain = [UIScreen mainScreen].scale;
+    float scale = 2;
     
     CGPoint leftEyePosition = face.leftEyePosition;
     CGPoint rightEyePosition = face.rightEyePosition;
     
     // Olhos
-    CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x];
-    CGFloat Y_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.y];
+    CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x faceWidth:face.bounds.size.width];
+    CGFloat Y_LEFT_EYE_POINT = [self normalizeYPoint:leftEyePosition.y faceHeight:face.bounds.size.height];
     
-    CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x];
-    CGFloat Y_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.y];
+    CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x faceWidth:face.bounds.size.width];
+    CGFloat Y_RIGHT_EYE_POINT = [self normalizeYPoint:rightEyePosition.y faceHeight:face.bounds.size.width];
     
     
     CGFloat X_LEFT_EAR_POINT = face.bounds.origin.x/scale;
@@ -662,14 +663,22 @@ float marginOfSides_CameraFace = 80.0f;
     int leftMargin = frameFaceCenter.origin.x;
     int rightMargin = (frameFaceCenter.origin.x + frameFaceCenter.size.width);
     
-    float minimumDistance = 150;
-    if(IS_IPHONE_X || IS_IPHONE_6P) {
-        minimumDistance = 150;
+    float minimumDistance = 150.0f;
+    if(scaleMain > 2) {
+        minimumDistance = 84.0f;
     }
     
     float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
     
-    if(X_RIGHT_EAR_POINT > rightMargin || X_LEFT_EAR_POINT < leftMargin) {
+    if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) || (fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height))) {
+        countTimeAlert ++;
+        if(hasError){
+            [strError appendString:@" / Center face"];
+        }else{
+            [strError appendString:@"Center face"];
+        }
+        hasError = YES;
+    }else if(X_RIGHT_EAR_POINT > rightMargin || X_LEFT_EAR_POINT < leftMargin) {
         countTimeAlert ++;
         if(hasError){
             [strError appendString:@" / Put your face away"];

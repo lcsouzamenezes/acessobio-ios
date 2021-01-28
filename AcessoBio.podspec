@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
 
   spec.name         = "AcessoBio"
   spec.version      = "1.2.1"
-  spec.summary      = "Esta biblioteca visa implementar as soluções Acesso sob a plataforma iOS."
+  spec.summary      = "Esta biblioteca visa implementar as soluções unico | check sob a plataforma iOS."
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -26,7 +26,7 @@ Pod::Spec.new do |spec|
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description = 'A short description about the project'
 
-  spec.homepage     = "https://home.acessodigital.com.br/bio/livenessx-documentacao.html"
+  spec.homepage     = "https://www3.acesso.io/sdkbio"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -54,7 +54,7 @@ Pod::Spec.new do |spec|
   spec.author             = { "MatheusDomingos" => "matheus.domingos@unico.io" }
   # Or just: spec.author    = "MatheusDomingos"
   # spec.authors            = {}
-  # spec.social_media_url   = "https://www.linkedin.com/in/matheus-domingos-5438097b"
+   spec.social_media_url   = "https://www.linkedin.com/in/matheus-domingos-5438097b"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -80,7 +80,6 @@ Pod::Spec.new do |spec|
 
   spec.source       = { :git => "https://github.com/acesso-io/acessobio-ios.git", :tag => "1.2.1" }
 
-
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
   #  CocoaPods is smart about how it includes source code. For source files
@@ -89,7 +88,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  =  "AcessoBio/**/*.{h,m}"
+  spec.source_files  =  "AcessoBio/**/*.{h,m}", "AcessoBio/**/*.{mlmodel}"
 
   # spec.public_header_files = "Classes/**/*.h"
 

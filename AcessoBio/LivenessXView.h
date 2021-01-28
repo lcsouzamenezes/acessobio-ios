@@ -20,19 +20,15 @@
 #import <CoreML/CoreML.h>
 #import <Vision/Vision.h>
 #import "CenterModelCrop.h"
-//#import "MobAwayLiveness.h"
 
-// gyroscope
 #import <CoreMotion/CoreMotion.h>
 
 #import "PopUpValidationLiveness.h"
 
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
 
-//#import "JGProgressHUD.h"
 
 @class CameraBio;
-//#import <BiometryFrameAcesso/FaceUtility.h>
 
 #import "AcessoBioManager.h"
 
@@ -56,7 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
     UIView *rectangleRight;
     UILabel *labelMessage;
 
-    
     int countNoFace;
     int countTimeAlert;
     int countNoNose;
@@ -75,6 +70,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSTimer * timerCountDown;
     NSInteger countDown;
     BOOL isCountDown;
+    
+    float scaleMain;
+
         
 #pragma mark - GLOBAL Liveness
     //Step Liveness - Discrimina o passo atual do liveness
@@ -152,14 +150,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSString *AuthToken;
     
-    
     double scoreFacedetect;
     
     UIView *vFlash;
     UIActivityIndicatorView *spinFlash;
     
     int  userBlinks;
-    
     
     int resultFaceDetectBehavior; // 1 = Face Match / 2 = Both substandard / 3 = Not match
     int resultFaceDetect; // // 1 = Face Match / 2 = Both substandard / 3 = Not match
@@ -213,7 +209,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     BOOL isStartLuminositySensor;
     
-//    JGProgressHUD *HUD;
     
     NSString *processId;
     
@@ -266,11 +261,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL isFinishiWithoutTheSmile;
 @property (assign, nonatomic) BOOL isLivenessBlinking;
 
-
 @property (assign, nonatomic) BOOL isCommingFromResult;
 
 #pragma mark sensors
-
 @property (strong,nonatomic) CMMotionManager *motionManager;
 
 @property (strong, nonatomic) NSString *URL;
@@ -278,7 +271,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *TOKEN;
 
 @property(nonatomic, strong) AcessoBioManager *acessiBioManager;
-
 
 @property (strong, nonatomic) UIColor *colorSilhoutteNeutral;
 @property (strong, nonatomic) UIColor *colorSilhoutteSuccess;
