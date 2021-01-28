@@ -78,7 +78,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/acesso-io/acessobio-ios.git", :tag => "1.2.1" }
+  spec.source       = { :git => "https://github.com/acesso-io/acessobio-ios.git", :tag => "1.2.0" }
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
