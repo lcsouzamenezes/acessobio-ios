@@ -129,7 +129,7 @@ Pod::Spec.new do |spec|
     #spec.dependency  'AFNetworking'
     #spec.dependency  "JGProgressHUD"
 
-    spec.static_framework = false
+    spec.static_framework = true
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
