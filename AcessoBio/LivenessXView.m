@@ -87,6 +87,7 @@ float marginOfSidesLivenessX = 80.0f;
 }
 
 - (void)close{
+    [self.acessiBioManager userClosedCameraManually];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -1993,7 +1994,7 @@ float marginOfSidesLivenessX = 80.0f;
                 NSString *description = [error valueForKey:@"Description"];
                 [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetect" description:description]];
             }else{
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetect" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetect" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
             }
             
             [self exitError];
@@ -2055,7 +2056,7 @@ float marginOfSidesLivenessX = 80.0f;
                 NSString *description = [error valueForKey:@"Description"];
                 [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetectBehavior" description:description]];
             }else{
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetectBehavior" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetectBehavior" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
             }
             
             [self exitError];
@@ -2260,7 +2261,7 @@ float marginOfSidesLivenessX = 80.0f;
                 NSString *description = [error valueForKey:@"Description"];
                 [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"sendBillingV3" description:description]];
             }else{
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"sendBillingV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"sendBillingV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
             }
             
             [self exitError];
@@ -2489,7 +2490,7 @@ float marginOfSidesLivenessX = 80.0f;
                 NSString *description = [error valueForKey:@"Description"];
                 [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:description]];
             }else{
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
             }
             
             [self exitError];

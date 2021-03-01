@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DocumentInsertView : CameraMain {
   //  JGProgressHUD *HUD;
     UIButton *btClose;
+    UIView *vFlash;
+    UIActivityIndicatorView *spinFlash;
 }
 
 @property (assign, nonatomic)NSInteger type; 
@@ -44,6 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) OperationType operationType;
 
 @property (strong, nonatomic) NSString *base64SelfieToFaceMatch;
+
+@property (strong, nonatomic) UIColor *colorSilhoutte;
+@property (strong, nonatomic) UIColor *colorBackground;
+@property (strong, nonatomic) UIColor *colorBackgroundBoxStatus;
+@property (strong, nonatomic) UIColor *colorTextBoxStatus;
 
 @end
 

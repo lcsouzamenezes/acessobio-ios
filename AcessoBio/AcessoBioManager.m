@@ -282,6 +282,8 @@
     
     isFacematchProcess = YES;
     documentTypeFacematch = documentType;
+    isSmartCamera = NO;
+    isAutoCapture = NO;
     
     [self openCameraFace];
     
@@ -372,6 +374,15 @@
 }
 
 #pragma mark - Callbacks
+
+- (void)userClosedCameraManually {
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(userClosedCameraManually)]) {
+        [self.delegate userClosedCameraManually];
+    }
+    
+}
+
 
 - (void)onSuccesLivenessX: (LivenessXResult *)result {
     

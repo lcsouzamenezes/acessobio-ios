@@ -33,6 +33,8 @@ typedef NS_ENUM(NSInteger, DocumentType) {
 - (BOOL)cameraBioShouldAutoCapture;
 - (BOOL)cameraBioShouldCountdow;
 
+- (void)userClosedCameraManually;
+
 - (void)onSuccesCameraDocument: (CameraDocumentResult *)result;
 - (void)onErrorCameraDocument: (NSString *)error;
 
@@ -45,12 +47,13 @@ typedef NS_ENUM(NSInteger, DocumentType) {
 - (void)onSuccessFacesCompare:(BOOL)status;
 - (void)onErrorFacesCompare:(NSString *)error;
 
-@required
 - (void)onSuccesLivenessX: (LivenessXResult *)result;
 - (void)onErrorLivenessX: (NSString *)error;
 
 - (void)onSuccesCameraFace: (CameraFaceResult *)result;
 - (void)onErrorCameraFace: (NSString *)error;
+
+//@required
 
 @end
 

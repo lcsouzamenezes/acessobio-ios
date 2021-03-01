@@ -61,10 +61,16 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 #pragma mark - Close
-
 - (void)addCloseButton {
     
-    btClose = [[UIButton alloc]initWithFrame:CGRectMake(7, 20, 70, 70)];
+    float yPosition = 0;
+    if(IS_IPHONE_5 || IS_IPHONE_6) {
+        yPosition = 20;
+    }else{
+        yPosition = 40;
+    }
+    
+    btClose = [[UIButton alloc]initWithFrame:CGRectMake(7, yPosition, 70, 70)];
     [btClose setImage:[UIImage imageNamed:@"ic_close"] forState:UIControlStateNormal];
     [btClose addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btClose];
@@ -72,6 +78,7 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)close{
+    [self.acessiBioManager userClosedCameraManually];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -1172,7 +1179,7 @@ float marginOfSides_CameraFace = 80.0f;
                 NSString *description = [error valueForKey:@"Description"];
                 [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:description]];
             }else{
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
             }
             
             [self exitError];
@@ -1247,7 +1254,7 @@ float marginOfSides_CameraFace = 80.0f;
                     [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
                     
                 }else{
-                    [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da Acesso."]];
+                    [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
                 }
                 
                 [self exitError];
@@ -1274,8 +1281,24 @@ float marginOfSides_CameraFace = 80.0f;
 #pragma mark - Button Take Picture
 
 - (void)addButtonTakePicture : (UIView *)view {
-    self.btTakePic = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 40, SCREEN_HEIGHT - 100, 80, 80)];
-    [self.btTakePic setImage:[UIImage imageNamed:@"icon_take_pic"] forState:UIControlStateNormal];
+
+    float heightViewBottom = 0;
+    float valueLessMask = 0;
+    
+    if(IS_IPHONE_5 || IS_IPHONE_6) {
+        heightViewBottom = 60.0f;
+        valueLessMask = 40.0f;
+    }else{
+        heightViewBottom = 100.0f;
+        valueLessMask = 0.0f;
+    }
+    
+    
+    [self.btTakePic setEnabled:YES];
+    [self.btTakePic setAlpha:1.0];
+    [self.btTakePic setFrame:CGRectMake((SCREEN_WIDTH/2) - 35, SCREEN_HEIGHT - heightViewBottom - 35, 70, 70)];
+    [self.btTakePic.layer setMasksToBounds:YES];
+    [self.btTakePic.layer setCornerRadius:self.btTakePic.frame.size.height/2];
     [self.btTakePic addTarget:self action:@selector(capture) forControlEvents:UIControlEventTouchUpInside];
     if(_isEnableSmartCapture) {
         [self.btTakePic setAlpha:0.5];
