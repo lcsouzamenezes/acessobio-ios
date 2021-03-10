@@ -1139,7 +1139,7 @@ float marginOfSides_CameraFace = 80.0f;
         languageOrigin = @"ios-reactnative";
     }
     
-    NSString *baseWithOtherDatas = [NSString stringWithFormat:@"data:%@|%@/image/jpeg;base64,%@", languageOrigin, self.versionRelease, base64ToUsage];
+    NSString *baseWithOtherDatas = [NSString stringWithFormat:@"data:%@|%@/image/jpeg;base64,%@", languageOrigin, self.versionRelease, _base64Center];
     
     NSDictionary *dict = @{
         @"subject" : @{@"Code": self.acessiBioManager.createProcess.code, @"Name": self.acessiBioManager.createProcess.name},
