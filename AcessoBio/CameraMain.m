@@ -240,7 +240,12 @@
 }
 
 - (float)normalizeYPoint : (float)point faceHeight:(float)faceHeight {
-    return SCREEN_HEIGHT - ((faceHeight/2) + (point/2));
+    
+    if(IS_IPHONE_5 || IS_IPHONE_6) {
+        return SCREEN_HEIGHT - ((point/2));
+    }else{
+        return SCREEN_HEIGHT - ((faceHeight/2) + (point/2));
+    }
 }
 
 - (CGPoint)scaledPoint:(CGPoint)point

@@ -298,7 +298,12 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)setParamsRectFaces {
     
-    frameFaceCenter = CGRectMake((SCREEN_WIDTH/2) - 125 ,(SCREEN_HEIGHT/2) - 180, 250, 400);
+    if(IS_IPHONE_5 || IS_IPHONE_6) {
+        frameFaceCenter = CGRectMake((SCREEN_WIDTH/2) - 100 ,(SCREEN_HEIGHT/2) - 170, 200, 340);
+    }else{
+        frameFaceCenter = CGRectMake((SCREEN_WIDTH/2) - 125 ,(SCREEN_HEIGHT/2) - 180, 250, 400);
+    }
+    
     frameFaceAway = CGRectMake((SCREEN_WIDTH/2) - 90 ,(SCREEN_HEIGHT/2) - 140, 180, 280);
     frameFaceCloser = CGRectMake((SCREEN_WIDTH/2) - 150 ,(SCREEN_HEIGHT/2) - 250, 300, 500);
     
@@ -687,9 +692,7 @@ float marginOfSides_CameraFace = 80.0f;
     
     float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
     
-   // NSLog(@"distanceBeetwenEyes: %.f", distanceBeetwenEyes);
-    
-    
+
     NSLog(@"Y_LEFT_EYE_POINT: %.f", fabs(Y_LEFT_EYE_POINT));
     
     // Orelhas
@@ -698,6 +701,7 @@ float marginOfSides_CameraFace = 80.0f;
     
     // Olhos
     [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EYE_POINT), fabs(Y_LEFT_EYE_POINT)) color:[UIColor redColor]];
+    [self addCircleToPoint:CGPointMake(fabs(X_RIGHT_EYE_POINT), fabs(Y_LEFT_EYE_POINT)) color:[UIColor blueColor]];
 
     // Bordas
     [self addCircleToPoint:CGPointMake(fabs(leftMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor blackColor]];
@@ -709,6 +713,15 @@ float marginOfSides_CameraFace = 80.0f;
     NSLog(@"result: %d", (fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y));
     
     
+    if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y)) {
+        NSLog(@"1 falhou");
+    }else if(fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) {
+        NSLog(@"2 falhou");
+    }else if((fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y)){
+        NSLog(@"3 falhou");
+    }else if (fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) {
+        NSLog(@"4 falhou");
+    }
 
     if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) || (fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height))) {
         countTimeAlert ++;
@@ -737,36 +750,41 @@ float marginOfSides_CameraFace = 80.0f;
         
         hasError = YES;
         
-    }else if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
-        countTimeAlert ++;
-        if(hasError){
-            [strError appendString:@" / Inclined face"];
-        }else{
-            [strError appendString:@"Inclined face"];
-        }
-        hasError = YES;
-        
     }
     
-    if(FACE_ANGLE > 20 || FACE_ANGLE < -20) {
-        countTimeAlert ++;
-        if(hasError){
-            if(FACE_ANGLE > 20) {
-                [strError appendString:@" / Turn slightly left"];
-            }else if(FACE_ANGLE < -20){
-                [strError appendString:@" / Turn slightly right"];
+    // IPHONE 5 ou 6 não validar inclinação ou rotação
+    if(!IS_IPHONE_5 || !IS_IPHONE_6) {
+        if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
+            countTimeAlert ++;
+            if(hasError){
+                [strError appendString:@" / Inclined face"];
+            }else{
+                [strError appendString:@"Inclined face"];
             }
-        }else{
-            if(FACE_ANGLE > 20) {
-                [strError appendString:@"Turn slightly left"];
-            }else if(FACE_ANGLE < -20){
-                [strError appendString:@"Turn slightly right"];
-            }
+            hasError = YES;
+            
         }
-        hasError = YES;
         
+        if(FACE_ANGLE > 20 || FACE_ANGLE < -20) {
+            countTimeAlert ++;
+            if(hasError){
+                if(FACE_ANGLE > 20) {
+                    [strError appendString:@" / Turn slightly left"];
+                }else if(FACE_ANGLE < -20){
+                    [strError appendString:@" / Turn slightly right"];
+                }
+            }else{
+                if(FACE_ANGLE > 20) {
+                    [strError appendString:@"Turn slightly left"];
+                }else if(FACE_ANGLE < -20){
+                    [strError appendString:@"Turn slightly right"];
+                }
+            }
+            hasError = YES;
+            
+        }
     }
-    
+   
     NSLog(@"Erro: %@", strError);
     
     if(hasError) {
