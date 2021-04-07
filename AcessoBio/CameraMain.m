@@ -400,4 +400,12 @@
     return deviceName;
 }
 
+- (BOOL)isSmallScreen {
+    NSString *deviceName = [self deviceName];
+    if([deviceName isEqualToString:@"iPhone 6"] || [deviceName isEqualToString:@"iPhone 6S"] || [deviceName isEqualToString:@"iPhone SE"]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

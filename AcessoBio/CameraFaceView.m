@@ -64,6 +64,8 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 
+    
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -754,8 +756,7 @@ float marginOfSides_CameraFace = 80.0f;
         
     }
     
-    // IPHONE 5 ou 6 não validar inclinação ou rotação
-    if(!IS_IPHONE_6) {
+    if(![self isSmallScreen]) {
         
         if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
             countTimeAlert ++;

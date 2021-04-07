@@ -75,8 +75,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIColor *)getColorPrimary;
 
+// Models and Screen Sizes
 - (NSString*) deviceName;
-
+- (BOOL)isSmallScreen;
 
 @end
 
