@@ -76,7 +76,7 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)addCloseButton {
     
     float yPosition = 0;
-    if(IS_IPHONE_5 || IS_IPHONE_6) {
+    if([self isSmallScreen]) {
         yPosition = 20;
     }else{
         yPosition = 40;
@@ -302,7 +302,7 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)setParamsRectFaces {
     
-    if(IS_IPHONE_5 || IS_IPHONE_6) {
+    if([self isSmallScreen]) {
         frameFaceCenter = CGRectMake((SCREEN_WIDTH/2) - 100 ,(SCREEN_HEIGHT/2) - 170, 200, 340);
     }else{
         frameFaceCenter = CGRectMake((SCREEN_WIDTH/2) - 125 ,(SCREEN_HEIGHT/2) - 180, 250, 400);
@@ -577,12 +577,11 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void) addImageAcessoBio {
-    if(IS_IPHONE_X || IS_IPHONE_6P){
+    if([self isSmallScreen]){
         ivAcessoBio = [[UIImageView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT - 70, 100, 40)];
         
     }else{
         ivAcessoBio = [[UIImageView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT - 50, 100, 40)];
-        
     }
     [ivAcessoBio setImage:[UIImage imageNamed:@"ic_bio"]];
     [ivAcessoBio setContentMode:UIViewContentModeScaleAspectFit];
@@ -698,7 +697,8 @@ float marginOfSides_CameraFace = 80.0f;
     
 
     NSLog(@"Y_LEFT_EYE_POINT: %.f", fabs(Y_LEFT_EYE_POINT));
-    
+   
+    /*
     // Orelhas
     [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor yellowColor]];
     [self addCircleToPoint:CGPointMake(fabs(X_RIGHT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor greenColor]];
@@ -710,22 +710,14 @@ float marginOfSides_CameraFace = 80.0f;
     // Bordas
     [self addCircleToPoint:CGPointMake(fabs(leftMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor blackColor]];
     [self addCircleToPoint:CGPointMake(fabs(rightMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor whiteColor]];
+     */
     
     
-    NSLog(@"frameFaceCenter.origin.y: %.f", frameFaceCenter.origin.y);
-
-    NSLog(@"result: %d", (fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y));
+//    NSLog(@"frameFaceCenter.origin.y: %.f", frameFaceCenter.origin.y);
+//
+//    NSLog(@"result: %d", (fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y));
     
     
-    if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y)) {
-        NSLog(@"1 falhou");
-    }else if(fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) {
-        NSLog(@"2 falhou");
-    }else if((fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y)){
-        NSLog(@"3 falhou");
-    }else if (fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) {
-        NSLog(@"4 falhou");
-    }
 
     if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) || (fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height))) {
         countTimeAlert ++;
@@ -1350,14 +1342,13 @@ float marginOfSides_CameraFace = 80.0f;
     float heightViewBottom = 0;
     float valueLessMask = 0;
     
-    if(IS_IPHONE_5 || IS_IPHONE_6) {
+    if([self isSmallScreen]) {
         heightViewBottom = 60.0f;
         valueLessMask = 40.0f;
     }else{
         heightViewBottom = 100.0f;
         valueLessMask = 0.0f;
     }
-    
     
     [self.btTakePic setEnabled:YES];
     [self.btTakePic setAlpha:1.0];
