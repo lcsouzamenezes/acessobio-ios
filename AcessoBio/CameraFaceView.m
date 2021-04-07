@@ -57,6 +57,8 @@ float marginOfSides_CameraFace = 80.0f;
     [self initialActionOfChangeState:NO];
     [self addFullBrightnessToScreen];
     
+    NSLog(@"NOME DO DEVICE >>>> %@", [self deviceName]);
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -753,7 +755,8 @@ float marginOfSides_CameraFace = 80.0f;
     }
     
     // IPHONE 5 ou 6 não validar inclinação ou rotação
-    if(!IS_IPHONE_5 || !IS_IPHONE_6) {
+    if(!IS_IPHONE_6) {
+        
         if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
             countTimeAlert ++;
             if(hasError){
@@ -765,7 +768,7 @@ float marginOfSides_CameraFace = 80.0f;
             
         }
         
-        if(FACE_ANGLE > 20 || FACE_ANGLE < -20) {
+        if(FACE_ANGLE > 20 || FACE_ANGLE < - 20) {
             countTimeAlert ++;
             if(hasError){
                 if(FACE_ANGLE > 20) {
