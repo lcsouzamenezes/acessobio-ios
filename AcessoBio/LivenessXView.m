@@ -65,6 +65,7 @@ float marginOfSidesLivenessX = 80.0f;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"resultadoIAClose" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"resultadoIAAway" object:nil];
@@ -72,7 +73,7 @@ float marginOfSidesLivenessX = 80.0f;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    
+    [super viewWillAppear:animated];
 }
 
 #pragma mark - Close
@@ -1931,7 +1932,6 @@ float marginOfSidesLivenessX = 80.0f;
     validateFaceDetectOK = NO;
     isRequestWebService = YES;
     
-    
     if(self.base64AwayWithoutSmilling.length == 0) {
         self.base64AwayWithoutSmilling = self.base64Away;
     }
@@ -1949,34 +1949,54 @@ float marginOfSidesLivenessX = 80.0f;
             NSDictionary *response = [NSJSONSerialization JSONObjectWithData:data
                                                                      options:0
                                                                        error:NULL];
-            //NSString * string = [[NSString alloc] initWithData:data encoding:NSStringEncodingConversionAllowLossy];
             
-            int FaceResult = [[response valueForKey:@"FaceResult"] intValue];
-            BOOL Similars = [[response valueForKey:@"Similars"] boolValue];
-            double SimilarScore = [[response valueForKey:@"SimilarScore"] doubleValue];
             
-            if(FaceResult == 0){
-                self->resultFaceDetect = 2;
-            }else if (!Similars) {
-                self->resultFaceDetect = 3;
-            }else{
-                self->scoreFacedetect = SimilarScore;
-                self->resultFaceDetect = 1;
-            }
-            
-            if(FaceResult != 0) {
-                if(FaceResult == 1){
-                    self->base64ToUsage = self->_base64Center;
-                }else if(FaceResult == 2){
-                    self->base64ToUsage = self->_base64AwayWithoutSmilling;
-                }
-            }
-            
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    [self validateFaceDetect];
+            if([response objectForKey:@"Error"]) {
+                
+                NSDictionary *error = [response objectForKey:@"Error"];
+                
+                int Code = [[error valueForKey:@"Code"] intValue];
+                
+                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"faceDetect" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
+                
+                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                            [self exitError];
+                    });
                 });
-            });
+                
+            }else{
+              
+                int FaceResult = [[response valueForKey:@"FaceResult"] intValue];
+                BOOL Similars = [[response valueForKey:@"Similars"] boolValue];
+                double SimilarScore = [[response valueForKey:@"SimilarScore"] doubleValue];
+                
+                if(FaceResult == 0){
+                    self->resultFaceDetect = 2;
+                }else if (!Similars) {
+                    self->resultFaceDetect = 3;
+                }else{
+                    self->scoreFacedetect = SimilarScore;
+                    self->resultFaceDetect = 1;
+                }
+                
+                if(FaceResult != 0) {
+                    if(FaceResult == 1){
+                        self->base64ToUsage = self->_base64Center;
+                    }else if(FaceResult == 2){
+                        self->base64ToUsage = self->_base64AwayWithoutSmilling;
+                    }
+                }
+                
+                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        [self validateFaceDetect];
+                    });
+                });
+                
+            }
+            
+
             
         }else {
             
@@ -2024,22 +2044,35 @@ float marginOfSidesLivenessX = 80.0f;
                                                                        error:NULL];
             //NSString * string = [[NSString alloc] initWithData:data encoding:NSStringEncodingConversionAllowLossy];
                         
-            int FaceResult = [[response valueForKey:@"FaceResult"] intValue];
-            BOOL Similars = [[response valueForKey:@"Similars"] boolValue];
             
-            if(FaceResult == 0){
-                self->resultFaceDetectBehavior = 2;
-            }else if (!Similars) {
-                self->resultFaceDetectBehavior = 3;
+            if([response objectForKey:@"Error"]) {
+                
+                NSDictionary *error = [response objectForKey:@"Error"];
+                
+                int Code = [[error valueForKey:@"Code"] intValue];
+                
+                return;
+                
             }else{
-                self->resultFaceDetectBehavior = 1;
-            }
-            
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    [self validateFaceDetect];
+                
+                int FaceResult = [[response valueForKey:@"FaceResult"] intValue];
+                BOOL Similars = [[response valueForKey:@"Similars"] boolValue];
+                
+                if(FaceResult == 0){
+                    self->resultFaceDetectBehavior = 2;
+                }else if (!Similars) {
+                    self->resultFaceDetectBehavior = 3;
+                }else{
+                    self->resultFaceDetectBehavior = 1;
+                }
+                
+                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        [self validateFaceDetect];
+                    });
                 });
-            });
+            }
+          
             
         }else {
         

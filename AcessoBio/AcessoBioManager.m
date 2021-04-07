@@ -95,7 +95,7 @@
     }else{
         [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
     }
-
+    
 }
 
 - (void)setColorSilhoutteError: (id)color {
@@ -111,7 +111,7 @@
     }else{
         [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
     }
-
+    
     
 }
 
@@ -128,7 +128,7 @@
     }else{
         [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
     }
-
+    
 }
 
 - (void)setColorBackgroundBoxStatus: (id)color {
@@ -247,32 +247,34 @@
 
 - (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone {
     
-    if ([self verifyTarget]) {
-        
-        CreateProcess *objProcess = [CreateProcess new];
-        objProcess.code = code;
-        objProcess.name = name;
-        
-        if(gender != nil) {
-            objProcess.gender = gender;
+    if([self verifyDataREST]) {
+        if ([self verifyTarget]) {
+            
+            CreateProcess *objProcess = [CreateProcess new];
+            objProcess.code = code;
+            objProcess.name = name;
+            
+            if(gender != nil) {
+                objProcess.gender = gender;
+            }
+            
+            if(birthdate != nil) {
+                objProcess.birthdate = birthdate;
+            }
+            
+            if(email != nil) {
+                objProcess.email = email;
+            }
+            
+            if(phone != nil) {
+                objProcess.phone = phone;
+            }
+            
+            self.createProcess = objProcess;
+            
+            [self callLivenessXView];
+            
         }
-        
-        if(birthdate != nil) {
-            objProcess.birthdate = birthdate;
-        }
-        
-        if(email != nil) {
-            objProcess.email = email;
-        }
-        
-        if(phone != nil) {
-            objProcess.phone = phone;
-        }
-        
-        self.createProcess = objProcess;
-    
-        [self callLivenessXView];
-        
     }
     
 }
@@ -303,70 +305,75 @@
         
     }
     
+    
 }
 
 - (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name {
     
-    if ([self verifyTarget]) {
-        
-        CreateProcess *objProcess = [CreateProcess new];
-        objProcess.code = code;
-        objProcess.name = name;
-        
-        self.createProcess = objProcess;
-        
-        cView = [CameraFaceView new];
-        [cView setAcessiBioManager:self];
-        [cView setURL:url];
-        [cView setAPIKEY:apikey];
-        [cView setTOKEN:token];
-        [cView setIsEnableAutoCapture:isAutoCapture];
-        [cView setIsEnableSmartCapture:isSmartCamera];
-        [cView setColorSilhoutteNeutral:colorSilhoutteNeutral];
-        [cView setColorSilhoutteError:colorSilhoutteError];
-        [cView setColorSilhoutteSuccess:colorSilhoutteSuccess];
-        [cView setColorBackground:colorBackground];
-        [cView setColorBackgroundBoxStatus:colorBackgroundBoxStatus];
-        [cView setColorTextBoxStatus:colorTextBoxStatus];
-        [cView setLanguage:language];
-        [cView setVersionRelease:versionRelease];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:cView];
-        [nav setNavigationBarHidden:YES animated:NO];
-        [nav setModalPresentationStyle:UIModalPresentationFullScreen];
-        [viewController presentViewController:nav animated:YES completion:nil];
-        
+    if([self verifyDataREST]) {
+        if ([self verifyTarget]) {
+            
+            CreateProcess *objProcess = [CreateProcess new];
+            objProcess.code = code;
+            objProcess.name = name;
+            
+            self.createProcess = objProcess;
+            
+            cView = [CameraFaceView new];
+            [cView setAcessiBioManager:self];
+            [cView setURL:url];
+            [cView setAPIKEY:apikey];
+            [cView setTOKEN:token];
+            [cView setIsEnableAutoCapture:isAutoCapture];
+            [cView setIsEnableSmartCapture:isSmartCamera];
+            [cView setColorSilhoutteNeutral:colorSilhoutteNeutral];
+            [cView setColorSilhoutteError:colorSilhoutteError];
+            [cView setColorSilhoutteSuccess:colorSilhoutteSuccess];
+            [cView setColorBackground:colorBackground];
+            [cView setColorBackgroundBoxStatus:colorBackgroundBoxStatus];
+            [cView setColorTextBoxStatus:colorTextBoxStatus];
+            [cView setLanguage:language];
+            [cView setVersionRelease:versionRelease];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:cView];
+            [nav setNavigationBarHidden:YES animated:NO];
+            [nav setModalPresentationStyle:UIModalPresentationFullScreen];
+            [viewController presentViewController:nav animated:YES completion:nil];
+            
+        }
     }
     
 }
 
 - (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone {
     
-    if ([self verifyTarget]) {
-        
-        CreateProcess *objProcess = [CreateProcess new];
-        objProcess.code = code;
-        objProcess.name = name;
-        objProcess.gender = gender;
-        objProcess.birthdate = birthdate;
-        objProcess.email = email;
-        objProcess.phone = phone;
-        
-        self.createProcess = objProcess;
-        
-        cView = [CameraFaceView new];
-        [cView setAcessiBioManager:self];
-        [cView setURL:url];
-        [cView setAPIKEY:apikey];
-        [cView setTOKEN:token];
-        [cView setIsEnableAutoCapture:isAutoCapture];
-        [cView setIsEnableSmartCapture:isSmartCamera];
-        [cView setLanguage:language];
-        [cView setVersionRelease:versionRelease];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:cView];
-        [nav setNavigationBarHidden:YES animated:NO];
-        [nav setModalPresentationStyle:UIModalPresentationFullScreen];
-        [viewController presentViewController:nav animated:YES completion:nil];
-        
+    if([self verifyDataREST]) {
+        if ([self verifyTarget]) {
+            
+            CreateProcess *objProcess = [CreateProcess new];
+            objProcess.code = code;
+            objProcess.name = name;
+            objProcess.gender = gender;
+            objProcess.birthdate = birthdate;
+            objProcess.email = email;
+            objProcess.phone = phone;
+            
+            self.createProcess = objProcess;
+            
+            cView = [CameraFaceView new];
+            [cView setAcessiBioManager:self];
+            [cView setURL:url];
+            [cView setAPIKEY:apikey];
+            [cView setTOKEN:token];
+            [cView setIsEnableAutoCapture:isAutoCapture];
+            [cView setIsEnableSmartCapture:isSmartCamera];
+            [cView setLanguage:language];
+            [cView setVersionRelease:versionRelease];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:cView];
+            [nav setNavigationBarHidden:YES animated:NO];
+            [nav setModalPresentationStyle:UIModalPresentationFullScreen];
+            [viewController presentViewController:nav animated:YES completion:nil];
+            
+        }
     }
     
 }
@@ -521,14 +528,32 @@
 
 - (BOOL)verifyColorString : (NSString *)string{
     NSCharacterSet *chars = [[NSCharacterSet
-           characterSetWithCharactersInString:@"#0123456789ABCDEF"] invertedSet];
-    
+                              characterSetWithCharactersInString:@"#0123456789ABCDEF"] invertedSet];
     
     BOOL isValid = (NSNotFound == [string rangeOfCharacterFromSet:chars].location);
     if(string.length == 0) {
         isValid = NO;
     }
     return isValid;
+}
+
+- (BOOL)verifyDataREST {
+    
+    NSURL *urlToValidate = [NSURL URLWithString:url];
+    if (!urlToValidate || !urlToValidate.scheme || !urlToValidate.host)
+    {
+        [self onErrorAcessoBioManager:@"A URL fornecida é inválida."];
+        return NO;
+    }else if(apikey.length == 0) {
+        [self onErrorAcessoBioManager:@"A APIKEY fornecida está vazia."];
+        return NO;
+    }else if(token.length == 0) {
+        [self onErrorAcessoBioManager:@"O TOKEN fornecido está vazio."];
+        return NO;
+    }
+    
+    return YES;
+    
 }
 
 
@@ -666,9 +691,9 @@
 
 - (void)onSuccessFacesCompare:(BOOL)status {
     
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onSuccessFacesCompare:)]) {
-            [self.delegate onSuccessFacesCompare:status];
-        }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onSuccessFacesCompare:)]) {
+        [self.delegate onSuccessFacesCompare:status];
+    }
     
 }
 
@@ -691,5 +716,7 @@
     }
     
 }
+
+
 
 @end

@@ -37,11 +37,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CameraMain : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate> {
     
-    AVCaptureVideoPreviewLayer *previewLayer;
 
     
 }
 
+@property (strong, nonatomic)   AVCaptureVideoPreviewLayer *previewLayer;
 
 @property (nonatomic, strong) UIButton *btTakePic;
 

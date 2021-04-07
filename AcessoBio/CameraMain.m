@@ -20,6 +20,12 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [self.session stopRunning];
+    [self.previewLayer removeFromSuperlayer];
+    self.previewLayer = nil;
+    self.session = nil;
+}
 
 - (void) orientationChanged:(NSNotification *)note
 {
@@ -129,11 +135,11 @@
     [self.btTakePic setEnabled:NO];
     [self.view addSubview:self.btTakePic];
     
-    previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+    self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
     UIView *myView = self.view;
-    previewLayer.frame = myView.bounds;
-    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    [self.view.layer addSublayer:previewLayer];
+    self.previewLayer.frame = myView.bounds;
+    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.view.layer addSublayer:self.previewLayer];
     
     [self updateOrientation:[self getCurrentOrientation]];
     

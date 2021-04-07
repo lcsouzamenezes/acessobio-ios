@@ -212,6 +212,7 @@ float SCORE_MINIMUM = 74.0f;
     }
             
     NSDictionary *result = @{@"isLive" : [NSNumber numberWithBool:isLive], @"total": [NSNumber numberWithDouble:scoreV2]};
+    
     return result;
 
 }

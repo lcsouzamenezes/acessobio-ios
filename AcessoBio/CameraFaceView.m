@@ -28,6 +28,14 @@ float marginOfSides_CameraFace = 80.0f;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
+    NSTimer *tt = [NSTimer scheduledTimerWithTimeInterval:2.0
+                                                            target:self
+                                                          selector:@selector(clearDots)
+                                                          userInfo:nil
+                                                           repeats:YES];
+
+
     isSmillingUpponEnter = YES;
     arrLeftEyeOpenProbability = [NSMutableArray new];
     
@@ -52,8 +60,8 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    
-    
+    [super viewDidDisappear:animated];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -301,7 +309,6 @@ float marginOfSides_CameraFace = 80.0f;
 - (void) setupCamera:(BOOL) isSelfie {
     [super setupCamera:isSelfie];
     
-    
 }
 
 - (void) startCamera {
@@ -411,28 +418,29 @@ float marginOfSides_CameraFace = 80.0f;
         }
     }
 }
-//
-//- (void)addCircleToPoint : (CGPoint) point color : (UIColor *)color{
-//    
-//    CGFloat widht = 10;
-//    
-//    CGFloat POINT_X = [self normalizeXPoint:point.x];
-//    CGFloat POINT_Y = [self normalizeYPoint:point.y];
-//    
-//    CGRect circleRect = CGRectMake(POINT_X - (widht / 2), POINT_Y - (widht / 2), widht, widht);
-//    
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        
-//        UIView *circleView = [[UIView alloc] initWithFrame:circleRect];
-//        circleView.layer.cornerRadius = widht/2;
-//        circleView.alpha = 0.7;
-//        circleView.backgroundColor = color;
-//        circleView.tag = -1;
-//        [self.view addSubview:circleView];
-//        
-//    });
-//    
-//}
+
+- (void)addCircleToPoint : (CGPoint) point color : (UIColor *)color{
+        
+    CGFloat widht = 10;
+    
+    CGFloat POINT_X = point.x;
+    CGFloat POINT_Y = point.y;
+    
+    CGRect circleRect = CGRectMake(POINT_X - (widht / 2), POINT_Y - (widht / 2), widht, widht);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        
+        UIView *circleView = [[UIView alloc] initWithFrame:circleRect];
+        circleView.layer.cornerRadius = widht/2;
+        circleView.alpha = 0.7;
+        circleView.backgroundColor = color;
+        circleView.tag = -1;
+        [self.view addSubview:circleView];
+        
+    });
+    
+}
 
 - (void)addCircleToPointNoNormalize : (CGPoint) point color : (UIColor *)color{
     
@@ -644,8 +652,13 @@ float marginOfSides_CameraFace = 80.0f;
     float scaleMain = [UIScreen mainScreen].scale;
     float scale = 2;
     
+    float compensationBoxEar = 20.0f;
+    
     CGPoint leftEyePosition = face.leftEyePosition;
     CGPoint rightEyePosition = face.rightEyePosition;
+    
+    CGPoint leftEarPosition = CGPointMake(((face.bounds.origin.x) + face.bounds.size.width), UIScreen.mainScreen.bounds.size.height/2);
+    CGPoint rightEarPosition = CGPointMake((face.bounds.origin.x), UIScreen.mainScreen.bounds.size.height/2);
     
     // Olhos
     CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x faceWidth:face.bounds.size.width];
@@ -654,12 +667,9 @@ float marginOfSides_CameraFace = 80.0f;
     CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x faceWidth:face.bounds.size.width];
     CGFloat Y_RIGHT_EYE_POINT = [self normalizeYPoint:rightEyePosition.y faceHeight:face.bounds.size.width];
     
+    CGFloat X_LEFT_EAR_POINT = [self normalizeXPoint:leftEarPosition.x  faceWidth:face.bounds.size.width];
     
-    CGFloat X_LEFT_EAR_POINT = face.bounds.origin.x/scale;
-    //CGFloat Y_LEFT_EAR_POINT = leftEarPosition.y/scale;
-    
-    CGFloat X_RIGHT_EAR_POINT = (face.bounds.origin.x + face.bounds.size.width)/scale;
-    //CGFloat Y_RIGHT_EAR_POINT = rightEarPosition.y/scale;
+    CGFloat X_RIGHT_EAR_POINT = [self normalizeXPoint:rightEarPosition.x faceWidth:face.bounds.size.width];
     
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
@@ -677,6 +687,29 @@ float marginOfSides_CameraFace = 80.0f;
     
     float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
     
+   // NSLog(@"distanceBeetwenEyes: %.f", distanceBeetwenEyes);
+    
+    
+    NSLog(@"Y_LEFT_EYE_POINT: %.f", fabs(Y_LEFT_EYE_POINT));
+    
+    // Orelhas
+    [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor yellowColor]];
+    [self addCircleToPoint:CGPointMake(fabs(X_RIGHT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor greenColor]];
+    
+    // Olhos
+    [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EYE_POINT), fabs(Y_LEFT_EYE_POINT)) color:[UIColor redColor]];
+
+    // Bordas
+    [self addCircleToPoint:CGPointMake(fabs(leftMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor blackColor]];
+    [self addCircleToPoint:CGPointMake(fabs(rightMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor whiteColor]];
+    
+    
+    NSLog(@"frameFaceCenter.origin.y: %.f", frameFaceCenter.origin.y);
+
+    NSLog(@"result: %d", (fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y));
+    
+    
+
     if((fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_LEFT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height)) || (fabs(Y_RIGHT_EYE_POINT) < frameFaceCenter.origin.y || fabs(Y_RIGHT_EYE_POINT) > (frameFaceCenter.origin.y + frameFaceCenter.size.height))) {
         countTimeAlert ++;
         if(hasError){
@@ -685,7 +718,7 @@ float marginOfSides_CameraFace = 80.0f;
             [strError appendString:@"Center face"];
         }
         hasError = YES;
-    }else if(X_RIGHT_EAR_POINT > rightMargin || X_LEFT_EAR_POINT < leftMargin) {
+    }else if(X_RIGHT_EYE_POINT > rightMargin || X_LEFT_EYE_POINT < leftMargin) {
         countTimeAlert ++;
         if(hasError){
             [strError appendString:@" / Put your face away"];
@@ -733,6 +766,8 @@ float marginOfSides_CameraFace = 80.0f;
         hasError = YES;
         
     }
+    
+    NSLog(@"Erro: %@", strError);
     
     if(hasError) {
         [self faceIsNotOK:strError];
