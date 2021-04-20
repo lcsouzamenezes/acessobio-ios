@@ -242,7 +242,7 @@
 
 - (float)normalizeYPoint : (float)point faceHeight:(float)faceHeight {
     
-    if(IS_IPHONE_5 || IS_IPHONE_6) {
+    if([self isSmallScreen]) {
         return SCREEN_HEIGHT - ((point/2));
     }else{
         return SCREEN_HEIGHT - ((faceHeight/2) + (point/2));
@@ -402,7 +402,12 @@
 
 - (BOOL)isSmallScreen {
     NSString *deviceName = [self deviceName];
-    if([deviceName isEqualToString:@"iPhone 6"] || [deviceName isEqualToString:@"iPhone 6S"] || [deviceName isEqualToString:@"iPhone SE"]) {
+    if([deviceName isEqualToString:@"iPhone 6"] ||
+       [deviceName isEqualToString:@"iPhone 6S"] ||
+       [deviceName isEqualToString:@"iPhone SE"] ||
+       [deviceName isEqualToString:@"iPhone 5"] ||
+       [deviceName isEqualToString:@"iPhone 5s"] ||
+       [deviceName isEqualToString:@"iPhone 5c"]) {
         return YES;
     }
     return NO;
