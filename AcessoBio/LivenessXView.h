@@ -10,20 +10,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreImage/CoreImage.h>
 #import "UIImageUtils.h"
-
 #import "FixedValues.h"
-
 #import "CameraMain.h"
-
 #import "UIViewWithHole.h"
-
 #import <CoreML/CoreML.h>
 #import <Vision/Vision.h>
-
 #import "CenterModelCrop.h"
-
 #import <CoreMotion/CoreMotion.h>
-
 #import "PopUpValidationLiveness.h"
 
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))

@@ -136,9 +136,9 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 
 #pragma mark - Camera
 
-- (void)openLivenessX;
-- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name;
-- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone;
+//- (void)openLivenessX;
+//- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name;
+//- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone;
 
 - (void)openCameraFace;
 - (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name;
