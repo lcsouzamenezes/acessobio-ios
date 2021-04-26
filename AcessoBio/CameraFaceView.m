@@ -1205,21 +1205,40 @@ float marginOfSides_CameraFace = 80.0f;
                                                                      options:0
                                                                        error:NULL];
             NSDictionary *result = response;
-            NSString * processId = [result valueForKey:@"Id"];
             
-            self->isValidating = NO;
-            
-            CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
-            [cameraFaceResult setBase64:self->_base64Center];
-            [cameraFaceResult setProcessId:processId];
-            [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
-            
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    [self removeFlash];
-                    [self doneProcess];
+            if([result objectForKey:@"Error"]) {
+                
+                NSDictionary *error = [response objectForKey:@"Error"];
+                
+                int Code = [[error valueForKey:@"Code"] intValue];
+                
+                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:[error valueForKey:@"Description"]]];
+                
+                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                            [self exitError];
+                    });
                 });
-            });
+                
+            }else{
+                NSString * processId = [result valueForKey:@"Id"];
+                
+                self->isValidating = NO;
+                
+                CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
+                [cameraFaceResult setBase64:self->_base64Center];
+                [cameraFaceResult setProcessId:processId];
+                [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
+                
+                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        [self removeFlash];
+                        [self doneProcess];
+                    });
+                });
+            }
+            
+           
             
         }else {
             
@@ -1234,9 +1253,9 @@ float marginOfSides_CameraFace = 80.0f;
             if([json isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *error = [json valueForKey:@"Error"];
                 NSString *description = [error valueForKey:@"Description"];
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:description]];
+                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:description]];
             }else{
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
+                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
             }
             
             [self exitError];
