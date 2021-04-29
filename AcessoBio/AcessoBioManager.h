@@ -55,8 +55,10 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 - (void)onSuccessFacesCompare:(BOOL)status;
 - (void)onErrorFacesCompare:(NSString *)error;
 
-- (void)onSuccesLivenessX: (LivenessXResult *)result;
-- (void)onErrorLivenessX: (NSString *)error;
+/** Deprecated
+ - (void)onSuccesLivenessX: (LivenessXResult *)result;
+ - (void)onErrorLivenessX: (NSString *)error;
+ */
 
 - (void)onSuccesCameraFace: (CameraFaceResult *)result;
 - (void)onErrorCameraFace: (NSString *)error;
@@ -136,9 +138,11 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 
 #pragma mark - Camera
 
+/** Deprecated
 //- (void)openLivenessX;
 //- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name;
 //- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone;
+*/
 
 - (void)openCameraFace;
 - (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name;
