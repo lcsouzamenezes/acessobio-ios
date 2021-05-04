@@ -123,9 +123,7 @@ float SCORE_MINIMUM = 74.0f;
     //BOOL photoAwayLive = [[pDictLiveness valueForKey:@"photoAwayLive"] boolValue];
     double photoAwayConfidence = [[pDictLiveness valueForKey:@"photoAwayConfidence"] doubleValue];
     
-    // Threshold
-    double threshold = 70;
-    
+
     // Variables
     double BP = 0; // blink proportion => time_total / blinks (se o blinks é 0, considerar BP = 0)
     if(userBlinks == 0){

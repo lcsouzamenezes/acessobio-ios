@@ -24,8 +24,8 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [self.session stopRunning];
     [self.previewLayer removeFromSuperlayer];
-    self.previewLayer = nil;
-    self.session = nil;
+    self.previewLayer = [AVCaptureVideoPreviewLayer new];
+    self.session = [AVCaptureSession new];;
 }
 
 - (void) orientationChanged:(NSNotification *)note
@@ -214,9 +214,13 @@
     }
 }
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [self updateOrientation:[self getCurrentOrientation:toInterfaceOrientation]];
-}
+/***Deprecated
+
+ - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+     [self updateOrientation:[self getCurrentOrientation:toInterfaceOrientation]];
+ }
+ */
+
 
 - (AVCaptureDevice *) cameraWithPosition:(AVCaptureDevicePosition) position
 {

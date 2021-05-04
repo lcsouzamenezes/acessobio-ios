@@ -231,13 +231,18 @@
 
 #pragma mark - Cameras
 
-- (void)openLivenessX {
-    
-    if ([self verifyTarget]) {
-        [self callLivenessXView];
-    }
-    
-}
+/***Deprecated
+ 
+ - (void)openLivenessX {
+     
+     if ([self verifyTarget]) {
+         [self callLivenessXView];
+     }
+     
+ }
+ 
+
+
 
 - (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name {
     
@@ -278,7 +283,7 @@
     }
     
 }
-
+ */
 - (void)openCameraFace {
     
     if ([self verifyTarget]) {
@@ -487,32 +492,38 @@
 }
 
 #pragma mark - Instances
-- (void)callLivenessXView {
-    
-    lView = [LivenessXView new];
-    [lView setAcessiBioManager:self];
-    [lView setURL:url];
-    [lView setAPIKEY:apikey];
-    [lView setTOKEN:token];
-    [lView setColorSilhoutteNeutral:colorSilhoutteNeutral];
-    [lView setColorSilhoutteError:colorSilhoutteError];
-    [lView setColorSilhoutteSuccess:colorSilhoutteSuccess];
-    [lView setColorBackground:colorBackground];
-    [lView setColorBackgroundBoxStatus:colorBackgroundBoxStatus];
-    [lView setColorTextBoxStatus:colorTextBoxStatus];
-    [lView setColorBackgroundPopupError:colorBackgroundPopupError];
-    [lView setColorTextPopupError:colorTextPopupError];
-    [lView setColorBackgroundButtonPopupError:colorBackgroundButtonPopupError];
-    [lView setColorTitleButtonPopupError:colorTitleButtonPopupError];
-    [lView setImageIconPopupError:imageIconPopupError];
-    [lView setLanguage:language];
-    [lView setVersionRelease:versionRelease];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:lView];
-    [nav setNavigationBarHidden:YES animated:NO];
-    [nav setModalPresentationStyle:UIModalPresentationFullScreen];
-    [viewController presentViewController:nav animated:YES completion:nil];
-    
-}
+
+/***Deprecated
+ 
+ - (void)callLivenessXView {
+     
+     lView = [LivenessXView new];
+     [lView setAcessiBioManager:self];
+     [lView setURL:url];
+     [lView setAPIKEY:apikey];
+     [lView setTOKEN:token];
+     [lView setColorSilhoutteNeutral:colorSilhoutteNeutral];
+     [lView setColorSilhoutteError:colorSilhoutteError];
+     [lView setColorSilhoutteSuccess:colorSilhoutteSuccess];
+     [lView setColorBackground:colorBackground];
+     [lView setColorBackgroundBoxStatus:colorBackgroundBoxStatus];
+     [lView setColorTextBoxStatus:colorTextBoxStatus];
+     [lView setColorBackgroundPopupError:colorBackgroundPopupError];
+     [lView setColorTextPopupError:colorTextPopupError];
+     [lView setColorBackgroundButtonPopupError:colorBackgroundButtonPopupError];
+     [lView setColorTitleButtonPopupError:colorTitleButtonPopupError];
+     [lView setImageIconPopupError:imageIconPopupError];
+     [lView setLanguage:language];
+     [lView setVersionRelease:versionRelease];
+     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:lView];
+     [nav setNavigationBarHidden:YES animated:NO];
+     [nav setModalPresentationStyle:UIModalPresentationFullScreen];
+     [viewController presentViewController:nav animated:YES completion:nil];
+     
+ }
+ 
+ */
+
 
 #pragma mark - Utils
 
@@ -521,7 +532,7 @@
     if (@available(iOS 11.0, *)) {
         return YES;
     }else{
-        [self onErrorLivenessX:@"Este método está disponível a partir do iOS 11."];
+        [self onErrorAcessoBioManager:@"Este método está disponível a partir do iOS 11."];
         return NO;
     }
 }
@@ -568,26 +579,29 @@
     
 }
 
+/** * Deprecated
+ 
+ - (void)onSuccesLivenessX: (LivenessXResult *)result {
+     
+     if (self.delegate && [self.delegate respondsToSelector:@selector(onSuccesLivenessX:)]) {
+         [self.delegate onSuccesLivenessX:result];
+     }else{
+         NSLog(@"Método onSuccesLivenessX não implementado. Implemente-o e tente novamente...");
+     }
+     
+ }
 
-- (void)onSuccesLivenessX: (LivenessXResult *)result {
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(onSuccesLivenessX:)]) {
-        [self.delegate onSuccesLivenessX:result];
-    }else{
-        NSLog(@"Método onSuccesLivenessX não implementado. Implemente-o e tente novamente...");
-    }
-    
-}
-
-- (void)onErrorLivenessX:(NSString *)error {
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorLivenessX:)]) {
-        [self.delegate onErrorLivenessX:error];
-    }else{
-        NSLog(@"Método onErrorLivenessX não implementado. Implemente-o e tente novamente...");
-    }
-    
-}
+ - (void)onErrorLivenessX:(NSString *)error {
+     
+     if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorLivenessX:)]) {
+         [self.delegate onErrorLivenessX:error];
+     }else{
+         NSLog(@"Método onErrorLivenessX não implementado. Implemente-o e tente novamente...");
+     }
+     
+ }
+ 
+ */
 
 - (void)onSuccesCameraFace:(CameraFaceResult *)result {
     

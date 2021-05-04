@@ -12,8 +12,6 @@
 @interface UIColor (UIColorExtensions)
 
 - (UIColor *)bioPrimary;
-+ (UIColor *)bioGreen;
-+ (UIColor *)camecTitleNavigation;
 + (UIColor*)camecSuperLightGray;
 + (UIColor*)camecLightGray;
 + (UIColor *)camecIconDefaultNavigation;

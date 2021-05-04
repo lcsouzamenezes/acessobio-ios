@@ -156,8 +156,10 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 - (void)facesCompare: (NSString *)cpf;
 
 #pragma mark - Callbacks
-- (void)onSuccesLivenessX: (LivenessXResult *)base64;
--(void)onErrorLivenessX: (NSString *)error;
+/***Deprecated
+ - (void)onSuccesLivenessX: (LivenessXResult *)base64;
+ -(void)onErrorLivenessX: (NSString *)error;
+ */
 - (void)onSuccesCameraFace: (CameraFaceResult *)result;
 - (void)onErrorCameraFace: (NSString *)error;
 
