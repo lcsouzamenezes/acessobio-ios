@@ -27,14 +27,6 @@ float marginOfSides_CameraFace = 80.0f;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
-    NSTimer *tt = [NSTimer scheduledTimerWithTimeInterval:2.0
-                                                            target:self
-                                                          selector:@selector(clearDots)
-                                                          userInfo:nil
-                                                           repeats:YES];
-
 
     isSmillingUpponEnter = YES;
     arrLeftEyeOpenProbability = [NSMutableArray new];
@@ -56,8 +48,6 @@ float marginOfSides_CameraFace = 80.0f;
     
     [self initialActionOfChangeState:NO];
     [self addFullBrightnessToScreen];
-    
-    NSLog(@"NOME DO DEVICE >>>> %@", [self deviceName]);
     
 }
 
@@ -658,15 +648,18 @@ float marginOfSides_CameraFace = 80.0f;
     countNoNose = 0;
     
     float scaleMain = [UIScreen mainScreen].scale;
-    float scale = 2;
+    //float scale = 2;
     
-    float compensationBoxEar = 20.0f;
+    //float compensationBoxEar = 20.0f;
     
     CGPoint leftEyePosition = face.leftEyePosition;
     CGPoint rightEyePosition = face.rightEyePosition;
     
-    CGPoint leftEarPosition = CGPointMake(((face.bounds.origin.x) + face.bounds.size.width), UIScreen.mainScreen.bounds.size.height/2);
-    CGPoint rightEarPosition = CGPointMake((face.bounds.origin.x), UIScreen.mainScreen.bounds.size.height/2);
+    /***Unused
+     CGPoint leftEarPosition = CGPointMake(((face.bounds.origin.x) + face.bounds.size.width), UIScreen.mainScreen.bounds.size.height/2);
+     CGPoint rightEarPosition = CGPointMake((face.bounds.origin.x), UIScreen.mainScreen.bounds.size.height/2);
+     */
+
     
     // Olhos
     CGFloat X_LEFT_EYE_POINT = [self normalizeXPoint:leftEyePosition.x faceWidth:face.bounds.size.width];
@@ -675,10 +668,10 @@ float marginOfSides_CameraFace = 80.0f;
     CGFloat X_RIGHT_EYE_POINT = [self normalizeXPoint:rightEyePosition.x faceWidth:face.bounds.size.width];
     CGFloat Y_RIGHT_EYE_POINT = [self normalizeYPoint:rightEyePosition.y faceHeight:face.bounds.size.width];
     
-    CGFloat X_LEFT_EAR_POINT = [self normalizeXPoint:leftEarPosition.x  faceWidth:face.bounds.size.width];
-    
-    CGFloat X_RIGHT_EAR_POINT = [self normalizeXPoint:rightEarPosition.x faceWidth:face.bounds.size.width];
-    
+    /***Unused
+     CGFloat X_LEFT_EAR_POINT = [self normalizeXPoint:leftEarPosition.x  faceWidth:face.bounds.size.width];
+     CGFloat X_RIGHT_EAR_POINT = [self normalizeXPoint:rightEarPosition.x faceWidth:face.bounds.size.width];
+     */
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
     
@@ -695,9 +688,6 @@ float marginOfSides_CameraFace = 80.0f;
     
     float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
     
-
-    NSLog(@"Y_LEFT_EYE_POINT: %.f", fabs(Y_LEFT_EYE_POINT));
-   
     /*
     // Orelhas
     [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor yellowColor]];
@@ -782,8 +772,6 @@ float marginOfSides_CameraFace = 80.0f;
             
         }
     }
-   
-    NSLog(@"Erro: %@", strError);
     
     if(hasError) {
         [self faceIsNotOK:strError];
@@ -1236,9 +1224,9 @@ float marginOfSides_CameraFace = 80.0f;
             if([json isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *error = [json valueForKey:@"Error"];
                 NSString *description = [error valueForKey:@"Description"];
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:description]];
+                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:description]];
             }else{
-                [self.acessiBioManager onErrorLivenessX:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
+                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
             }
             
             [self exitError];
@@ -1380,7 +1368,7 @@ float marginOfSides_CameraFace = 80.0f;
     [self addVHole:CGRectZero];
     
     popup = [[PopUpValidationLiveness alloc]initWithFrame:CGRectMake(((SCREEN_WIDTH/2) - 165), ((SCREEN_HEIGHT/2) - 180) , 330, 370)];
-    [popup setType:PopupTypeGeneric faceInsertView:self];
+   // [popup setType:PopupTypeGeneric faceInsertView:self];
     [popup setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:popup];
     

@@ -39,248 +39,254 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LivenessXView : CameraMain <AVCaptureVideoDataOutputSampleBufferDelegate> {
     
-    BOOL isSelfie;
-    UIView *rectangle;
-    UIView *rectangleTop;
-    UIView *rectangleLeft;
-    UIView *rectangleRight;
-    UILabel *labelMessage;
+    /***Deprecated
+     BOOL isSelfie;
+     UIView *rectangle;
+     UIView *rectangleTop;
+     UIView *rectangleLeft;
+     UIView *rectangleRight;
+     UILabel *labelMessage;
 
-    int countNoFace;
-    int countTimeAlert;
-    int countNoNose;
+     int countNoFace;
+     int countTimeAlert;
+     int countNoNose;
 
-    BOOL isShowAlert;
-    
-    UIView *viewLog;
-    UILabel *lbNosePosition;
-    UILabel *lbRightEye;
-    UILabel *lbLeftEye;
-    UILabel *lbRightEar;
-    UILabel *lbLeftEar;
-    UILabel *lbEulerX;
-    UILabel *lbSpaceEye;
-    
-    NSTimer * timerCountDown;
-    NSInteger countDown;
-    BOOL isCountDown;
-    
-    float scaleMain;
+     BOOL isShowAlert;
+     
+     UIView *viewLog;
+     UILabel *lbNosePosition;
+     UILabel *lbRightEye;
+     UILabel *lbLeftEye;
+     UILabel *lbRightEar;
+     UILabel *lbLeftEar;
+     UILabel *lbEulerX;
+     UILabel *lbSpaceEye;
+     
+     NSTimer * timerCountDown;
+     NSInteger countDown;
+     BOOL isCountDown;
+     
+     float scaleMain;
 
-        
-#pragma mark - GLOBAL Liveness
-    //Step Liveness - Discrimina o passo atual do liveness
-    LivenessStateType lStateType;
-    BOOL isShowAlertLiveness;
-    BOOL isShowAlertToLiveness;
-    BOOL isLivenessComplete;
-    NSDictionary *dictLivenessResultCenter;
-    NSDictionary *dictLivenessResultAway;
-    NSDictionary *dictLivenessResultCloser;
-    NSMutableArray *arrLeftEyeOpenProbability;
+         
+ #pragma mark - GLOBAL Liveness
+     //Step Liveness - Discrimina o passo atual do liveness
+     LivenessStateType lStateType;
+     BOOL isShowAlertLiveness;
+     BOOL isShowAlertToLiveness;
+     BOOL isLivenessComplete;
+     NSDictionary *dictLivenessResultCenter;
+     NSDictionary *dictLivenessResultAway;
+     NSDictionary *dictLivenessResultCloser;
+     NSMutableArray *arrLeftEyeOpenProbability;
 
-    float fTotal;
-    
-    UIViewWithHole *vHole;
-    
-    UIImageView *ivAcessoBio;
-    
-    
-    CGRect frameCurrent;
+     float fTotal;
+     
+     UIViewWithHole *vHole;
+     
+     UIImageView *ivAcessoBio;
+     
+     
+     CGRect frameCurrent;
 
-    CGRect frameFaceCenter;
-    CGRect frameFaceAway;
-    CGRect frameFaceCloser;
-    
-    BOOL isSuccessAnimated;
-    BOOL isErrorAnimated;
-    
-    BOOL isProccessIA;
+     CGRect frameFaceCenter;
+     CGRect frameFaceAway;
+     CGRect frameFaceCloser;
+     
+     BOOL isSuccessAnimated;
+     BOOL isErrorAnimated;
+     
+     BOOL isProccessIA;
 
-    UILabel *lbMessage;
-    UIView *vAlert;
-    UIButton *btClose;
-    
-    BOOL isSmillingUpponEnter;
-    
-    BOOL isVerifiedSmillingUpponEnter;
-    
-    int delayToVerifySmilling;
+     UILabel *lbMessage;
+     UIView *vAlert;
+     UIButton *btClose;
+     
+     BOOL isSmillingUpponEnter;
+     
+     BOOL isVerifiedSmillingUpponEnter;
+     
+     int delayToVerifySmilling;
 
-    BOOL isResetRunning;
-    BOOL isResetSessionValidate;
-    int attemptsValidate;
-    
-    BOOL isResetSessionSpoofing;
-        
-    int attemptsSpoofing;
+     BOOL isResetRunning;
+     BOOL isResetSessionValidate;
+     int attemptsValidate;
+     
+     BOOL isResetSessionSpoofing;
+         
+     int attemptsSpoofing;
 
-    BOOL isResetSessionNoComputated;
-    
-    UILabel *lbTitleAlertCustom;
-    UIView *viewAlertBlack;
-    
-    NSTimer *timerProcesss;
-    
-    NSTimer *timerToTakeCenterPhoto;
-    NSTimer *timerToTakeAwayPhoto;
-    NSTimer *timerToSmiling;
+     BOOL isResetSessionNoComputated;
+     
+     UILabel *lbTitleAlertCustom;
+     UIView *viewAlertBlack;
+     
+     NSTimer *timerProcesss;
+     
+     NSTimer *timerToTakeCenterPhoto;
+     NSTimer *timerToTakeAwayPhoto;
+     NSTimer *timerToSmiling;
 
-    int durationProcess;
-    BOOL isFastProcess;
-    
-    BOOL isDoneValidate;
-    
-    BOOL isStartProcessIA;
-    
-    int timeToTakeCenterPhoto;
-    int timeToTakeAwayPhoto;
-    int timeToSmiling;
-    
-    // Discrimino se é para fazer a captura da foto afastada sem o sorriso (que dificulta a captura).
-    BOOL isPhotoAwayToCapture;
-    
-    UIImageView *ivBackgroundGreen;
-    
-    NSString *AuthToken;
-    
-    double scoreFacedetect;
-    
-    UIView *vFlash;
-    UIActivityIndicatorView *spinFlash;
-    
-    int  userBlinks;
-    
-    int resultFaceDetectBehavior; // 1 = Face Match / 2 = Both substandard / 3 = Not match
-    int resultFaceDetect; // // 1 = Face Match / 2 = Both substandard / 3 = Not match
+     int durationProcess;
+     BOOL isFastProcess;
+     
+     BOOL isDoneValidate;
+     
+     BOOL isStartProcessIA;
+     
+     int timeToTakeCenterPhoto;
+     int timeToTakeAwayPhoto;
+     int timeToSmiling;
+     
+     // Discrimino se é para fazer a captura da foto afastada sem o sorriso (que dificulta a captura).
+     BOOL isPhotoAwayToCapture;
+     
+     UIImageView *ivBackgroundGreen;
+     
+     NSString *AuthToken;
+     
+     double scoreFacedetect;
+     
+     UIView *vFlash;
+     UIActivityIndicatorView *spinFlash;
+     
+     int  userBlinks;
+     
+     int resultFaceDetectBehavior; // 1 = Face Match / 2 = Both substandard / 3 = Not match
+     int resultFaceDetect; // // 1 = Face Match / 2 = Both substandard / 3 = Not match
 
-    NSString *base64ToUsage;
+     NSString *base64ToUsage;
 
-    BOOL facesNoMatchInFaceDetect;
+     BOOL facesNoMatchInFaceDetect;
 
-    BOOL isValidating;
-    
-    int SESSION;
+     BOOL isValidating;
+     
+     int SESSION;
 
-    int TimeSessionFirst;
-    int TimeSessionSecond;
-    int TimeSessionThird;
-    
-    
-    BOOL validateFaceDetectOK;
+     int TimeSessionFirst;
+     int TimeSessionSecond;
+     int TimeSessionThird;
+     
+     
+     BOOL validateFaceDetectOK;
 
-    BOOL isRequestWebService;
+     BOOL isRequestWebService;
 
-    BOOL isDoneProcess;
-    
-    BOOL isTakingPhoto;
-    
-    // sensors
-    double pPitch;
-    double pRoll;
-    double pYaw;
+     BOOL isDoneProcess;
+     
+     BOOL isTakingPhoto;
+     
+     // sensors
+     double pPitch;
+     double pRoll;
+     double pYaw;
 
-    double pitchClose;
-    double rollClose;
-    double yawClose;
-    
-    double pitchAway;
-    double rollAway;
-    double yawAway;
-    
-    double pitchInitial;
-    double rollInitial;
-    double yawInitial;
+     double pitchClose;
+     double rollClose;
+     double yawClose;
+     
+     double pitchAway;
+     double rollAway;
+     double yawAway;
+     
+     double pitchInitial;
+     double rollInitial;
+     double yawInitial;
 
-    // Variables about popup reset
-    PopUpValidationLiveness *popup;
-    BOOL isPopUpShow;
-    
-    // Luminosity
-    float luminosity;
-    float luminosityAway;
-    float luminosityClose;
+     // Variables about popup reset
+     PopUpValidationLiveness *popup;
+     BOOL isPopUpShow;
+     
+     // Luminosity
+     float luminosity;
+     float luminosityAway;
+     float luminosityClose;
 
-    BOOL isStartLuminositySensor;
-    
-    
-    NSString *processId;
-    
-    NSString *billingId;
+     BOOL isStartLuminositySensor;
+     
+     
+     NSString *processId;
+     
+     NSString *billingId;
 
-    LivenessXResult *livenessXResult;
+     LivenessXResult *livenessXResult;
+     */
     
 }
+/***Deprecated
+ 
+ #pragma mark - Methods
 
-#pragma mark - Methods
+ - (void)popupHidden;
 
-- (void)popupHidden;
+ - (void)setIsDebug : (BOOL)debug;
+ - (void)successProcces : (NSString *)processId;
 
-- (void)setIsDebug : (BOOL)debug;
-- (void)successProcces : (NSString *)processId;
+ #pragma mark - Propertys
 
-#pragma mark - Propertys
+ // * Configurable
+ @property (assign, nonatomic) BOOL debug;
 
-// * Configurable
-@property (assign, nonatomic) BOOL debug;
-
-//@property (strong, nonatomic) FaceIA *faceIA;
+ //@property (strong, nonatomic) FaceIA *faceIA;
 
 
-@property (nonatomic) UIImageView *face;
-@property (nonatomic) UIImageView *frame;
+ @property (nonatomic) UIImageView *face;
+ @property (nonatomic) UIImageView *frame;
 
-@property (strong, nonatomic) NSString *proccessId;
+ @property (strong, nonatomic) NSString *proccessId;
 
-@property (strong, nonatomic) CameraBio *cam;
+ @property (strong, nonatomic) CameraBio *cam;
 
-@property (strong, nonatomic) UILabel *lbIInstructions;
+ @property (strong, nonatomic) UILabel *lbIInstructions;
 
-#pragma mark liveness
+ #pragma mark liveness
 
-@property (strong, nonatomic) NSString *base64AwayWithoutSmilling;
+ @property (strong, nonatomic) NSString *base64AwayWithoutSmilling;
 
-@property (strong, nonatomic) NSString *base64Center;
-@property (strong, nonatomic) NSString *base64Away;
-@property (strong, nonatomic) NSString *base64Closer;
+ @property (strong, nonatomic) NSString *base64Center;
+ @property (strong, nonatomic) NSString *base64Away;
+ @property (strong, nonatomic) NSString *base64Closer;
 
-@property (strong, nonatomic) UIImage *imgCenter;
-@property (strong, nonatomic) UIImage *imgAway;
-@property (strong, nonatomic) UIImage *imgCloser;
-@property (strong, nonatomic) UIImage *imgAwayWithoutSmile;
+ @property (strong, nonatomic) UIImage *imgCenter;
+ @property (strong, nonatomic) UIImage *imgAway;
+ @property (strong, nonatomic) UIImage *imgCloser;
+ @property (strong, nonatomic) UIImage *imgAwayWithoutSmile;
 
-@property (assign, nonatomic) BOOL isFaceLiveness;
+ @property (assign, nonatomic) BOOL isFaceLiveness;
 
-@property (assign, nonatomic) BOOL isLivenessSmilling;
-@property (assign, nonatomic) BOOL isFinishiWithoutTheSmile;
-@property (assign, nonatomic) BOOL isLivenessBlinking;
+ @property (assign, nonatomic) BOOL isLivenessSmilling;
+ @property (assign, nonatomic) BOOL isFinishiWithoutTheSmile;
+ @property (assign, nonatomic) BOOL isLivenessBlinking;
 
-@property (assign, nonatomic) BOOL isCommingFromResult;
+ @property (assign, nonatomic) BOOL isCommingFromResult;
 
-#pragma mark sensors
-@property (strong,nonatomic) CMMotionManager *motionManager;
+ #pragma mark sensors
+ @property (strong,nonatomic) CMMotionManager *motionManager;
 
-@property (strong, nonatomic) NSString *URL;
-@property (strong, nonatomic) NSString *APIKEY;
-@property (strong, nonatomic) NSString *TOKEN;
+ @property (strong, nonatomic) NSString *URL;
+ @property (strong, nonatomic) NSString *APIKEY;
+ @property (strong, nonatomic) NSString *TOKEN;
 
-@property(nonatomic, strong) AcessoBioManager *acessiBioManager;
+ @property(nonatomic, strong) AcessoBioManager *acessiBioManager;
 
-@property (strong, nonatomic) UIColor *colorSilhoutteNeutral;
-@property (strong, nonatomic) UIColor *colorSilhoutteSuccess;
-@property (strong, nonatomic) UIColor *colorSilhoutteError;
-@property (strong, nonatomic) UIColor *colorBackground;
-@property (strong, nonatomic) UIColor *colorBackgroundBoxStatus;
-@property (strong, nonatomic) UIColor *colorTextBoxStatus;
-@property (strong, nonatomic) UIColor *colorBackgroundPopupError;
-@property (strong, nonatomic) UIColor *colorTextPopupError;
-@property (strong, nonatomic) UIColor *colorBackgroundButtonPopupError;
-@property (strong, nonatomic) UIColor *colorTitleButtonPopupError;
+ @property (strong, nonatomic) UIColor *colorSilhoutteNeutral;
+ @property (strong, nonatomic) UIColor *colorSilhoutteSuccess;
+ @property (strong, nonatomic) UIColor *colorSilhoutteError;
+ @property (strong, nonatomic) UIColor *colorBackground;
+ @property (strong, nonatomic) UIColor *colorBackgroundBoxStatus;
+ @property (strong, nonatomic) UIColor *colorTextBoxStatus;
+ @property (strong, nonatomic) UIColor *colorBackgroundPopupError;
+ @property (strong, nonatomic) UIColor *colorTextPopupError;
+ @property (strong, nonatomic) UIColor *colorBackgroundButtonPopupError;
+ @property (strong, nonatomic) UIColor *colorTitleButtonPopupError;
 
-@property (strong, nonatomic) UIImage *imageIconPopupError;
+ @property (strong, nonatomic) UIImage *imageIconPopupError;
 
-@property (readwrite) LanguageOrigin language;
-@property (strong, nonatomic) NSString *versionRelease;
+ @property (readwrite) LanguageOrigin language;
+ @property (strong, nonatomic) NSString *versionRelease;
+ 
+ */
+
 
 @end
 

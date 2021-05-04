@@ -202,7 +202,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (void)setIsDebug : (BOOL)debug;
-- (void)successProcces : (NSString *)processId;
+//- (void)successProcces : (NSString *)processId;
 
 #pragma mark - Propertys
 

@@ -120,7 +120,7 @@
 }
 
 - (void)removePopup {
-    [pFaceInsertView popupHidden];
+    //[pFaceInsertView popupHidden];
 }
 
 - (void)setBackgroundColorButton : (UIColor *)color {
