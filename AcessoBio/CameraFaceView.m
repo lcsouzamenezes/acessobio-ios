@@ -748,8 +748,10 @@ float marginOfSides_CameraFace = 80.0f;
         
     }
     
+
     if(![self isSmallScreen]) {
         
+
         if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 20) || (fabs(Y_RIGHT_EYE_POINT - Y_LEFT_EYE_POINT) > 20)){
             countTimeAlert ++;
             if(hasError){
