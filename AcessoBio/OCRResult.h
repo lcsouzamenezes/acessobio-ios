@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *Renach;
 @property (strong, nonatomic) NSString *SecurityCode;
 @property (strong, nonatomic) NSString *PlaceOfBirth;
+@property (strong, nonatomic) NSString *ExpeditionState;
+@property (strong, nonatomic) NSString *Observation;
 
 @end
 
