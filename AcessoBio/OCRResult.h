@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *RegistrationNumber;
 @property (strong, nonatomic) NSString *Renach;
 @property (strong, nonatomic) NSString *SecurityCode;
+@property (strong, nonatomic) NSString *PlaceOfBirth;
 
 @end
 
