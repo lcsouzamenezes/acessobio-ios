@@ -458,11 +458,11 @@
 		16DBCD6B2461ED970040D4E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COREML_CODEGEN_LANGUAGE = Automatic;
 				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = NO;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = GR7KL5JY22;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -483,6 +483,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.acesso.AcessoBio;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Firebase/FirebaseMLVision/Frameworks";
@@ -493,11 +494,11 @@
 		16DBCD6C2461ED970040D4E8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COREML_CODEGEN_LANGUAGE = Automatic;
 				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = NO;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = GR7KL5JY22;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -518,6 +519,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.acesso.AcessoBio;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Firebase/FirebaseMLVision/Frameworks";
