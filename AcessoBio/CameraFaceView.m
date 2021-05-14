@@ -16,6 +16,7 @@ float topOffsetPercent_CameraFace = 30.0f;
 float sizeBetweenTopAndBottomPercent_CameraFace = 50.0f;
 float marginOfSides_CameraFace = 80.0f;
 
+
 @interface CameraFaceView ()
 
 @end
@@ -48,7 +49,7 @@ float marginOfSides_CameraFace = 80.0f;
     
     [self initialActionOfChangeState:NO];
     [self addFullBrightnessToScreen];
-    
+        
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -1199,10 +1200,11 @@ float marginOfSides_CameraFace = 80.0f;
             if([result objectForKey:@"Error"]) {
                 
                 NSDictionary *error = [response objectForKey:@"Error"];
-                
+        
                 int Code = [[error valueForKey:@"Code"] intValue];
-                
-                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:[error valueForKey:@"Description"]]];
+                NSString * Description = [error valueForKey:@"Description"];
+            
+                [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:Code method:@"createProcessV3" description:Description]];
                 
                 dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
                     dispatch_async(dispatch_get_main_queue(), ^(void){
@@ -1241,11 +1243,16 @@ float marginOfSides_CameraFace = 80.0f;
             id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             
             if([json isKindOfClass:[NSDictionary class]]) {
+                
                 NSDictionary *error = [json valueForKey:@"Error"];
-                NSString *description = [error valueForKey:@"Description"];
-                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:description]];
+                NSString *Description = [error valueForKey:@"Description"];
+               
+                [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:400 method:@"createProcessV3" description:Description]];
+                
             }else{
-                [self.acessiBioManager onErrorCameraFace:[self strErrorFormatted:@"createProcessV3" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
+                
+                [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:401 method:@"createProcessV3" description:self->unauthorized_error_bio]];
+                
             }
             
             [self exitError];
@@ -1313,14 +1320,17 @@ float marginOfSides_CameraFace = 80.0f;
                 id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 if([json isKindOfClass:[NSDictionary class]]) {
+                   
                     NSDictionary *error = [json valueForKey:@"Error"];
-                    NSString *description = [error valueForKey:@"Description"];
-                    NSNumber * Code = [error valueForKey:@"Code"] ;
+                    NSString *Description = [error valueForKey:@"Description"];
+                    NSInteger Code = [[error valueForKey:@"Code"] integerValue];
                     
-                    [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:[NSString stringWithFormat:@"Code: %@ - %@", Code, description ]]];
+                    [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:Code method:@"facesCompare" description:Description]];
                     
                 }else{
-                    [self.acessiBioManager onErrorFacesCompare:[self strErrorFormatted:@"facesCompare" description:@"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico."]];
+                    
+                    [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:401 method:@"facesCompare" description:self->unauthorized_error_bio]];
+                    
                 }
                 
                 [self exitError];
@@ -1444,10 +1454,6 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)exitError {
     [self invalidateAllTimers];
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (NSString *)strErrorFormatted: (NSString *)method description: (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@", method, description];
 }
 
 @end

@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CameraFaceView : CameraMain <AVCaptureVideoDataOutputSampleBufferDelegate> {
     
+    
     BOOL isSelfie;
     UIView *rectangle;
     UIView *rectangleTop;
@@ -191,7 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     BOOL isStartLuminositySensor;
     
-//    JGProgressHUD *HUD;
+    //    JGProgressHUD *HUD;
 
 }
 

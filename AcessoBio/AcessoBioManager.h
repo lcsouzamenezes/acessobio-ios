@@ -14,6 +14,7 @@
 #import "FacematchResult.h"
 #import "CreateProcess.h"
 #import "CreateProcess.h"
+#import "ErrorBio.h"
 
 @class LivenessXView;
 @class CameraFaceView;
@@ -33,8 +34,6 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
     ReactNative
 };
 
-
-
 @protocol AcessoBioDelegate <NSObject>
 
 @optional
@@ -44,16 +43,16 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 - (void)userClosedCameraManually;
 
 - (void)onSuccesCameraDocument: (CameraDocumentResult *)result;
-- (void)onErrorCameraDocument: (NSString *)error;
+- (void)onErrorCameraDocument: (ErrorBio *)error;
 
 - (void)onSuccessOCR: (OCRResult *)result;
-- (void)onErrorOCR: (NSString *)error;
+- (void)onErrorOCR: (ErrorBio *)error;
 
 - (void)onSuccessFacematch: (FacematchResult *)result;
-- (void)onErrorFacematch: (NSString *)error;
+- (void)onErrorFacematch: (ErrorBio *)error;
 
 - (void)onSuccessFacesCompare:(BOOL)status;
-- (void)onErrorFacesCompare:(NSString *)error;
+- (void)onErrorFacesCompare:(ErrorBio *)error;
 
 /** Deprecated
  - (void)onSuccesLivenessX: (LivenessXResult *)result;
@@ -61,10 +60,10 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
  */
 
 - (void)onSuccesCameraFace: (CameraFaceResult *)result;
-- (void)onErrorCameraFace: (NSString *)error;
+- (void)onErrorCameraFace: (ErrorBio *)error;
 
 @required
-- (void)onErrorAcessoBioManager: (NSString *)error;
+- (void)onErrorAcessoBioManager: (ErrorBio *)error;
 
 
 @end
@@ -150,7 +149,7 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 
 - (void)openCameraDocuments : (DocumentType) documentType;
 - (void)openCameraDocumentOCR : (DocumentType) documentType;
-- (void)onErrorCameraDocument: (NSString *)error;
+- (void)onErrorCameraDocument: (ErrorBio *)error;
 - (void)openCameraDocumentFacematch : (DocumentType) documentType;
 
 - (void)facesCompare: (NSString *)cpf;
@@ -161,7 +160,7 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
  -(void)onErrorLivenessX: (NSString *)error;
  */
 - (void)onSuccesCameraFace: (CameraFaceResult *)result;
-- (void)onErrorCameraFace: (NSString *)error;
+- (void)onErrorCameraFace: (ErrorBio *)error;
 
 
 

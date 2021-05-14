@@ -74,10 +74,11 @@
         if([self verifyColorString:color]) {
             colorSilhoutteNeutral = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
     
 }
@@ -90,11 +91,10 @@
         if([self verifyColorString:color]) {
             colorSilhoutteSuccess = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
-    }
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];    }
     
 }
 
@@ -106,10 +106,12 @@
         if([self verifyColorString:color]) {
             colorSilhoutteError = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
+        
     }
     
     
@@ -123,10 +125,11 @@
         if([self verifyColorString:color]) {
             colorBackground = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
+        
     }
     
 }
@@ -139,10 +142,9 @@
         if([self verifyColorString:color]) {
             colorBackgroundBoxStatus = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
-        }
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];        }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
     
 }
@@ -154,7 +156,7 @@
     }else if([color isKindOfClass:[NSString class]]) {
         colorTextBoxStatus = [UIColor colorWithHexString:color];
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
     
 }
@@ -167,10 +169,10 @@
         if([self verifyColorString:color]) {
             colorBackgroundPopupError = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
     
 }
@@ -184,10 +186,10 @@
         if([self verifyColorString:color]) {
             colorTextPopupError = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
     
 }
@@ -200,10 +202,10 @@
         if([self verifyColorString:color]) {
             colorBackgroundButtonPopupError = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
     
 }
@@ -216,10 +218,10 @@
         if([self verifyColorString:color]) {
             colorTitleButtonPopupError = [UIColor colorWithHexString:color];
         }else{
-            [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+            [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
     }else{
-        [self onErrorAcessoBioManager:@"Formato de cor não permitido."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
     
     
@@ -532,7 +534,9 @@
     if (@available(iOS 11.0, *)) {
         return YES;
     }else{
-        [self onErrorAcessoBioManager:@"Este método está disponível a partir do iOS 11."];
+        
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"verifyTarget" description:@"Este método está disponível a partir do iOS 11."]];
+            
         return NO;
     }
 }
@@ -553,13 +557,15 @@
     NSURL *urlToValidate = [NSURL URLWithString:url];
     if (!urlToValidate || !urlToValidate.scheme || !urlToValidate.host)
     {
-        [self onErrorAcessoBioManager:@"A URL fornecida é inválida."];
+        
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"verifyDataREST" description:@"A URL fornecida é inválida."]];
         return NO;
     }else if(apikey.length == 0) {
-        [self onErrorAcessoBioManager:@"A APIKEY fornecida está vazia."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"verifyDataREST" description:@"A APIKEY fornecida está vazia."]];
         return NO;
     }else if(token.length == 0) {
-        [self onErrorAcessoBioManager:@"O TOKEN fornecido está vazio."];
+        [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"verifyDataREST" description:@"O TOKEN fornecido está vazio."]];
+        
         return NO;
     }
     
@@ -620,7 +626,7 @@
     
 }
 
-- (void)onErrorCameraFace:(NSString *)error {
+- (void)onErrorCameraFace:(ErrorBio *)error {
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorCameraFace:)]) {
         [self.delegate onErrorCameraFace:error];
@@ -648,7 +654,7 @@
     
 }
 
-- (void)onErrorCameraDocument:(NSString *)error{
+- (void)onErrorCameraDocument:(ErrorBio *)error{
     if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorCameraDocument:)]) {
         [self.delegate onErrorCameraDocument:error];
     }else{
@@ -675,7 +681,7 @@
     
 }
 
-- (void)onErrorOCR: (NSString *)error {
+- (void)onErrorOCR: (ErrorBio *)error {
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorOCR:)]) {
         [self.delegate onErrorOCR:error];
@@ -693,7 +699,7 @@
     
 }
 
-- (void)onErrorFacematch: (NSString *)error {
+- (void)onErrorFacematch: (ErrorBio *)error {
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorFacematch:)]) {
         [self.delegate onErrorFacematch:error];
@@ -711,7 +717,7 @@
     
 }
 
-- (void)onErrorFacesCompare:(NSString *)error {
+- (void)onErrorFacesCompare:(ErrorBio *)error {
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorFacesCompare:)]) {
         [self.delegate onErrorFacesCompare:error];
@@ -721,7 +727,7 @@
     
 }
 
-- (void)onErrorAcessoBioManager:(NSString *)error {
+- (void)onErrorAcessoBioManager:(ErrorBio *)error {
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(onErrorAcessoBioManager:)]) {
         [self.delegate onErrorAcessoBioManager:error];
