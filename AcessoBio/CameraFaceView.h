@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
     UIView *rectangleRight;
     UILabel *labelMessage;
 
-    int countNoFace;
+    int countWithNoFaceAtScreen;
     int countTimeAlert;
     int countNoNose;
 
@@ -193,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL isStartLuminositySensor;
     
     NSTimer *timerToTimoutFaceInference;
-    NSTimer *timerToTimoutProcess;
+    NSTimer *timerToTimoutSession;
 
 }
 
@@ -273,7 +273,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *versionRelease;
 
 @property (readwrite) double secondsTimeoutToInferenceFace;
-@property (readwrite) double secondsTimeoutProcess;
+@property (readwrite) double secondsTimeoutSession;
 
 @end
 

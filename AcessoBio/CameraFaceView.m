@@ -64,7 +64,7 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)triggerTimeoutProcess {
-    timerToTimoutProcess = [NSTimer scheduledTimerWithTimeInterval: self.secondsTimeoutProcess
+    timerToTimoutSession = [NSTimer scheduledTimerWithTimeInterval: self.secondsTimeoutSession
                           target: self
                           selector:@selector(closeTriggerTimeoutProcess)
                           userInfo: nil repeats:NO];
@@ -78,7 +78,7 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)closeTriggerTimeoutProcess {
-    [self.acessiBioManager systemClosedCameraTimeoutProcess];
+    [self.acessiBioManager systemClosedCameraTimeoutSession];
     [self exit];
 }
 
@@ -537,13 +537,12 @@ float marginOfSides_CameraFace = 80.0f;
                     
                     [self fireFlash];
                     
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC);
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC);
                     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                         [self take];
                     });
                     
                 }
-                
                 
             }
             
@@ -650,7 +649,7 @@ float marginOfSides_CameraFace = 80.0f;
                             timerToTimoutFaceInference = nil;
                         }
                         
-                        self->countNoFace = 0;
+                        self->countWithNoFaceAtScreen = 0;
                         
                         CIFaceFeature *face = [faceFeatures firstObject];
                         
@@ -664,8 +663,8 @@ float marginOfSides_CameraFace = 80.0f;
                     
                 }else{
                     
-                    self->countNoFace++;
-                    if(self->countNoFace >= 20) {
+                    self->countWithNoFaceAtScreen++;
+                    if(self->countWithNoFaceAtScreen >= 20) {
                         [self showGray];
                     }
                     
@@ -984,7 +983,7 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)resetTimer {
     [self->timerCountDown invalidate];
-    self->countDown = 1.3;
+    self->countDown = 1;
     self->isCountDown = NO;
     self->timerCountDown = nil;
 }
@@ -1004,12 +1003,16 @@ float marginOfSides_CameraFace = 80.0f;
     if(!isShowAlertLiveness) {
         
         if(countDown == 0) {
-            if(!self->isSuccessAnimated) {
-                self->isSuccessAnimated = YES;
-                // [self->vHole startAnimationSuccess];
+            if(countWithNoFaceAtScreen > 0) {
+                [self showRed];
+            }else{
+                if(!self->isSuccessAnimated) {
+                    self->isSuccessAnimated = YES;
+                    // [self->vHole startAnimationSuccess];
+                }
+                [self resetTimer];
+                [self capture];
             }
-            [self resetTimer];
-            [self capture];
         }
         
         countDown --;
@@ -1061,9 +1064,9 @@ float marginOfSides_CameraFace = 80.0f;
         timerToTimoutFaceInference = nil;
     }
     
-    if(timerToTimoutProcess != nil) {
-        [timerToTimoutProcess invalidate];
-        timerToTimoutProcess = nil;
+    if(timerToTimoutSession != nil) {
+        [timerToTimoutSession invalidate];
+        timerToTimoutSession = nil;
     }
     
     [self invalidateTimerToSmiling];

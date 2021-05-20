@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 @required
 - (void)onErrorAcessoBioManager: (ErrorBio *)error;
 - (void)userClosedCameraManually;
-- (void)systemClosedCameraTimeoutProcess;
+- (void)systemClosedCameraTimeoutSession;
 - (void)systemClosedCameraTimeoutFaceInference;
 
 @end
@@ -103,8 +103,8 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
     UIImage *imageIconPopupError;
     
     double secondsTimeoutToFaceInference;
-    double secondsTimeoutProcess;
-    double defaultTimeoutProcess;
+    double secondsTimeoutSession;
+    double defaultTimeoutSession;
     double defaultTimeoutToFaceInference;
     double minimumTimeoutToFaceInference;
 
@@ -146,7 +146,7 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 #pragma mark - Timeouts
 
 - (void)setTimeoutToFaceInference : (double)seconds;
-- (void)setTimeoutProcess: (double)seconds;
+- (void)setTimeoutSession: (double)seconds;
 
 #pragma mark - Camera
 
