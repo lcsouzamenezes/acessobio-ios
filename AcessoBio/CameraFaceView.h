@@ -194,6 +194,9 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSTimer *timerToTimoutFaceInference;
     NSTimer *timerToTimoutSession;
+    
+    NSMutableString *strError;
+    CIFaceFeature *faceObj;
 
 }
 

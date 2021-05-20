@@ -66,7 +66,7 @@
     secondsTimeoutToFaceInference = seconds;
 }
 
-- (void)setTimeoutProcess: (double)seconds{
+- (void)setTimeoutSession: (double)seconds{
     if(seconds <= defaultTimeoutSession) {
         [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setTimeoutProcess" description:@"É necessário insirir um valor maior que 40 segundos no método: setTimeoutProcess."]];
         return;

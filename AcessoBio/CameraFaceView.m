@@ -651,10 +651,10 @@ float marginOfSides_CameraFace = 80.0f;
                         
                         self->countWithNoFaceAtScreen = 0;
                         
-                        CIFaceFeature *face = [faceFeatures firstObject];
+                        faceObj = [faceFeatures firstObject];
                         
-                        if(face.hasMouthPosition) {
-                            [self verifyFaceCenter:face];
+                        if(faceObj.hasMouthPosition) {
+                            [self verifyFaceCenter:faceObj];
                         }else {
                             [self showGray];
                         }
@@ -680,8 +680,9 @@ float marginOfSides_CameraFace = 80.0f;
     
 }
 
+// @params: toFinalValidate @description: indica se é a validação final para realizar a captura.
 
-- (void)verifyFaceCenter : (CIFaceFeature *)face{
+- (BOOL)validateFaceCenter : (CIFaceFeature *)face {
     
     countNoNose = 0;
     
@@ -714,7 +715,8 @@ float marginOfSides_CameraFace = 80.0f;
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
     
     BOOL hasError = NO;
-    NSMutableString *strError = [NSMutableString new];
+    
+    strError = [NSMutableString new];
     
     int leftMargin = frameFaceCenter.origin.x;
     int rightMargin = (frameFaceCenter.origin.x + frameFaceCenter.size.width);
@@ -776,7 +778,6 @@ float marginOfSides_CameraFace = 80.0f;
         
     }
     
-
     if(![self isSmallScreen]) {
         
 
@@ -810,10 +811,15 @@ float marginOfSides_CameraFace = 80.0f;
             
         }
     }
+
+    return hasError;
+
+}
+
+- (void)verifyFaceCenter : (CIFaceFeature *)face{
     
-    if(hasError) {
+    if([self validateFaceCenter:face]) {
         [self faceIsNotOK:strError];
-        hasError = NO;
     }else{
         [self faceIsOK];
     }
@@ -1003,7 +1009,7 @@ float marginOfSides_CameraFace = 80.0f;
     if(!isShowAlertLiveness) {
         
         if(countDown == 0) {
-            if(countWithNoFaceAtScreen > 0) {
+            if(countWithNoFaceAtScreen > 0 && [self validateFaceCenter:faceObj]) {
                 [self showRed];
             }else{
                 if(!self->isSuccessAnimated) {
