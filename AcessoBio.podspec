@@ -24,7 +24,7 @@ Pod::Spec.new do |spec|
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  spec.description = 'A short description about the project'
+  spec.description = ''
 
   spec.homepage     = "https://www3.acesso.io/sdkbio"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
@@ -119,15 +119,15 @@ Pod::Spec.new do |spec|
   #
 
   
-  # spec.framework  = "SomeFramework"
-  # spec.frameworks = "SomeFramework", "AnotherFramework"
+  # spec.framework  = ""
+  # spec.frameworks = "", ""
 
   # spec.library   = "iconv"
   # spec.libraries = "iconv", "xml2"
 
-    #spec.dependency "Firebase/MLVisionFaceModel"
-    #spec.dependency  'AFNetworking'
-    #spec.dependency  "JGProgressHUD"
+    #spec.dependency ""
+    #spec.dependency  ''
+    #spec.dependency  ""
 
     spec.static_framework = true
 
@@ -140,6 +140,5 @@ Pod::Spec.new do |spec|
   # spec.requires_arc = true
 
   # spec.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  # spec.dependency "JSONKit", "~> 1.4"
 
 end
