@@ -15,7 +15,7 @@
 #import "UIViewWithHole.h"
 #import <CoreML/CoreML.h>
 #import <Vision/Vision.h>
-#import "CenterModelCrop.h"
+//#import "CenterModelCrop.h"
 #import <CoreMotion/CoreMotion.h>
 #import "PopUpValidationLiveness.h"
 

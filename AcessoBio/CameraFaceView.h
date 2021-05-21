@@ -18,7 +18,7 @@
 
 #import <CoreML/CoreML.h>
 #import <Vision/Vision.h>
-#import "CenterModelCrop.h"
+//#import "CenterModelCrop.h"
 
 // gyroscope
 #import <CoreMotion/CoreMotion.h>
