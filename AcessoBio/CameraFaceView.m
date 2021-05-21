@@ -811,14 +811,16 @@ float marginOfSides_CameraFace = 80.0f;
             
         }
     }
+    
+    BOOL validFace = !hasError;
 
-    return hasError;
+    return validFace;
 
 }
 
 - (void)verifyFaceCenter : (CIFaceFeature *)face{
     
-    if([self validateFaceCenter:face]) {
+    if(![self validateFaceCenter:face]) {
         [self faceIsNotOK:strError];
     }else{
         [self faceIsOK];
@@ -1009,7 +1011,8 @@ float marginOfSides_CameraFace = 80.0f;
     if(!isShowAlertLiveness) {
         
         if(countDown == 0) {
-            if(countWithNoFaceAtScreen > 0 && [self validateFaceCenter:faceObj]) {
+
+            if(countWithNoFaceAtScreen > 0 || ![self validateFaceCenter:faceObj]) {
                 [self showRed];
             }else{
                 if(!self->isSuccessAnimated) {
