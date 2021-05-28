@@ -61,13 +61,14 @@
     
     
     if(self.type == 4) {
-        [iv setImage:[UIImage imageNamed:@"frame_cnh"]];
+        
+        [iv setImage:[UIImage imageNamed:@"frame_cnh" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil]];
         [lbStatus setText:@"Enquadre a CNH aberta"];
     }else if (self.type == 501) {
-        [iv setImage:[UIImage imageNamed:@"frame_rg_frente"]];
+        [iv setImage:[UIImage imageNamed:@"frame_rg_frente" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil]];
         [lbStatus setText:@"Enquadre o RG frente aberto"];
     }else if (self.type == 502){
-        [iv setImage:[UIImage imageNamed:@"frame_rg_verso"]];
+        [iv setImage:[UIImage imageNamed:@"frame_rg_verso" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil]];
         [lbStatus setText:@"Enquadre o RG verso aberto"];
     }else{
         [iv setHidden:YES];

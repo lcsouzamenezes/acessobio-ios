@@ -157,15 +157,15 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 */
 
 - (void)openCameraFace;
-- (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name;
-- (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone;
+- (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar criação de processo use via server-to-server.");
+- (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar criação de processo use via server-to-server.");
 
 - (void)openCameraDocuments : (DocumentType) documentType;
-- (void)openCameraDocumentOCR : (DocumentType) documentType;
+- (void)openCameraDocumentOCR : (DocumentType) documentType __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar o OCR use via server-to-server.");
 - (void)onErrorCameraDocument: (ErrorBio *)error;
 - (void)openCameraDocumentFacematch : (DocumentType) documentType;
 
-- (void)facesCompare: (NSString *)cpf;
+- (void)facesCompare: (NSString *)cpf __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar a comparação de face use via server-to-server.");
 
 #pragma mark - Callbacks
 /***Deprecated

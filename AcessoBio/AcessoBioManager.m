@@ -437,7 +437,7 @@
     }
     
     dView.acessoBioManager = self;
-    [self presentView:cView];
+    [self presentView:dView];
     
 }
 
@@ -460,7 +460,7 @@
     }else{
         dView.type = 999;
     }
-    [self presentView:cView];
+    [self presentView:dView];
 
     
 }
@@ -514,6 +514,8 @@
     [cView setCpfToFacesCompare:cpf];
     [cView setLanguage:language];
     [cView setVersionRelease:versionRelease];
+    [cView setSecondsTimeoutSession:secondsTimeoutSession];
+    [cView setSecondsTimeoutToInferenceFace:secondsTimeoutToFaceInference];
     [self presentView:cView];
     
 }

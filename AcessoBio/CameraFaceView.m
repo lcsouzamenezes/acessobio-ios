@@ -108,7 +108,7 @@ float marginOfSides_CameraFace = 80.0f;
     }
     
     btClose = [[UIButton alloc]initWithFrame:CGRectMake(7, yPosition, 70, 70)];
-    [btClose setImage:[UIImage imageNamed:@"ic_close"] forState:UIControlStateNormal];
+    [btClose setImage:[UIImage imageNamed:@"ic_close" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     [btClose addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btClose];
     
@@ -606,7 +606,8 @@ float marginOfSides_CameraFace = 80.0f;
     }else{
         ivAcessoBio = [[UIImageView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT - 50, 100, 40)];
     }
-    [ivAcessoBio setImage:[UIImage imageNamed:@"ic_bio"]];
+    
+    [ivAcessoBio setImage:[UIImage imageNamed:@"ic_bio" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil]];
     [ivAcessoBio setContentMode:UIViewContentModeScaleAspectFit];
     [ivAcessoBio setTag:-99];
     [self.view addSubview:ivAcessoBio];
