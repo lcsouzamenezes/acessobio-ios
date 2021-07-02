@@ -75,35 +75,19 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
     CameraFaceView *cView;
     DocumentInsertView *dView;
     
-    LanguageOrigin language;
     NSString *versionRelease;
     
     NSString *url;
     NSString *apikey;
     NSString *token;
     
-    BOOL isAutoCapture;
-    BOOL isSmartCamera;
-    
     BOOL isFacematchProcess;
     
     DocumentType documentTypeFacematch;
     NSString * base64Facematch;
     
-    UIColor *colorSilhoutteNeutral;
-    UIColor *colorSilhoutteSuccess;
-    UIColor *colorSilhoutteError;
-    UIColor *colorBackground;
-    UIColor *colorBackgroundBoxStatus;
-    UIColor *colorTextBoxStatus;
-    UIColor *colorBackgroundPopupError;
-    UIColor *colorTextPopupError;
-    UIColor *colorBackgroundButtonPopupError;
-    UIColor *colorTitleButtonPopupError;
     UIImage *imageIconPopupError;
     
-    double secondsTimeoutToFaceInference;
-    double secondsTimeoutSession;
     double defaultTimeoutSession;
     double defaultTimeoutToFaceInference;
     double minimumTimeoutToFaceInference;
@@ -122,31 +106,37 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 #pragma mark - Language Origin
 
 - (void)setLanguageOrigin: (LanguageOrigin)origin release: (NSString*)release;
+@property (readonly) LanguageOrigin language;
 
 #pragma mark - Custom
 
 - (void)disableAutoCapture;
 - (void)disableSmartCamera;
+@property (readonly) BOOL isAutoCapture;
 
 - (void)enableAutoCapture;
 - (void)enableSmartCamera;
+@property (readonly) BOOL isSmartCamera;
 
-- (void)setColorSilhoutteNeutral: (id)color;
-- (void)setColorSilhoutteSuccess: (id)color;
-- (void)setColorSilhoutteError: (id)color;
-- (void)setColorBackground: (id)color;
-- (void)setColorBackgroundBoxStatus: (id)color;
-- (void)setColorTextBoxStatus: (id)color;
-- (void)setColorBackgroundPopupError: (id)color;
-- (void)setColorTextPopupError: (id)color;
-- (void)setColorBackgroundButtonPopupError : (id)color;
-- (void)setColorTitleButtonPopupError : (id)color;
+@property (nonatomic, strong) UIColor *colorSilhoutteNeutral;
+@property (nonatomic, strong) UIColor *colorSilhoutteSuccess;
+@property (nonatomic, strong) UIColor *colorSilhoutteError;
+@property (nonatomic, strong) UIColor *colorBackground;
+@property (nonatomic, strong) UIColor *colorBackgroundBoxStatus;
+@property (nonatomic, strong) UIColor *colorTextBoxStatus;
+@property (nonatomic, strong) UIColor *colorBackgroundPopupError;
+@property (nonatomic, strong) UIColor *colorTextPopupError;
+@property (nonatomic, strong) UIColor *colorBackgroundButtonPopupError;
+@property (nonatomic, strong) UIColor *colorTitleButtonPopupError;
+
 - (void)setImageIconPopupError: (id)image;
 
 #pragma mark - Timeouts
 
 - (void)setTimeoutToFaceInference : (double)seconds;
+@property (readonly) double secondsTimeoutSession;
 - (void)setTimeoutSession: (double)seconds;
+@property (readonly) double secondsTimeoutToFaceInference;
 
 #pragma mark - Camera
 

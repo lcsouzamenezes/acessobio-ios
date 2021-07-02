@@ -23,13 +23,14 @@
         url = pUrl;
         apikey = pApikey;
         token = pToken;
-        isAutoCapture = YES;
-        isSmartCamera = YES;
+        _isAutoCapture = YES;
+        _isSmartCamera = YES;
         [self setDefaults];
 
     }
     
     return self;
+    
     
 }
 
@@ -49,7 +50,7 @@
 #pragma mark - Origin and Version
 
 - (void)setDefaultOrigin {
-    language = Native;
+    _language = Native;
 }
 
 - (void)setDefaultVersionRelease {
@@ -63,7 +64,7 @@
         [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setTimeoutToFaceInference" description:@"É necessário insirir um valor maior que 5 segundos no método: setTimeoutToFaceInference."]];
         return;
     }
-    secondsTimeoutToFaceInference = seconds;
+    _secondsTimeoutToFaceInference = seconds;
 }
 
 - (void)setTimeoutSession: (double)seconds{
@@ -71,47 +72,47 @@
         [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setTimeoutProcess" description:@"É necessário insirir um valor maior que 40 segundos no método: setTimeoutProcess."]];
         return;
     }
-    secondsTimeoutSession = seconds;
+    _secondsTimeoutSession = seconds;
 }
 
 - (void)setDefaultTimeoutProcess {
-    secondsTimeoutSession = defaultTimeoutSession;
+    _secondsTimeoutSession = defaultTimeoutSession;
 }
 
 - (void)setDefaultTimeoutFaceInference {
-    secondsTimeoutToFaceInference = defaultTimeoutToFaceInference;
+    _secondsTimeoutToFaceInference = defaultTimeoutToFaceInference;
 }
 
 - (void)setLanguageOrigin: (LanguageOrigin)origin release: (NSString*)release{
-    language = origin;
+    _language = origin;
     versionRelease = release;
 }
 
 #pragma mark - Custom
 
 - (void)disableAutoCapture {
-    isAutoCapture = NO;
+    _isAutoCapture = NO;
 }
 
 - (void)disableSmartCamera {
-    isSmartCamera = NO;
+    _isSmartCamera = NO;
 }
 
 - (void)enableAutoCapture {
-    isAutoCapture = YES;
+    _isAutoCapture = YES;
 }
 
 - (void)enableSmartCamera {
-    isSmartCamera = YES;
+    _isSmartCamera = YES;
 }
 
 - (void)setColorSilhoutteNeutral: (id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorSilhoutteNeutral = color;
+        _colorSilhoutteNeutral = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorSilhoutteNeutral = [UIColor colorWithHexString:color];
+            _colorSilhoutteNeutral = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
@@ -125,10 +126,10 @@
 - (void)setColorSilhoutteSuccess: (id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorSilhoutteSuccess = color;
+        _colorSilhoutteSuccess = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorSilhoutteSuccess = [UIColor colorWithHexString:color];
+            _colorSilhoutteSuccess = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
@@ -140,10 +141,10 @@
 - (void)setColorSilhoutteError: (id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorSilhoutteError = color;
+        _colorSilhoutteError = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorSilhoutteError = [UIColor colorWithHexString:color];
+            _colorSilhoutteError = [UIColor colorWithHexString:color];
         }else{
             
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
@@ -158,10 +159,10 @@
 - (void)setColorBackground: (id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorBackground = color;
+        _colorBackground = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorBackground = [UIColor colorWithHexString:color];
+            _colorBackground = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
@@ -175,10 +176,10 @@
 - (void)setColorBackgroundBoxStatus: (id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorBackgroundBoxStatus = color;
+        _colorBackgroundBoxStatus = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorBackgroundBoxStatus = [UIColor colorWithHexString:color];
+            _colorBackgroundBoxStatus = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];        }
     }else{
@@ -190,9 +191,9 @@
 - (void)setColorTextBoxStatus: (id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorTextBoxStatus = color;
+        _colorTextBoxStatus = color;
     }else if([color isKindOfClass:[NSString class]]) {
-        colorTextBoxStatus = [UIColor colorWithHexString:color];
+        _colorTextBoxStatus = [UIColor colorWithHexString:color];
     }else{
         [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
     }
@@ -202,10 +203,10 @@
 - (void)setColorBackgroundPopupError: (id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorBackgroundPopupError = color;
+        _colorBackgroundPopupError = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorBackgroundPopupError = [UIColor colorWithHexString:color];
+            _colorBackgroundPopupError = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
@@ -216,13 +217,13 @@
 }
 
 - (void)setColorTextPopupError: (id)color {
-    colorTextPopupError = color;
+    _colorTextPopupError = color;
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorTextPopupError = color;
+        _colorTextPopupError = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorTextPopupError = [UIColor colorWithHexString:color];
+            _colorTextPopupError = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
@@ -235,10 +236,10 @@
 - (void)setColorBackgroundButtonPopupError:(id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorBackgroundButtonPopupError = color;
+        _colorBackgroundButtonPopupError = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorBackgroundButtonPopupError = [UIColor colorWithHexString:color];
+            _colorBackgroundButtonPopupError = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
@@ -251,10 +252,10 @@
 - (void)setColorTitleButtonPopupError:(id)color {
     
     if([color isKindOfClass:[UIColor class]]) {
-        colorTitleButtonPopupError = color;
+        _colorTitleButtonPopupError = color;
     }else if([color isKindOfClass:[NSString class]]) {
         if([self verifyColorString:color]) {
-            colorTitleButtonPopupError = [UIColor colorWithHexString:color];
+            _colorTitleButtonPopupError = [UIColor colorWithHexString:color];
         }else{
             [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorSilhoutteNeutral" description:@"Formato de cor não permitido."]];
         }
@@ -336,18 +337,18 @@
         [cView setURL:url];
         [cView setAPIKEY:apikey];
         [cView setTOKEN:token];
-        [cView setIsEnableAutoCapture:isAutoCapture];
-        [cView setIsEnableSmartCapture:isSmartCamera];
-        [cView setColorSilhoutteNeutral:colorSilhoutteNeutral];
-        [cView setColorSilhoutteError:colorSilhoutteError];
-        [cView setColorSilhoutteSuccess:colorSilhoutteSuccess];
-        [cView setColorBackground:colorBackground];
-        [cView setColorBackgroundBoxStatus:colorBackgroundBoxStatus];
-        [cView setColorTextBoxStatus:colorTextBoxStatus];
-        [cView setLanguage:language];
+        [cView setIsEnableAutoCapture:_isAutoCapture];
+        [cView setIsEnableSmartCapture:_isSmartCamera];
+        [cView setColorSilhoutteNeutral:_colorSilhoutteNeutral];
+        [cView setColorSilhoutteError:_colorSilhoutteError];
+        [cView setColorSilhoutteSuccess:_colorSilhoutteSuccess];
+        [cView setColorBackground:_colorBackground];
+        [cView setColorBackgroundBoxStatus:_colorBackgroundBoxStatus];
+        [cView setColorTextBoxStatus:_colorTextBoxStatus];
+        [cView setLanguage:_language];
         [cView setVersionRelease:versionRelease];
-        [cView setSecondsTimeoutSession:secondsTimeoutSession];
-        [cView setSecondsTimeoutToInferenceFace:secondsTimeoutToFaceInference];
+        [cView setSecondsTimeoutSession:_secondsTimeoutSession];
+        [cView setSecondsTimeoutToInferenceFace:_secondsTimeoutToFaceInference];
         [self presentView:cView];
         
     }
@@ -370,18 +371,18 @@
             [cView setURL:url];
             [cView setAPIKEY:apikey];
             [cView setTOKEN:token];
-            [cView setIsEnableAutoCapture:isAutoCapture];
-            [cView setIsEnableSmartCapture:isSmartCamera];
-            [cView setColorSilhoutteNeutral:colorSilhoutteNeutral];
-            [cView setColorSilhoutteError:colorSilhoutteError];
-            [cView setColorSilhoutteSuccess:colorSilhoutteSuccess];
-            [cView setColorBackground:colorBackground];
-            [cView setColorBackgroundBoxStatus:colorBackgroundBoxStatus];
-            [cView setColorTextBoxStatus:colorTextBoxStatus];
-            [cView setLanguage:language];
+            [cView setIsEnableAutoCapture:_isAutoCapture];
+            [cView setIsEnableSmartCapture:_isSmartCamera];
+            [cView setColorSilhoutteNeutral:_colorSilhoutteNeutral];
+            [cView setColorSilhoutteError:_colorSilhoutteError];
+            [cView setColorSilhoutteSuccess:_colorSilhoutteSuccess];
+            [cView setColorBackground:_colorBackground];
+            [cView setColorBackgroundBoxStatus:_colorBackgroundBoxStatus];
+            [cView setColorTextBoxStatus:_colorTextBoxStatus];
+            [cView setLanguage:_language];
             [cView setVersionRelease:versionRelease];
-            [cView setSecondsTimeoutSession:secondsTimeoutSession];
-            [cView setSecondsTimeoutToInferenceFace:secondsTimeoutToFaceInference];
+            [cView setSecondsTimeoutSession:_secondsTimeoutSession];
+            [cView setSecondsTimeoutToInferenceFace:_secondsTimeoutToFaceInference];
             [self presentView:cView];
             
         }
@@ -409,12 +410,12 @@
             [cView setURL:url];
             [cView setAPIKEY:apikey];
             [cView setTOKEN:token];
-            [cView setIsEnableAutoCapture:isAutoCapture];
-            [cView setIsEnableSmartCapture:isSmartCamera];
-            [cView setLanguage:language];
+            [cView setIsEnableAutoCapture:_isAutoCapture];
+            [cView setIsEnableSmartCapture:_isSmartCamera];
+            [cView setLanguage:_language];
             [cView setVersionRelease:versionRelease];
-            [cView setSecondsTimeoutSession:secondsTimeoutSession];
-            [cView setSecondsTimeoutToInferenceFace:secondsTimeoutToFaceInference];
+            [cView setSecondsTimeoutSession:_secondsTimeoutSession];
+            [cView setSecondsTimeoutToInferenceFace:_secondsTimeoutToFaceInference];
             [self presentView:cView];
             
         }
@@ -469,8 +470,8 @@
     
     isFacematchProcess = YES;
     documentTypeFacematch = documentType;
-    isSmartCamera = NO;
-    isAutoCapture = NO;
+    _isSmartCamera = NO;
+    _isAutoCapture = NO;
     
     [self openCameraFace];
     
@@ -508,14 +509,14 @@
     [cView setURL:url];
     [cView setAPIKEY:apikey];
     [cView setTOKEN:token];
-    [cView setIsEnableAutoCapture:isAutoCapture];
-    [cView setIsEnableSmartCapture:isSmartCamera];
+    [cView setIsEnableAutoCapture:_isAutoCapture];
+    [cView setIsEnableSmartCapture:_isSmartCamera];
     [cView setIsFacesCompareOneToOne:YES];
     [cView setCpfToFacesCompare:cpf];
-    [cView setLanguage:language];
+    [cView setLanguage:_language];
     [cView setVersionRelease:versionRelease];
-    [cView setSecondsTimeoutSession:secondsTimeoutSession];
-    [cView setSecondsTimeoutToInferenceFace:secondsTimeoutToFaceInference];
+    [cView setSecondsTimeoutSession:_secondsTimeoutSession];
+    [cView setSecondsTimeoutToInferenceFace:_secondsTimeoutToFaceInference];
     [self presentView:cView];
     
 }
