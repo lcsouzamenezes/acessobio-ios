@@ -24,6 +24,8 @@
 		2B150C1D265ED8C800C2D899 /* frame_rg_verso.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E6D86EA524E07AAB00B24B12 /* frame_rg_verso.png */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2B150C1E265ED8C800C2D899 /* ic_close.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67B7A592471B9CD00918066 /* ic_close.png */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2B150C1F265ED8C800C2D899 /* ic_popup_face_error.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67B7A50247195C000918066 /* ic_popup_face_error.png */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2B66647C26A9E6EE0015C63D /* DeviceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B66647A26A9E6EE0015C63D /* DeviceUtils.h */; };
+		2B66647D26A9E6EE0015C63D /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66647B26A9E6EE0015C63D /* DeviceUtils.m */; };
 		2BA988E3268CB51A00F72029 /* AcessoBioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA988E2268CB51A00F72029 /* AcessoBioTests.m */; };
 		2BA988E5268CB51A00F72029 /* AcessoBio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16DBCD622461ED970040D4E8 /* AcessoBio.framework */; platformFilter = ios; };
 		2BDFCFE0264EC2AC009E7AB0 /* ErrorBio.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BDFCFDE264EC2AC009E7AB0 /* ErrorBio.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
@@ -97,6 +99,8 @@
 		16DBCD752461EE3B0040D4E8 /* UIColorExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColorExtensions.h; sourceTree = "<group>"; };
 		16DBCD762461EE3B0040D4E8 /* UIColorExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColorExtensions.m; sourceTree = "<group>"; };
 		16DBCD792461EE3B0040D4E8 /* CameraMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraMain.h; sourceTree = "<group>"; };
+		2B66647A26A9E6EE0015C63D /* DeviceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceUtils.h; sourceTree = "<group>"; };
+		2B66647B26A9E6EE0015C63D /* DeviceUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceUtils.m; sourceTree = "<group>"; };
 		2BA988E0268CB51A00F72029 /* AcessoBioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AcessoBioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA988E2268CB51A00F72029 /* AcessoBioTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcessoBioTests.m; sourceTree = "<group>"; };
 		2BA988E4268CB51A00F72029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -221,6 +225,8 @@
 		16DBCD642461ED970040D4E8 /* AcessoBio */ = {
 			isa = PBXGroup;
 			children = (
+				2B66647A26A9E6EE0015C63D /* DeviceUtils.h */,
+				2B66647B26A9E6EE0015C63D /* DeviceUtils.m */,
 				97E59BE0256714BD0090575A /* ic_takepicture.png */,
 				E69DB92E24E1E0FC001A1C2A /* OCRResult.h */,
 				E69DB92D24E1E0FB001A1C2A /* OCRResult.m */,
@@ -318,6 +324,7 @@
 				E6FDF4A72469CCC300A8D34D /* PopUpValidationLiveness.h in Headers */,
 				E669E3F92469922900110BAC /* CameraFaceView.h in Headers */,
 				16DBCD812461EE3C0040D4E8 /* UIViewWithHole.h in Headers */,
+				2B66647C26A9E6EE0015C63D /* DeviceUtils.h in Headers */,
 				16DBCD7D2461EE3C0040D4E8 /* ValidateLiveness.h in Headers */,
 				2BDFCFE0264EC2AC009E7AB0 /* ErrorBio.h in Headers */,
 				E669E3F82469922900110BAC /* LivenessXView.h in Headers */,
@@ -433,6 +440,7 @@
 				E669E4522469BA6F00110BAC /* LivenessXResult.m in Sources */,
 				E69DB93624E20021001A1C2A /* FacematchResult.m in Sources */,
 				E669E3FA2469922900110BAC /* LivenessXView.m in Sources */,
+				2B66647D26A9E6EE0015C63D /* DeviceUtils.m in Sources */,
 				E69DB92F24E1E0FC001A1C2A /* OCRResult.m in Sources */,
 				E669E4552469C20F00110BAC /* CreateProcess.m in Sources */,
 				E669E3FD2469928800110BAC /* CameraFaceResult.m in Sources */,

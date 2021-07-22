@@ -27,6 +27,7 @@
 
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
 
+
 #import "AcessoBioManager.h"
 
 @class CameraBio;
@@ -46,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
     UILabel *labelMessage;
 
     int countWithNoFaceAtScreen;
-    int countTimeAlert;
+    int countError;
     int countNoNose;
 
     BOOL isShowAlert;
@@ -86,6 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
     CGRect frameFaceCenter;
     CGRect frameFaceAway;
     CGRect frameFaceCloser;
+    
+    BOOL leftEyeClosed;
+    BOOL rightEyeClosed;
     
     BOOL isSuccessAnimated;
     BOOL isErrorAnimated;
