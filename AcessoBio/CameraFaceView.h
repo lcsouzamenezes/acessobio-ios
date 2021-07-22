@@ -175,6 +175,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     BOOL isTakingPhoto;
     
+    double yawFace;
+    
     // sensors
     double pPitch;
     double pRoll;
