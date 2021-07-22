@@ -682,6 +682,17 @@ float marginOfSides_CameraFace = 80.0f;
     
 }
 
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
+    [super captureOutput:captureOutput didOutputMetadataObjects:metadataObjects fromConnection:connection];
+    
+    for (AVMetadataFaceObject *metadataObject in metadataObjects) {
+        if(metadataObject.hasYawAngle) {
+            NSLog(@"yaw: %.2f", metadataObject.yawAngle);
+        }
+    }
+}
+
 - (BOOL)validateFaceCenter : (CIFaceFeature *)face {
         
     countNoNose = 0;
@@ -689,8 +700,6 @@ float marginOfSides_CameraFace = 80.0f;
     CGPoint leftEyePosition = face.leftEyePosition;
     CGPoint rightEyePosition = face.rightEyePosition;
     CGPoint mouthPosition = face.mouthPosition;
-    
-    
     
     /***Unused
      CGPoint leftEarPosition = CGPointMake(((face.bounds.origin.x) + face.bounds.size.width), UIScreen.mainScreen.bounds.size.height/2);
@@ -713,6 +722,8 @@ float marginOfSides_CameraFace = 80.0f;
      CGFloat X_LEFT_EAR_POINT = [self normalizeXPoint:leftEarPosition.x  faceWidth:face.bounds.size.width];
      CGFloat X_RIGHT_EAR_POINT = [self normalizeXPoint:rightEarPosition.x faceWidth:face.bounds.size.width];
      */
+        
+    
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
 //    NSLog(@"FACE_ANGLE: %.2f",FACE_ANGLE);

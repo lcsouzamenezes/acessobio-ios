@@ -122,6 +122,15 @@
         self.stillImageOutput = stillImageOutput;
     }
     
+    self.metadataOutput = [[AVCaptureMetadataOutput alloc] init];
+    [self.metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    if ([self.session canAddOutput:self.metadataOutput]) {
+        [self.session addOutput:self.metadataOutput];
+    }else{
+        NSLog(@"Meta data output can not be added.");
+    }
+    self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
+    
     self.dataOutput = [[AVCaptureVideoDataOutput alloc] init];
     if ([self.session canAddOutput:self.dataOutput]) {
         self.dataOutput = self.dataOutput;
@@ -175,6 +184,10 @@
     return captureDevice;
 }
 
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
+    NSLog(@"Metadata");
+}
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }

@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-@interface CameraFaceView : CameraMain <AVCaptureVideoDataOutputSampleBufferDelegate> {
+@interface CameraFaceView : CameraMain <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate> {
     
     
     BOOL isSelfie;

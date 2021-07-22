@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-@interface CameraMain : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate> {
+@interface CameraMain : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate> {
     
     NSString *unauthorized_error_bio;
     
@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic) AVCaptureVideoDataOutput *dataOutput;
+@property (nonatomic) AVCaptureMetadataOutput *metadataOutput;
 @property (nonatomic, assign) id delegate;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic) NSLock *renderLock;
