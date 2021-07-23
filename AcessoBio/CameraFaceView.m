@@ -627,57 +627,130 @@ float marginOfSides_CameraFace = 80.0f;
                 if (self->isPopUpShow) {
                     return;
                 }
-                
-                NSDictionary *options = @{
-                    CIDetectorSmile : [NSNumber numberWithBool:YES],
-                    CIDetectorEyeBlink: [NSNumber numberWithBool:YES],
-                    CIDetectorImageOrientation: [NSNumber numberWithInt:4]
-                };
-                
-                CIImage *personciImage = [CIImage imageWithCGImage:image.CGImage];
-                
-                NSDictionary *accuracy = @{CIDetectorAccuracy: CIDetectorAccuracyHigh};
-                CIDetector *faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:accuracy];
-                NSArray *faceFeatures = [faceDetector featuresInImage:personciImage options:options];
-                
-                if([faceFeatures count] > 0) {
-                    
-                    if([faceFeatures count] == 1) {
-                        
-                        if(timerToTimoutFaceInference != nil) {
-                            [timerToTimoutFaceInference invalidate];
-                            timerToTimoutFaceInference = nil;
-                        }
-                        
-                        self->countWithNoFaceAtScreen = 0;
-                        
-                        faceObj = [faceFeatures firstObject];
-                        
-                        if(faceObj.hasMouthPosition) {
-                            [self verifyFaceCenter:faceObj];
-                        }else {
-                            [self showGray];
-                        }
-                        
-                    }
-                    
-                }else{
-                    
-                    self->countWithNoFaceAtScreen++;
-                    if(self->countWithNoFaceAtScreen >= 20) {
-                        [self showGray];
-                    }
-                    
-                }
-                
-            }
             
+                CIImage *personciImage = [CIImage imageWithCGImage:image.CGImage];
+                                
+               // [self detectFaceNew:personciImage];
+                [self detectFace:personciImage];
+                 
+            }
+                
             [self.renderLock unlock];
             
         }
         
     }
     
+}
+
+- (void)detectFace:(CIImage*)image{
+    
+    NSDictionary *options = @{
+        CIDetectorSmile : [NSNumber numberWithBool:YES],
+        CIDetectorEyeBlink: [NSNumber numberWithBool:YES],
+        CIDetectorImageOrientation: [NSNumber numberWithInt:4]
+    };
+    
+    NSDictionary *accuracy = @{CIDetectorAccuracy: CIDetectorAccuracyHigh};
+    CIDetector *faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:accuracy];
+    NSArray *faceFeatures = [faceDetector featuresInImage:image options:options];
+    
+    if([faceFeatures count] > 0) {
+        
+        if([faceFeatures count] == 1) {
+            
+            if(timerToTimoutFaceInference != nil) {
+                [timerToTimoutFaceInference invalidate];
+                timerToTimoutFaceInference = nil;
+            }
+            
+            self->countWithNoFaceAtScreen = 0;
+            
+            faceObj = [faceFeatures firstObject];
+            
+            if(faceObj.hasMouthPosition) {
+                [self verifyFaceCenter:faceObj];
+            }else {
+                [self showGray];
+            }
+            
+        }
+        
+    }else{
+        
+        self->countWithNoFaceAtScreen++;
+        if(self->countWithNoFaceAtScreen >= 20) {
+            [self showGray];
+        }
+        
+    }
+}
+    
+    
+- (void)detectFaceNew:(CIImage*)image{
+    //create req
+    VNDetectFaceRectanglesRequest *faceDetectionReq = [VNDetectFaceRectanglesRequest new];
+    NSDictionary *d = [[NSDictionary alloc] init];
+    //req handler
+    VNImageRequestHandler *handler = [[VNImageRequestHandler alloc] initWithCIImage:image options:d];
+    //send req to handler
+    [handler performRequests:@[faceDetectionReq] error:nil];
+    
+    //is there a face?
+    for(VNFaceObservation *observation in faceDetectionReq.results){
+        if(observation){
+            [self drawFaceRect:image];
+        }
+    }
+}
+
+- (void)drawFaceRect:(CIImage*)image{
+    //face landmark
+    VNDetectFaceLandmarksRequest *faceLandmarks = [VNDetectFaceLandmarksRequest new];
+    VNSequenceRequestHandler *faceLandmarksDetectionRequest = [VNSequenceRequestHandler new];
+    [faceLandmarksDetectionRequest performRequests:@[faceLandmarks] onCIImage:image error:nil];
+    
+    NSArray *results = faceLandmarks.results;
+    
+    for(VNFaceObservation *observation in results){
+        
+        if (@available(iOS 13.0, *)) {
+            float quality = [observation.faceCaptureQuality floatValue];
+            NSLog(@"%f", quality);
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        if (@available(iOS 12.0, *)) {
+          //  NSLog(@"yaw: %@", observation.yaw);
+        } else {
+            // Fallback on earlier versions
+        }
+
+        //draw rect on face
+        CGRect boundingBox = observation.boundingBox;
+        CGSize size = CGSizeMake(boundingBox.size.width * SCREEN_HEIGHT, boundingBox.size.height * SCREEN_HEIGHT);
+        CGPoint origin = CGPointMake(boundingBox.origin.x * SCREEN_WIDTH, (1-boundingBox.origin.y)* SCREEN_HEIGHT - size.height);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            for(UIView *view in [self.view subviews]) {
+                if(view.tag == -1) {
+                    [view removeFromSuperview];
+                }
+            }
+            
+            UIView *layer = [UIView new];
+            layer.frame = CGRectMake(origin.x, origin.y, size.width, size.height);
+            layer.layer.borderColor = [UIColor redColor].CGColor;
+            layer.layer.borderWidth = 2;
+            layer.tag = -1;
+            [self.view addSubview:layer];
+        });
+        
+
+        
+    }
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
