@@ -10,6 +10,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreImage/CoreImage.h>
+#import "DeviceUtils.h"
 
 #define NAME_APPLICATION [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
@@ -77,10 +78,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) stopCamera;
 
 - (UIColor *)getColorPrimary;
-
-// Models and Screen Sizes
-- (NSString*) deviceName;
-- (BOOL)isSmallScreen;
 
 @end
 
