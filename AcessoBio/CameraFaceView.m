@@ -28,9 +28,7 @@ float marginOfSides_CameraFace = 80.0f;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
-    [DeviceUtils hasFasterModelDevice];
-    
+        
     isSmillingUpponEnter = YES;
     arrLeftEyeOpenProbability = [NSMutableArray new];
     
@@ -53,7 +51,7 @@ float marginOfSides_CameraFace = 80.0f;
     [self addFullBrightnessToScreen];
     [self triggerTimeoutProcess];
     [self triggerTimeoutToFaceInference];
-        
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -67,16 +65,16 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)triggerTimeoutProcess {
     timerToTimoutSession = [NSTimer scheduledTimerWithTimeInterval: self.secondsTimeoutSession
-                          target: self
-                          selector:@selector(closeTriggerTimeoutProcess)
-                          userInfo: nil repeats:NO];
+                                                            target: self
+                                                          selector:@selector(closeTriggerTimeoutProcess)
+                                                          userInfo: nil repeats:NO];
 }
 
 - (void)triggerTimeoutToFaceInference {
     timerToTimoutFaceInference = [NSTimer scheduledTimerWithTimeInterval: self.secondsTimeoutToInferenceFace
-                          target: self
-                          selector:@selector(closeTriggerTimeoutToFaceInference)
-                          userInfo: nil repeats:NO];
+                                                                  target: self
+                                                                selector:@selector(closeTriggerTimeoutToFaceInference)
+                                                                userInfo: nil repeats:NO];
 }
 
 - (void)closeTriggerTimeoutProcess {
@@ -161,7 +159,7 @@ float marginOfSides_CameraFace = 80.0f;
         if(self.colorBackground != nil) {
             colorBackground = self.colorBackground;
         }
-//        [vFlash setBackgroundColor:colorBackground];
+        //        [vFlash setBackgroundColor:colorBackground];
         [self.view addSubview:vFlash];
         
         spinFlash = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -172,10 +170,10 @@ float marginOfSides_CameraFace = 80.0f;
             [spinFlash setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
         }
         
-//        UIColor *colorSpin  = [UIColor whiteColor];
-//        if(self.colorSilhoutteNeutral != nil) {
-//            colorSpin = self.colorSilhoutteNeutral;
-//        }
+        //        UIColor *colorSpin  = [UIColor whiteColor];
+        //        if(self.colorSilhoutteNeutral != nil) {
+        //            colorSpin = self.colorSilhoutteNeutral;
+        //        }
         [spinFlash setColor:colorBackground];
         spinFlash.center = self.view.center;
         [spinFlash startAnimating];
@@ -455,7 +453,7 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)addCircleToPoint : (CGPoint) point color : (UIColor *)color{
-        
+    
     CGFloat widht = 10;
     
     CGFloat POINT_X = point.x;
@@ -682,15 +680,24 @@ float marginOfSides_CameraFace = 80.0f;
     
 }
 
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
+    [super captureOutput:captureOutput didOutputMetadataObjects:metadataObjects fromConnection:connection];
+    
+    for (AVMetadataFaceObject *metadataObject in metadataObjects) {
+        if(metadataObject.hasYawAngle) {
+            yawFace = metadataObject.yawAngle;
+        }
+    }
+}
+
 - (BOOL)validateFaceCenter : (CIFaceFeature *)face {
-        
+    
     countNoNose = 0;
     
     CGPoint leftEyePosition = face.leftEyePosition;
     CGPoint rightEyePosition = face.rightEyePosition;
     CGPoint mouthPosition = face.mouthPosition;
-    
-    
     
     /***Unused
      CGPoint leftEarPosition = CGPointMake(((face.bounds.origin.x) + face.bounds.size.width), UIScreen.mainScreen.bounds.size.height/2);
@@ -705,7 +712,7 @@ float marginOfSides_CameraFace = 80.0f;
     CGFloat Y_RIGHT_EYE_POINT = [self normalizeYPoint:rightEyePosition.y faceHeight:face.bounds.size.height];
     
     // Boca
-//    CGFloat X_MOUTH_POINT = [self normalizeXPoint:mouthPosition.x faceWidth:face.bounds.size.width];
+    //    CGFloat X_MOUTH_POINT = [self normalizeXPoint:mouthPosition.x faceWidth:face.bounds.size.width];
     CGFloat Y_MOUTH_POINT = [self normalizeYPoint:mouthPosition.y faceHeight:face.bounds.size.height];
     
     
@@ -713,12 +720,14 @@ float marginOfSides_CameraFace = 80.0f;
      CGFloat X_LEFT_EAR_POINT = [self normalizeXPoint:leftEarPosition.x  faceWidth:face.bounds.size.width];
      CGFloat X_RIGHT_EAR_POINT = [self normalizeXPoint:rightEarPosition.x faceWidth:face.bounds.size.width];
      */
+    
+    
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
-//    NSLog(@"FACE_ANGLE: %.2f",FACE_ANGLE);
+    //    NSLog(@"FACE_ANGLE: %.2f",FACE_ANGLE);
     
     BOOL hasError = NO;
-//
+    //
     strError = [NSMutableString new];
     
     // Silhueta
@@ -734,22 +743,22 @@ float marginOfSides_CameraFace = 80.0f;
     
     float distanceBeetwenEyes = ((fabs(X_RIGHT_EYE_POINT - X_LEFT_EYE_POINT)) * 2);
     
-//    NSLog(@"distanceBeetwenEyes: %.2f",distanceBeetwenEyes);
+    //    NSLog(@"distanceBeetwenEyes: %.2f",distanceBeetwenEyes);
     /*
-    // Orelhas
-    [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor yellowColor]];
-    [self addCircleToPoint:CGPointMake(fabs(X_RIGHT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor greenColor]];
-    
-    // Olhos
-    [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EYE_POINT), fabs(Y_LEFT_EYE_POINT)) color:[UIColor redColor]];
-    [self addCircleToPoint:CGPointMake(fabs(X_RIGHT_EYE_POINT), fabs(Y_LEFT_EYE_POINT)) color:[UIColor blueColor]];
-
-    // Bordas
-    [self addCircleToPoint:CGPointMake(fabs(leftMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor blackColor]];
-    [self addCircleToPoint:CGPointMake(fabs(rightMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor whiteColor]];
+     // Orelhas
+     [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor yellowColor]];
+     [self addCircleToPoint:CGPointMake(fabs(X_RIGHT_EAR_POINT), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor greenColor]];
+     
+     // Olhos
+     [self addCircleToPoint:CGPointMake(fabs(X_LEFT_EYE_POINT), fabs(Y_LEFT_EYE_POINT)) color:[UIColor redColor]];
+     [self addCircleToPoint:CGPointMake(fabs(X_RIGHT_EYE_POINT), fabs(Y_LEFT_EYE_POINT)) color:[UIColor blueColor]];
+     
+     // Bordas
+     [self addCircleToPoint:CGPointMake(fabs(leftMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor blackColor]];
+     [self addCircleToPoint:CGPointMake(fabs(rightMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor whiteColor]];
      */
-//    NSLog(@"frameFaceCenter.origin.y: %.f", frameFaceCenter.origin.y);
-//    NSLog(@"result: %d", (fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y));
+    //    NSLog(@"frameFaceCenter.origin.y: %.f", frameFaceCenter.origin.y);
+    //    NSLog(@"result: %d", (fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y));
     
     //Verificação se o olho está acima da silhueta
     if ((fabs(Y_LEFT_EYE_POINT) < topMargin) ||
@@ -792,12 +801,11 @@ float marginOfSides_CameraFace = 80.0f;
         
         hasError = YES;
     }
-
     
     if(![self isSmallScreen]) {
         
-            if((fabs(FACE_ANGLE) > 5))
-            {
+        if((fabs(FACE_ANGLE) > 5))
+        {
             countError ++;
             if(hasError){
                 [strError appendString:@" / Inclined face"];
@@ -807,36 +815,46 @@ float marginOfSides_CameraFace = 80.0f;
             hasError = YES;
         }
         
-//        NSLog(@"FACE_ANGLE: %.2f", FACE_ANGLE);
-//            NSLog(@"X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT: %.2f", X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT );
-//        if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 5 this is the same thing than face_angle
-//        if((fabs(FACE_ANGLE) > 20 ||
-//            fabs(FACE_ANGLE) < -20)) {
-//            NSLog(@"FACE_ANGLE: %.2f", FACE_ANGLE);
-//            countError ++;
-//            if(hasError){
-//                if(FACE_ANGLE > 20) {
-//                    [strError appendString:@" / Turn slightly left"];
-//                }else if(FACE_ANGLE < -20){
-//                    [strError appendString:@" / Turn slightly right"];
-//                }
-//            }else{
-//                if(FACE_ANGLE > 20) {
-//                    [strError appendString:@"Turn slightly left"];
-//                }else if(FACE_ANGLE < -20){
-//                    [strError appendString:@"Turn slightly right"];
-//                }
-//            }
-//            hasError = YES;
-//
-//        }
-         
+        if(yawFace != 0) {
+            countError ++;
+            if(hasError){
+                [strError appendString:@" / Rotated face"];
+            }else{
+                [strError appendString:@"Rotated face"];
+            }
+            hasError = YES;
+        }
+        
+        //        NSLog(@"FACE_ANGLE: %.2f", FACE_ANGLE);
+        //            NSLog(@"X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT: %.2f", X_LEFT_EYE_POINT - X_RIGHT_EYE_POINT );
+        //        if((fabs(Y_LEFT_EYE_POINT - Y_RIGHT_EYE_POINT) > 5 this is the same thing than face_angle
+        //        if((fabs(FACE_ANGLE) > 20 ||
+        //            fabs(FACE_ANGLE) < -20)) {
+        //            NSLog(@"FACE_ANGLE: %.2f", FACE_ANGLE);
+        //            countError ++;
+        //            if(hasError){
+        //                if(FACE_ANGLE > 20) {
+        //                    [strError appendString:@" / Turn slightly left"];
+        //                }else if(FACE_ANGLE < -20){
+        //                    [strError appendString:@" / Turn slightly right"];
+        //                }
+        //            }else{
+        //                if(FACE_ANGLE > 20) {
+        //                    [strError appendString:@"Turn slightly left"];
+        //                }else if(FACE_ANGLE < -20){
+        //                    [strError appendString:@"Turn slightly right"];
+        //                }
+        //            }
+        //            hasError = YES;
+        //
+        //        }
+        
     }
     
     BOOL validFace = !hasError;
-
+    
     return validFace;
-
+    
 }
 
 - (void)verifyFaceCenter : (CIFaceFeature *)face{
@@ -851,7 +869,7 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)showError : (NSString *)error {
     
     float minimumCountError = 10;
-    if (IS_IPHONE_X_OR_MORE){
+    if ([DeviceUtils hasFasterModelDevice]){
         minimumCountError = 20;
     }
     if(countError >= minimumCountError) {
@@ -875,10 +893,11 @@ float marginOfSides_CameraFace = 80.0f;
                 [self setMessageStatus:@"Afaste o rosto"];
             }else if ([error containsString:@"Inclined face"]){
                 [self setMessageStatus:@"Deixe seu rosto reto na tela"];
+            }else if([error containsString:@"Rotated face"]){
+                [self setMessageStatus:@"Deixe seu rosto reto na tela"];
             }else{
                 [self setMessageStatus:@"Enquadre o seu rosto"];
             }
-            
             
             UIColor *colorLbMessage = [UIColor whiteColor];
             
@@ -1031,28 +1050,28 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)countDown {
-//    - (BOOL)validateFaceCenter : (CIFaceFeature *)face {
-
+    //    - (BOOL)validateFaceCenter : (CIFaceFeature *)face {
+    
     if(!isShowAlertLiveness) {
         
         if(countDown == 0) {
             // The last validation
             if(countWithNoFaceAtScreen > 0 || ![self validateFaceCenter:faceObj]) {
-
+                
                 [self showRed];
             }else{
                 if (leftEyeClosed == NO && rightEyeClosed == NO){
-                if(!self->isSuccessAnimated) {
-                    self->isSuccessAnimated = YES;
-                    // [self->vHole startAnimationSuccess];
-                }
-                [self resetTimer];
-                [self capture];
+                    if(!self->isSuccessAnimated) {
+                        self->isSuccessAnimated = YES;
+                        // [self->vHole startAnimationSuccess];
+                    }
+                    [self resetTimer];
+                    [self capture];
                 }
             }
         }
         
-       countDown --;
+        countDown --;
         
     }
     
@@ -1288,15 +1307,15 @@ float marginOfSides_CameraFace = 80.0f;
             if([result objectForKey:@"Error"]) {
                 
                 NSDictionary *error = [response objectForKey:@"Error"];
-        
+                
                 int Code = [[error valueForKey:@"Code"] intValue];
                 NSString * Description = [error valueForKey:@"Description"];
-            
+                
                 [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:Code method:@"createProcessV3" description:Description]];
                 
                 dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
                     dispatch_async(dispatch_get_main_queue(), ^(void){
-                            [self exit];
+                        [self exit];
                     });
                 });
                 
@@ -1318,7 +1337,7 @@ float marginOfSides_CameraFace = 80.0f;
                 });
             }
             
-           
+            
             
         }else {
             
@@ -1334,7 +1353,7 @@ float marginOfSides_CameraFace = 80.0f;
                 
                 NSDictionary *error = [json valueForKey:@"Error"];
                 NSString *Description = [error valueForKey:@"Description"];
-               
+                
                 [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:400 method:@"createProcessV3" description:Description]];
                 
             }else{
@@ -1402,33 +1421,33 @@ float marginOfSides_CameraFace = 80.0f;
                 });
             });
             
-            }else {
+        }else {
+            
+            NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
+            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            
+            if([json isKindOfClass:[NSDictionary class]]) {
                 
-                NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
-                id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSDictionary *error = [json valueForKey:@"Error"];
+                NSString *Description = [error valueForKey:@"Description"];
+                NSInteger Code = [[error valueForKey:@"Code"] integerValue];
                 
-                if([json isKindOfClass:[NSDictionary class]]) {
-                   
-                    NSDictionary *error = [json valueForKey:@"Error"];
-                    NSString *Description = [error valueForKey:@"Description"];
-                    NSInteger Code = [[error valueForKey:@"Code"] integerValue];
-                    
-                    [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:Code method:@"facesCompare" description:Description]];
-                    
-                }else{
-                    
-                    [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:401 method:@"facesCompare" description:self->unauthorized_error_bio]];
-                    
-                }
+                [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:Code method:@"facesCompare" description:Description]];
                 
-                [self exit];
+            }else{
+                
+                [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:401 method:@"facesCompare" description:self->unauthorized_error_bio]];
                 
             }
             
+            [self exit];
+            
         }
         
-    ] resume];
-
+    }
+      
+      ] resume];
+    
 }
 
 
@@ -1445,7 +1464,7 @@ float marginOfSides_CameraFace = 80.0f;
 #pragma mark - Button Take Picture
 
 - (void)addButtonTakePicture : (UIView *)view {
-
+    
     float heightViewBottom = 0;
     float valueLessMask = 0;
     
@@ -1485,7 +1504,7 @@ float marginOfSides_CameraFace = 80.0f;
     [self addVHole:CGRectZero];
     
     popup = [[PopUpValidationLiveness alloc]initWithFrame:CGRectMake(((SCREEN_WIDTH/2) - 165), ((SCREEN_HEIGHT/2) - 180) , 330, 370)];
-   // [popup setType:PopupTypeGeneric faceInsertView:self];
+    // [popup setType:PopupTypeGeneric faceInsertView:self];
     [popup setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:popup];
     
