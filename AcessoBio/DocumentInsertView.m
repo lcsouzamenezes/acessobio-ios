@@ -137,16 +137,10 @@
 
 - (void)actionAfterTakePicture : (NSString *)base64 {
     
-    if(self.operationType == Facematch) {
-        [self facematch:base64];
-    }else if(self.operationType == OCR) {
-        [self ocr:base64];
-    }else{
         [self dismissViewControllerAnimated:YES completion:nil];
         CameraDocumentResult *cameraResult = [CameraDocumentResult new];
         cameraResult.base64 = base64;
         [self.acessoBioManager onSuccesCameraDocument:cameraResult];
-    }
     
 }
 
@@ -194,159 +188,9 @@
     spinFlash = nil;
 }
 
-#pragma mark - OCR
 
-- (void)ocr : (NSString *)base64 {
-    
-    [self showHUB];
-    
-    NSDictionary *dict = @{
-        @"type": [NSString stringWithFormat:@"%ld", (long)self.type],
-        @"base64": base64
-    };
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/documents/ocr", self.URL]];
-    [[[NSURLSession sharedSession] dataTaskWithRequest:[self getRequestMain:url params:dict] completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-        
-        if (data.length > 0 && error == nil)
-        {
-            NSDictionary *response = [NSJSONSerialization JSONObjectWithData:data
-                                                                     options:0
-                                                                       error:NULL];
-            NSDictionary *result = response;
-            
-            OCRResult *ocrResult = [OCRResult new];
-            ocrResult.BirthDate = [result valueForKey:@"BirthDate"];
-            ocrResult.Category = [result valueForKey:@"Category"];
-            ocrResult.Code = [result valueForKey:@"Code"];
-            ocrResult.ExpeditionCity = [result valueForKey:@"ExpeditionCity"];
-            ocrResult.ExpeditionDate = [result valueForKey:@"ExpeditionDate"];
-            ocrResult.ExpirationDate = [result valueForKey:@"ExpirationDate"];
-            ocrResult.FatherName = [result valueForKey:@"FatherName"];
-            ocrResult.FirstLicenseDate = [result valueForKey:@"FirstLicenseDate"];
-            ocrResult.MirrorNumber = [result valueForKey:@"MirrorNumber"];
-            ocrResult.MotherName = [result valueForKey:@"MotherName"];
-            ocrResult.Name = [result valueForKey:@"Name"];
-            ocrResult.RegistrationNumber = [result valueForKey:@"RegistrationNumber"];
-            ocrResult.Renach = [result valueForKey:@"Renach"];
-            ocrResult.RG = [result valueForKey:@"RG"];
-            ocrResult.SecurityCode = [result valueForKey:@"SecurityCode"];
-            
-            [self.acessoBioManager onSuccessOCR:ocrResult];
-            
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    [self dismissHUB];
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                });
-            });
-            
-        }else {
-            
-            NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
-            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            
-            if([json isKindOfClass:[NSDictionary class]]) {
-                
-                NSDictionary *error = [json valueForKey:@"Error"];
-                NSString *Description = [error valueForKey:@"Description"];
-                NSInteger Code = [[error valueForKey:@"Code"] integerValue];
-                
-                [self.acessoBioManager onErrorOCR:[[ErrorBio alloc]initCode:Code method:@"ocr" description:Description]];
-                
-            }else{
-                
-                [self.acessoBioManager onErrorOCR:[[ErrorBio alloc]initCode:401 method:@"ocr" description:self->unauthorized_error_bio]];
-                
-            }
-            
-            [self exitError];
-            
-        }
-        
-    }] resume];
-    
-    
-    
-}
 
-#pragma mark - FACEMATCH
 
-- (void)facematch : (NSString *)base64Document {
-    
-    [self showHUB];
-    
-    NSString *strBaseFace = [NSString stringWithFormat:@"%@", self.base64SelfieToFaceMatch];
-    
-    NSDictionary *dict = @{
-        @"Base64Documento": base64Document,
-        @"Base64Selfie": strBaseFace,
-    };
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/match", self.URL]];
-    [[[NSURLSession sharedSession] dataTaskWithRequest:[self getRequestMain:url params:dict] completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-        
-        if (data.length > 0 && error == nil)
-        {
-            NSDictionary *response = [NSJSONSerialization JSONObjectWithData:data
-                                                                     options:0
-                                                                       error:NULL];
-            NSDictionary *dictresponse = response;
-            
-            
-            FacematchResult *facematchResult = [FacematchResult new];
-            
-            facematchResult.Base64Document = base64Document;
-            facematchResult.Base64Selfie = self.base64SelfieToFaceMatch;
-            facematchResult.Status = [[dictresponse valueForKey:@"Status"] boolValue];
-            
-            [self.acessoBioManager onSuccessFacematch:facematchResult];
-            
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    [self dismissHUB];
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                });
-            });
-            
-        }else {
-            
-            NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
-            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            
-            if([json isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *error = [json valueForKey:@"Error"];
-                NSString *Description = [error valueForKey:@"Description"];
-                NSInteger  Code = [[error valueForKey:@"Code"] integerValue];
-            
-                [self.acessoBioManager onErrorFacematch:[[ErrorBio alloc]initCode:Code method:@"facematch" description:Description]];
-                
-            }else{
-                
-                [self.acessoBioManager onErrorFacematch:[[ErrorBio alloc]initCode:401 method:@"facematch" description:self->unauthorized_error_bio]];
-            }
-            
-            [self exitError];
-            
-        }
-        
-    }
-      
-      ] resume];
-    
-    
-}
-
-- (NSMutableURLRequest *)getRequestMain: (NSURL *)url params:(NSDictionary *)params {
-    NSError *error;
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [request addValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:&error]];
-    return request;
-}
 
 - (void)exitError {
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){

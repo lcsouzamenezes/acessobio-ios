@@ -77,9 +77,6 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
     
     NSString *versionRelease;
     
-    NSString *url;
-    NSString *apikey;
-    NSString *token;
     
     BOOL isFacematchProcess;
     
@@ -101,7 +98,7 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 @property (nonatomic, strong) CreateProcess *createProcess;
 
 #pragma mark - Instance
-- (id)initWithViewController:(id)view url:(NSString*)url apikey: (NSString*)apikey token: (NSString*)token;
+- (id)initWithViewController:(id)view;
 
 #pragma mark - Language Origin
 

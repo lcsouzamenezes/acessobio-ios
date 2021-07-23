@@ -39,10 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic)NSInteger type; 
 @property (strong, nonatomic) AcessoBioManager *acessoBioManager;
 
-@property (strong, nonatomic) NSString *URL;
-@property (strong, nonatomic) NSString *APIKEY;
-@property (strong, nonatomic) NSString *TOKEN;
-
 @property (assign, nonatomic) OperationType operationType;
 
 @property (strong, nonatomic) NSString *base64SelfieToFaceMatch;
