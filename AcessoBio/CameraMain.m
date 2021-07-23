@@ -20,7 +20,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    unauthorized_error_bio = @"Verifique sua url de conexão, apikey e token. Se persistir, entre em contato com a equipe da unico.";
 
 }
 

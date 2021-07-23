@@ -143,7 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
      
      UIImageView *ivBackgroundGreen;
      
-     NSString *AuthToken;
+    
      
      double scoreFacedetect;
      
@@ -263,9 +263,6 @@ NS_ASSUME_NONNULL_BEGIN
  #pragma mark sensors
  @property (strong,nonatomic) CMMotionManager *motionManager;
 
- @property (strong, nonatomic) NSString *URL;
- @property (strong, nonatomic) NSString *APIKEY;
- @property (strong, nonatomic) NSString *TOKEN;
 
  @property(nonatomic, strong) AcessoBioManager *acessiBioManager;
 

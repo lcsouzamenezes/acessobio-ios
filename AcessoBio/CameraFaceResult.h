@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CameraFaceResult : NSObject
 
 @property(strong, nonatomic) NSString *base64;
-@property(strong, nonatomic) NSString *processId;
+
 
 @end
 

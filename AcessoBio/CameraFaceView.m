@@ -757,8 +757,7 @@ float marginOfSides_CameraFace = 80.0f;
      [self addCircleToPoint:CGPointMake(fabs(leftMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor blackColor]];
      [self addCircleToPoint:CGPointMake(fabs(rightMargin), UIScreen.mainScreen.bounds.size.height/2) color:[UIColor whiteColor]];
      */
-    //    NSLog(@"frameFaceCenter.origin.y: %.f", frameFaceCenter.origin.y);
-    //    NSLog(@"result: %d", (fabs(Y_LEFT_EYE_POINT) < frameFaceCenter.origin.y));
+
     
     //Verificação se o olho está acima da silhueta
     if ((fabs(Y_LEFT_EYE_POINT) < topMargin) ||
@@ -807,6 +806,7 @@ float marginOfSides_CameraFace = 80.0f;
         if((fabs(FACE_ANGLE) > 5))
         {
             countError ++;
+
             if(hasError){
                 [strError appendString:@" / Inclined face"];
             }else{
@@ -1084,16 +1084,11 @@ float marginOfSides_CameraFace = 80.0f;
     _base64Center = base64;
     _imgCenter = image;
     
-    if(self.isFacesCompareOneToOne) {
-        [self facesCompare:self.cpfToFacesCompare base64:base64];
-    }else if(self.acessiBioManager.createProcess == nil){
-        CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
-        [cameraFaceResult setBase64:self->_base64Center];
-        [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
-        [self doneProcess];
-    }else{
-        [self createProcessV3];
-    }
+    CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
+    [cameraFaceResult setBase64:self->_base64Center];
+    [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
+    [self doneProcess];
+    
     
 }
 
@@ -1275,9 +1270,9 @@ float marginOfSides_CameraFace = 80.0f;
 
 #pragma mark - Create Process v3
 
-- (void)createProcessV3 {
+- (void)createBase64WithData {
     
-    isRequestWebService = YES;
+    
     
     NSString *languageOrigin = @"ios-native";
     if(self.language == Flutter) {
@@ -1288,167 +1283,6 @@ float marginOfSides_CameraFace = 80.0f;
     
     NSString *baseWithOtherDatas = [NSString stringWithFormat:@"data:%@|%@/image/jpeg;base64,%@", languageOrigin, self.versionRelease, _base64Center];
     
-    NSDictionary *dict = @{
-        @"subject" : @{@"Code": self.acessiBioManager.createProcess.code, @"Name": self.acessiBioManager.createProcess.name},
-        @"onlySelfie" : [NSNumber numberWithBool:YES],
-        @"imagebase64": baseWithOtherDatas
-    };
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/processes", self.URL]];
-    [[[NSURLSession sharedSession] dataTaskWithRequest:[self getRequestMain:url params:dict] completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-        
-        if (data.length > 0 && error == nil)
-        {
-            NSDictionary *response = [NSJSONSerialization JSONObjectWithData:data
-                                                                     options:0
-                                                                       error:NULL];
-            NSDictionary *result = response;
-            
-            if([result objectForKey:@"Error"]) {
-                
-                NSDictionary *error = [response objectForKey:@"Error"];
-                
-                int Code = [[error valueForKey:@"Code"] intValue];
-                NSString * Description = [error valueForKey:@"Description"];
-                
-                [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:Code method:@"createProcessV3" description:Description]];
-                
-                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                    dispatch_async(dispatch_get_main_queue(), ^(void){
-                        [self exit];
-                    });
-                });
-                
-            }else{
-                NSString * processId = [result valueForKey:@"Id"];
-                
-                self->isValidating = NO;
-                
-                CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
-                [cameraFaceResult setBase64:self->_base64Center];
-                [cameraFaceResult setProcessId:processId];
-                [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
-                
-                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                    dispatch_async(dispatch_get_main_queue(), ^(void){
-                        [self removeFlash];
-                        [self doneProcess];
-                    });
-                });
-            }
-            
-            
-            
-        }else {
-            
-            if(self.debug) {
-                NSLog(@"Error: %@", error);
-            }
-            self->isRequestWebService = NO;
-            
-            NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
-            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            
-            if([json isKindOfClass:[NSDictionary class]]) {
-                
-                NSDictionary *error = [json valueForKey:@"Error"];
-                NSString *Description = [error valueForKey:@"Description"];
-                
-                [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:400 method:@"createProcessV3" description:Description]];
-                
-            }else{
-                
-                [self.acessiBioManager onErrorCameraFace:[[ErrorBio alloc]initCode:401 method:@"createProcessV3" description:self->unauthorized_error_bio]];
-                
-            }
-            
-            [self exit];
-            
-        }
-        
-    }] resume];
-    
-}
-
-- (NSMutableURLRequest *)getRequestMain: (NSURL *)url params:(NSDictionary *)params {
-    NSError *error;
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:self.APIKEY forHTTPHeaderField:@"APIKEY"];
-    [request addValue:self.TOKEN forHTTPHeaderField:@"Authorization"];
-    [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:&error]];
-    return request;
-}
-
-
-#pragma mark - FacesCompare
-
-- (void)facesCompare: (NSString *)cpf base64: (NSString *)base64{
-    
-    //[self showHUB];
-    
-    cpf = [cpf stringByReplacingOccurrencesOfString:@"." withString:@""];
-    cpf = [cpf stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    
-    NSDictionary *dict = @{
-        @"code": cpf,
-        @"imagebase64": base64
-    };
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/services/v3/AcessoService.svc/faces/compare", self.URL]];
-    [[[NSURLSession sharedSession] dataTaskWithRequest:[self getRequestMain:url params:dict] completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-        
-        if (data.length > 0 && error == nil)
-        {
-            NSDictionary *response = [NSJSONSerialization JSONObjectWithData:data
-                                                                     options:0
-                                                                       error:NULL];
-            NSDictionary *dictresponse = response;
-            
-            BOOL status = NO;
-            
-            if([[dictresponse valueForKey:@"Status"] integerValue] == 1) {
-                status = YES;
-            }
-            
-            [self.acessiBioManager onSuccessFacesCompare:status];
-            
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    [self removeFlash];
-                    [self doneProcess];
-                });
-            });
-            
-        }else {
-            
-            NSData *data = [error.description dataUsingEncoding:NSUTF8StringEncoding];
-            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            
-            if([json isKindOfClass:[NSDictionary class]]) {
-                
-                NSDictionary *error = [json valueForKey:@"Error"];
-                NSString *Description = [error valueForKey:@"Description"];
-                NSInteger Code = [[error valueForKey:@"Code"] integerValue];
-                
-                [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:Code method:@"facesCompare" description:Description]];
-                
-            }else{
-                
-                [self.acessiBioManager onErrorFacesCompare:[[ErrorBio alloc]initCode:401 method:@"facesCompare" description:self->unauthorized_error_bio]];
-                
-            }
-            
-            [self exit];
-            
-        }
-        
-    }
-      
-      ] resume];
-    
-}
 
 
 - (UIImage *)croppIngimage:(UIImage *)imageToCrop toRect:(CGRect)rect

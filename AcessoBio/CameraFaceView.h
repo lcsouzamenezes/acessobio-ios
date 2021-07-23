@@ -141,7 +141,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     UIImageView *ivBackgroundGreen;
     
-    NSString *AuthToken;
     
     
     double scoreFacedetect;
@@ -259,9 +258,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong,nonatomic) CMMotionManager *motionManager;
 
-@property (strong, nonatomic) NSString *URL;
-@property (strong, nonatomic) NSString *APIKEY;
-@property (strong, nonatomic) NSString *TOKEN;
 
 @property (assign, nonatomic) BOOL isEnableAutoCapture;
 @property (assign, nonatomic) BOOL isEnableSmartCapture;
