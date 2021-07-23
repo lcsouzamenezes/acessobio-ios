@@ -714,6 +714,7 @@ float marginOfSides_CameraFace = 80.0f;
     
     for(VNFaceObservation *observation in results){
         
+        
         if (@available(iOS 13.0, *)) {
             float quality = [observation.faceCaptureQuality floatValue];
             NSLog(@"%f", quality);
@@ -771,7 +772,7 @@ float marginOfSides_CameraFace = 80.0f;
     CGPoint leftEyePosition = face.leftEyePosition;
     CGPoint rightEyePosition = face.rightEyePosition;
     CGPoint mouthPosition = face.mouthPosition;
-    
+        
     /***Unused
      CGPoint leftEarPosition = CGPointMake(((face.bounds.origin.x) + face.bounds.size.width), UIScreen.mainScreen.bounds.size.height/2);
      CGPoint rightEarPosition = CGPointMake((face.bounds.origin.x), UIScreen.mainScreen.bounds.size.height/2);
@@ -1286,6 +1287,8 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)setMessageStatus: (NSString *)str {
+    
+    NSLog(@"%@", str);
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if(self->popup == nil) {
