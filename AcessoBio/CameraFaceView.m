@@ -51,6 +51,8 @@ float marginOfSides_CameraFace = 80.0f;
     [self triggerTimeoutProcess];
     [self triggerTimeoutToFaceInference];
     
+    //sensorDevice = [[SensorsDevice alloc]init];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -794,10 +796,8 @@ float marginOfSides_CameraFace = 80.0f;
      CGFloat X_RIGHT_EAR_POINT = [self normalizeXPoint:rightEarPosition.x faceWidth:face.bounds.size.width];
      */
     
-    
     // Face Angle
     CGFloat FACE_ANGLE = 180 - fabs(face.faceAngle);
-    //    NSLog(@"FACE_ANGLE: %.2f",FACE_ANGLE);
     
     BOOL hasError = NO;
     //
@@ -875,8 +875,7 @@ float marginOfSides_CameraFace = 80.0f;
         
         hasError = YES;
     }
-    
-    
+        
     if((fabs(FACE_ANGLE) > 5))
     {
         countError ++;

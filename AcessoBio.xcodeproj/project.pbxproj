@@ -28,6 +28,8 @@
 		2B66647D26A9E6EE0015C63D /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66647B26A9E6EE0015C63D /* DeviceUtils.m */; };
 		2BA988E3268CB51A00F72029 /* AcessoBioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA988E2268CB51A00F72029 /* AcessoBioTests.m */; };
 		2BA988E5268CB51A00F72029 /* AcessoBio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16DBCD622461ED970040D4E8 /* AcessoBio.framework */; platformFilter = ios; };
+		2BDD107626AF026A008F7DC3 /* SensorsDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BDD107426AF026A008F7DC3 /* SensorsDevice.h */; };
+		2BDD107726AF026A008F7DC3 /* SensorsDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BDD107526AF026A008F7DC3 /* SensorsDevice.m */; };
 		2BDFCFE0264EC2AC009E7AB0 /* ErrorBio.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BDFCFDE264EC2AC009E7AB0 /* ErrorBio.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
 		2BDFCFE1264EC2AC009E7AB0 /* ErrorBio.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BDFCFDF264EC2AC009E7AB0 /* ErrorBio.m */; platformFilter = ios; };
 		E63F9B1125AE59B700F436D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E63F9B1025AE59B700F436D2 /* WebKit.framework */; };
@@ -104,6 +106,8 @@
 		2BA988E0268CB51A00F72029 /* AcessoBioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AcessoBioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA988E2268CB51A00F72029 /* AcessoBioTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcessoBioTests.m; sourceTree = "<group>"; };
 		2BA988E4268CB51A00F72029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2BDD107426AF026A008F7DC3 /* SensorsDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SensorsDevice.h; sourceTree = "<group>"; };
+		2BDD107526AF026A008F7DC3 /* SensorsDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SensorsDevice.m; sourceTree = "<group>"; };
 		2BDFCFDE264EC2AC009E7AB0 /* ErrorBio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorBio.h; sourceTree = "<group>"; };
 		2BDFCFDF264EC2AC009E7AB0 /* ErrorBio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorBio.m; sourceTree = "<group>"; };
 		2BEDCE50265350E60055870A /* AcessoBioManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AcessoBioManager.h; path = AcessoBio/AcessoBioManager.h; sourceTree = "<group>"; };
@@ -270,6 +274,8 @@
 				E69DB93424E20020001A1C2A /* FacematchResult.m */,
 				2BDFCFDE264EC2AC009E7AB0 /* ErrorBio.h */,
 				2BDFCFDF264EC2AC009E7AB0 /* ErrorBio.m */,
+				2BDD107426AF026A008F7DC3 /* SensorsDevice.h */,
+				2BDD107526AF026A008F7DC3 /* SensorsDevice.m */,
 			);
 			path = AcessoBio;
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 				16DBCD822461EE3C0040D4E8 /* UIColorExtensions.h in Headers */,
 				E669E4562469C20F00110BAC /* CreateProcess.h in Headers */,
 				E69DB93524E20021001A1C2A /* FacematchResult.h in Headers */,
+				2BDD107626AF026A008F7DC3 /* SensorsDevice.h in Headers */,
 				16DBCD7F2461EE3C0040D4E8 /* UIImageUtils.h in Headers */,
 				16DBCD862461EE3C0040D4E8 /* CameraMain.h in Headers */,
 				E6FDF4A72469CCC300A8D34D /* PopUpValidationLiveness.h in Headers */,
@@ -443,6 +450,7 @@
 				2B66647D26A9E6EE0015C63D /* DeviceUtils.m in Sources */,
 				E69DB92F24E1E0FC001A1C2A /* OCRResult.m in Sources */,
 				E669E4552469C20F00110BAC /* CreateProcess.m in Sources */,
+				2BDD107726AF026A008F7DC3 /* SensorsDevice.m in Sources */,
 				E669E3FD2469928800110BAC /* CameraFaceResult.m in Sources */,
 				16DBCD7C2461EE3C0040D4E8 /* ValidateLiveness.m in Sources */,
 				E6D86EB024E087DE00B24B12 /* CameraDocumentResult.m in Sources */,

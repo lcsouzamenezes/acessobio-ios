@@ -24,11 +24,8 @@
 #import <CoreMotion/CoreMotion.h>
 
 #import "PopUpValidationLiveness.h"
-
-#define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
-
-
 #import "AcessoBioManager.h"
+#import "SensorsDevice.h"
 
 @class CameraBio;
 
@@ -202,6 +199,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSMutableString *strError;
     CIFaceFeature *faceObj;
+    
+    SensorsDevice *sensorDevice; 
 
 }
 
