@@ -105,9 +105,9 @@ Pod::Spec.new do |spec|
    spec.resources = "AcessoBio/AcessoBio/*.{png}", "*.{png}", "AcessoBio/*.{png}", "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
    spec.exclude_files = "AcessoBio/AcessoBio/*.plist"
 
-   spec.preserve_paths  = "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
+   #spec.preserve_paths  = "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
 
-   spec.ios.resource_bundle = { 'AcessoBio' => "AcessoBio/AcessoBio/*.{mlmodel}" }
+   #spec.ios.resource_bundle = { 'AcessoBio' => "AcessoBio/AcessoBio/*.{mlmodel}" }
 
   # spec.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
