@@ -24,11 +24,10 @@
 #import <CoreMotion/CoreMotion.h>
 
 #import "PopUpValidationLiveness.h"
-
-#define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
-
-
 #import "AcessoBioManager.h"
+#import "SensorsDevice.h"
+
+#import "FaceAnalyze.h"
 
 @class CameraBio;
 
@@ -47,8 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
     UILabel *labelMessage;
 
     int countWithNoFaceAtScreen;
-    int countError;
-    int countNoNose;
 
     BOOL isShowAlert;
         
@@ -200,8 +197,11 @@ NS_ASSUME_NONNULL_BEGIN
     NSTimer *timerToTimoutFaceInference;
     NSTimer *timerToTimoutSession;
     
-    NSMutableString *strError;
     CIFaceFeature *faceObj;
+    UIImage *lastImageObj;
+    
+    SensorsDevice *sensorDevice;
+    FaceAnalyze *faceAnalyze;
 
 }
 

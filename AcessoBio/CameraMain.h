@@ -10,6 +10,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreImage/CoreImage.h>
+#import "DeviceUtils.h"
 
 #define NAME_APPLICATION [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
@@ -68,19 +69,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)converCIImageToUIImage : (CIImage *)cIImage;
 
-- (float)normalizeXPoint : (float)point faceWidth:(float)faceWidth;
-- (float)normalizeYPoint : (float)point faceHeight:(float)faceHeight;
-
 - (void) setupCamera:(BOOL) isSelfie;
 
 - (void) startCamera;
 - (void) stopCamera;
 
 - (UIColor *)getColorPrimary;
-
-// Models and Screen Sizes
-- (NSString*) deviceName;
-- (BOOL)isSmallScreen;
 
 @end
 

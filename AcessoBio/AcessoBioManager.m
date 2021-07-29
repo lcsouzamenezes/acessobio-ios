@@ -50,7 +50,7 @@
 }
 
 - (void)setDefaultVersionRelease {
-    versionRelease = @"1.2.1.1";
+    versionRelease = @"1.2.7";
 }
 
 #pragma mark - Timeout
