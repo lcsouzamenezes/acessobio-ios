@@ -9,7 +9,6 @@
 #import "DocumentInsertView.h"
 #import "AcessoBioManager.h"
 #import "UIImageUtils.h"
-#import "FacematchResult.h"
 
 @interface DocumentInsertView ()
 
@@ -88,7 +87,6 @@
     
 }
 
-
 #pragma mark - Close
 - (void)addCloseButton {
     
@@ -100,7 +98,7 @@
 }
 
 - (void)close {
-    [self.acessoBioManager userClosedCameraManually];
+    // *** [self.core userClosedCameraManually];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -138,9 +136,9 @@
 - (void)actionAfterTakePicture : (NSString *)base64 {
     
         [self dismissViewControllerAnimated:YES completion:nil];
-        CameraDocumentResult *cameraResult = [CameraDocumentResult new];
-        cameraResult.base64 = base64;
-        [self.acessoBioManager onSuccesCameraDocument:cameraResult];
+        DocumentResult *result = [DocumentResult new];
+        result.base64 = base64;
+        // *** [self.core onSuccesCameraDocument:cameraResult];
     
 }
 
@@ -188,10 +186,6 @@
     spinFlash = nil;
 }
 
-
-
-
-
 - (void)exitError {
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         dispatch_async(dispatch_get_main_queue(), ^(void){
@@ -200,11 +194,9 @@
     });
 }
 
-
 - (NSString *)strErrorFormatted: (NSString *)method description: (NSString *)description {
     return [NSString stringWithFormat:@"%@ - %@", method, description];
 }
-
 
 
 @end

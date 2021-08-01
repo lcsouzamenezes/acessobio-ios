@@ -9,8 +9,8 @@
 #import "CameraFaceView.h"
 
 #import <sys/utsname.h> // import it in your header or implementation file.
-#import "ValidateLiveness.h"
 #import "DeviceUtils.h"
+#import "UnicoCheck.h"
 
 float topOffsetPercent_CameraFace = 30.0f;
 float sizeBetweenTopAndBottomPercent_CameraFace = 50.0f;
@@ -86,12 +86,12 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)closeTriggerTimeoutProcess {
-    [self.acessiBioManager systemClosedCameraTimeoutSession];
+    [self.delegate systemClosedCameraTimeoutSession];
     [self exit];
 }
 
 - (void)closeTriggerTimeoutToFaceInference {
-    [self.acessiBioManager systemClosedCameraTimeoutFaceInference];
+    [self.delegate systemClosedCameraTimeoutFaceInference];
     [self disableSmartCamera];
 }
 
@@ -123,7 +123,7 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)close{
-    [self.acessiBioManager userClosedCameraManually];
+    [self.delegate userClosedCameraManually];
     [self exit];
 }
 
@@ -933,9 +933,9 @@ float marginOfSides_CameraFace = 80.0f;
     _base64Center = base64;
     _imgCenter = image;
     
-    CameraFaceResult *cameraFaceResult = [CameraFaceResult new];
-    [cameraFaceResult setBase64:self->_base64Center];
-    [self.acessiBioManager onSuccesCameraFace:cameraFaceResult];
+    SelfieResult *selfieResult = [SelfieResult new];
+    [selfieResult setBase64:self->_base64Center];
+    [self.delegate onSuccessSelfie:selfieResult];
     [self doneProcess];
     
 }
@@ -988,7 +988,7 @@ float marginOfSides_CameraFace = 80.0f;
         [self addCloseButton];
         
         if(fromReset) {
-            [self popupShow];
+            
         }
         
     }
@@ -1004,7 +1004,6 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)createViewAlert {
     
     
-    if(popup == nil) {
         vAlert = [[UIView alloc]initWithFrame:CGRectMake(20, (frameFaceCenter.origin.y - 25) , SCREEN_WIDTH - 40, 50)];
         [vAlert setBackgroundColor:[UIColor colorWithRed:24.0f/255.0f green:30.0f/255.0f blue:45.0f/255.0f alpha:1.0]];
         [vAlert setAlpha:1.0f];
@@ -1044,7 +1043,7 @@ float marginOfSides_CameraFace = 80.0f;
         
         
         //   [self startBlinkingLabel:lbMessage];
-    }
+
     
     
     
@@ -1058,13 +1057,8 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)setMessageStatus: (NSString *)str {
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(self->popup == nil) {
             [self->vAlert setHidden:NO];
             [self->lbMessage setText:str];
-        }else{
-            [self->vAlert setHidden:YES];
-            [self->lbMessage setText:@""];
-        }
     });
     
 }
@@ -1173,34 +1167,6 @@ float marginOfSides_CameraFace = 80.0f;
     [self.view addSubview:self.btTakePic];
 }
 
-#pragma mark - Popup's
-
-- (void)popupShow {
-    
-    isPopUpShow = YES;
-    
-    [vAlert setHidden:YES];
-    [self removeFlash];
-    
-    [self addVHole:CGRectZero];
-    
-    popup = [[PopUpValidationLiveness alloc]initWithFrame:CGRectMake(((SCREEN_WIDTH/2) - 165), ((SCREEN_HEIGHT/2) - 180) , 330, 370)];
-    // [popup setType:PopupTypeGeneric faceInsertView:self];
-    [popup setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:popup];
-    
-}
-
-- (void)popupHidden {
-    
-    isPopUpShow = NO;
-    
-    [self changeHoleView:frameCurrent delayInSeconds:0];
-    
-    [popup removeFromSuperview];
-    popup = nil;
-    
-}
 
 #pragma mark - General
 

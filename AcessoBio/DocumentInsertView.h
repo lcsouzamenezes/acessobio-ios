@@ -17,7 +17,7 @@
 //#import "AFHTTPSessionManager.h"
 //#import "JGProgressHUD.h"
 
-@class AcessoBioManager;
+@class UnicoCheck;
 
 
 typedef NS_ENUM(NSInteger, OperationType) {
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @property (assign, nonatomic)NSInteger type; 
-@property (strong, nonatomic) AcessoBioManager *acessoBioManager;
+@property (strong, nonatomic) UnicoCheck *core;
 
 @property (assign, nonatomic) OperationType operationType;
 

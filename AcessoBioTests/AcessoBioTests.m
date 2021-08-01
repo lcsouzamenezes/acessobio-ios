@@ -27,7 +27,7 @@
 }
 
 #pragma mark - SetUp
-
+/*
 - (void)testConfigEnableCamera {
     NSNumber *expectedValueAtSmartCamera = [NSNumber numberWithBool:YES];
     [self.acessoBioManager enableSmartCamera];
@@ -84,7 +84,7 @@
 }
 
 #pragma mark - Custom
-/* This test covers hexa string color and the UIColor with RGB */
+// This test covers hexa string color and the UIColor with RGB 
 - (void)testCustomSilhoutteNeutral {
     UIColor *expectedValueStringColor = [UIColor colorWithRed:144.0f/255.0f green:144.0f/255.0f blue:144.0f/255.0f alpha:1.0];
     [self.acessoBioManager setColorSilhoutteNeutral:[UIColor colorWithRed:144.0f/255.0f green:144.0f/255.0f blue:144.0f/255.0f alpha:1.0]];
@@ -165,7 +165,7 @@
     XCTAssertEqualObjects(expectedValueStringColor, resultValueStringColor, "testing custom color title button pop up error");
 }
 
-
+*/
 
 
 

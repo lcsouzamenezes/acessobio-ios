@@ -54,7 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic) AVCaptureVideoDataOutput *dataOutput;
 @property (nonatomic) AVCaptureMetadataOutput *metadataOutput;
-@property (nonatomic, assign) id delegate;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic) NSLock *renderLock;
 @property (nonatomic) CIImage *latestFrame;

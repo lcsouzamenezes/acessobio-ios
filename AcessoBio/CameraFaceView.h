@@ -23,13 +23,14 @@
 // gyroscope
 #import <CoreMotion/CoreMotion.h>
 
-#import "PopUpValidationLiveness.h"
 #import "AcessoBioManager.h"
 #import "SensorsDevice.h"
 
 #import "FaceAnalyze.h"
 
 @class CameraBio;
+
+@class UnicoCheck;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -184,7 +185,6 @@ NS_ASSUME_NONNULL_BEGIN
     double rollAway;
     
     // Variables about popup reset
-    PopUpValidationLiveness *popup;
     BOOL isPopUpShow;
     
     // Luminosity
@@ -204,6 +204,10 @@ NS_ASSUME_NONNULL_BEGIN
     FaceAnalyze *faceAnalyze;
 
 }
+
+
+@property (strong, nonatomic) UnicoCheck *delegate;
+
 
 #pragma mark - Methods
 

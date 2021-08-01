@@ -1,14 +1,13 @@
 //
-//  CreateProcess.m
+//  CameraFaceResult.m
 //  CaptureAcesso
 //
 //  Created by Matheus Domingos on 10/05/20.
 //  Copyright © 2020 Matheus  domingos. All rights reserved.
 //
 
-#import "CreateProcess.h"
+#import "SelfieResult.h"
 
-@implementation CreateProcess
-
+@implementation SelfieResult
 
 @end

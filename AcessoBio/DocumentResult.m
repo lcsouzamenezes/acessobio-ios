@@ -6,8 +6,8 @@
 //  Copyright © 2020 Matheus Domingos Acesso. All rights reserved.
 //
 
-#import "CameraDocumentResult.h"
+#import "DocumentResult.h"
 
-@implementation CameraDocumentResult
+@implementation DocumentResult
 
 @end

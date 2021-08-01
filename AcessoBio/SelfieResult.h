@@ -1,8 +1,8 @@
 //
-//  LivenessXResult.h
+//  CameraFaceResult.h
 //  CaptureAcesso
 //
-//  Created by Daniel Zanelatto on 13/03/20.
+//  Created by Matheus Domingos on 10/05/20.
 //  Copyright © 2020 Matheus  domingos. All rights reserved.
 //
 
@@ -10,11 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LivenessXResult : NSObject
+@interface SelfieResult : NSObject
 
 @property(strong, nonatomic) NSString *base64;
-@property(strong, nonatomic) NSString *processId;
-@property(assign, nonatomic) BOOL isLiveness;
 
 
 @end

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CameraDocumentResult : NSObject
+@interface DocumentResult : NSObject
 
 @property(strong, nonatomic) NSString *base64;
 

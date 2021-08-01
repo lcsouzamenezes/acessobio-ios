@@ -61,7 +61,6 @@
 - (void) setupCamera:(BOOL) isSelfie {
     
     self.session = [[AVCaptureSession alloc] init];
-    self.delegate = self;
     self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
     self.renderLock = [[NSLock alloc] init];
     
@@ -136,7 +135,7 @@
         [self.dataOutput setAlwaysDiscardsLateVideoFrames:YES];
         [self.dataOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
         
-        [self.dataOutput setSampleBufferDelegate:self.delegate queue:self.sessionQueue];
+        [self.dataOutput setSampleBufferDelegate:self queue:self.sessionQueue];
         
         [self.session addOutput:self.dataOutput];
     }
