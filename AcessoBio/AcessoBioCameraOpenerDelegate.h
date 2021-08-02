@@ -9,11 +9,12 @@
 #ifndef AcessoBioCameraOpenerDelegate_h
 #define AcessoBioCameraOpenerDelegate_h
 #import "AcessoBioSelfieDelegate.h"
-
+#import "AcessoBioDocumentDelegate.h"
 
 @protocol AcessoBioCameraOpenerDelegate <NSObject>
 
 - (void)open:(id <AcessoBioSelfieDelegate>)delegate;
+- (void)openDocument:(id <AcessoBioDocumentDelegate>)delegate;
 
 @end
 

@@ -26,7 +26,7 @@
 		2B37DEF626B41E5100CC5994 /* AcessoBioDocumentDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DEF526B41E5100CC5994 /* AcessoBioDocumentDelegate.h */; };
 		2B37DEFB26B426B800CC5994 /* AcessoBioConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DEF926B426B800CC5994 /* AcessoBioConstants.h */; };
 		2B37DEFC26B426B800CC5994 /* AcessoBioConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B37DEFA26B426B800CC5994 /* AcessoBioConstants.m */; };
-		2B37DF2026B442DC00CC5994 /* iAcessoBioTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF1F26B442DC00CC5994 /* iAcessoBioTheme.h */; };
+		2B37DF2026B442DC00CC5994 /* AcessoBioThemeDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF1F26B442DC00CC5994 /* AcessoBioThemeDelegate.h */; };
 		2B37DF2926B4557C00CC5994 /* AcessoBioCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF2826B4557C00CC5994 /* AcessoBioCamera.h */; };
 		2B37DF2D26B4586500CC5994 /* AcessoBioCameraOpenerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF2C26B4586500CC5994 /* AcessoBioCameraOpenerDelegate.h */; };
 		2B37DF3326B4890700CC5994 /* AcessoBioCameraImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF3126B4890700CC5994 /* AcessoBioCameraImpl.h */; };
@@ -36,6 +36,7 @@
 		2B37DF4026B4998300CC5994 /* SelfieCameraDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF3F26B4998300CC5994 /* SelfieCameraDelegate.h */; };
 		2B37DF4526B763BA00CC5994 /* SelfieCameraDelegateImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF4326B763BA00CC5994 /* SelfieCameraDelegateImpl.h */; };
 		2B37DF4626B763BA00CC5994 /* SelfieCameraDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B37DF4426B763BA00CC5994 /* SelfieCameraDelegateImpl.m */; };
+		2B59E4B826B88346001A0E52 /* DocumentCameraDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B59E4B726B88346001A0E52 /* DocumentCameraDelegate.h */; };
 		2B66647C26A9E6EE0015C63D /* DeviceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B66647A26A9E6EE0015C63D /* DeviceUtils.h */; };
 		2B66647D26A9E6EE0015C63D /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66647B26A9E6EE0015C63D /* DeviceUtils.m */; };
 		2BA988E3268CB51A00F72029 /* AcessoBioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA988E2268CB51A00F72029 /* AcessoBioTests.m */; };
@@ -115,7 +116,7 @@
 		2B37DEF526B41E5100CC5994 /* AcessoBioDocumentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioDocumentDelegate.h; sourceTree = "<group>"; };
 		2B37DEF926B426B800CC5994 /* AcessoBioConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioConstants.h; sourceTree = "<group>"; };
 		2B37DEFA26B426B800CC5994 /* AcessoBioConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcessoBioConstants.m; sourceTree = "<group>"; };
-		2B37DF1F26B442DC00CC5994 /* iAcessoBioTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iAcessoBioTheme.h; sourceTree = "<group>"; };
+		2B37DF1F26B442DC00CC5994 /* AcessoBioThemeDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioThemeDelegate.h; sourceTree = "<group>"; };
 		2B37DF2826B4557C00CC5994 /* AcessoBioCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioCamera.h; sourceTree = "<group>"; };
 		2B37DF2C26B4586500CC5994 /* AcessoBioCameraOpenerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioCameraOpenerDelegate.h; sourceTree = "<group>"; };
 		2B37DF3126B4890700CC5994 /* AcessoBioCameraImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioCameraImpl.h; sourceTree = "<group>"; };
@@ -125,6 +126,7 @@
 		2B37DF3F26B4998300CC5994 /* SelfieCameraDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelfieCameraDelegate.h; sourceTree = "<group>"; };
 		2B37DF4326B763BA00CC5994 /* SelfieCameraDelegateImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelfieCameraDelegateImpl.h; sourceTree = "<group>"; };
 		2B37DF4426B763BA00CC5994 /* SelfieCameraDelegateImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelfieCameraDelegateImpl.m; sourceTree = "<group>"; };
+		2B59E4B726B88346001A0E52 /* DocumentCameraDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentCameraDelegate.h; sourceTree = "<group>"; };
 		2B66647A26A9E6EE0015C63D /* DeviceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceUtils.h; sourceTree = "<group>"; };
 		2B66647B26A9E6EE0015C63D /* DeviceUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceUtils.m; sourceTree = "<group>"; };
 		2BA988E0268CB51A00F72029 /* AcessoBioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AcessoBioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,7 +277,7 @@
 				16DBCD752461EE3B0040D4E8 /* UIColorExtensions.h */,
 				16DBCD762461EE3B0040D4E8 /* UIColorExtensions.m */,
 				2BF90D7826B341DB00027D47 /* iAcessoBioBuilder.h */,
-				2B37DF1F26B442DC00CC5994 /* iAcessoBioTheme.h */,
+				2B37DF1F26B442DC00CC5994 /* AcessoBioThemeDelegate.h */,
 				2BF90D7A26B34B1200027D47 /* UnicoCheck.h */,
 				2BF90D7B26B34B1200027D47 /* UnicoCheck.m */,
 				2B37DEF326B41A7F00CC5994 /* AcessoBioSelfieDelegate.h */,
@@ -290,6 +292,7 @@
 				2B37DF3126B4890700CC5994 /* AcessoBioCameraImpl.h */,
 				2B37DF3226B4890700CC5994 /* AcessoBioCameraImpl.m */,
 				2B37DF3F26B4998300CC5994 /* SelfieCameraDelegate.h */,
+				2B59E4B726B88346001A0E52 /* DocumentCameraDelegate.h */,
 				97E59BE0256714BD0090575A /* ic_takepicture.png */,
 				E6D86EA324E07AAA00B24B12 /* frame_cnh.png */,
 				E6D86EA424E07AAA00B24B12 /* frame_rg_frente.png */,
@@ -397,6 +400,7 @@
 				2BF90D7926B341DB00027D47 /* iAcessoBioBuilder.h in Headers */,
 				2BF90D7F26B34E0C00027D47 /* AcessoBioDelegate.h in Headers */,
 				16DBCD7F2461EE3C0040D4E8 /* UIImageUtils.h in Headers */,
+				2B59E4B826B88346001A0E52 /* DocumentCameraDelegate.h in Headers */,
 				2BDD107A26AF2B8A008F7DC3 /* FaceAnalyze.h in Headers */,
 				16DBCD862461EE3C0040D4E8 /* CameraMain.h in Headers */,
 				E669E3F92469922900110BAC /* CameraFaceView.h in Headers */,
@@ -407,7 +411,7 @@
 				2BDFCFE0264EC2AC009E7AB0 /* ErrorBio.h in Headers */,
 				2B37DF4526B763BA00CC5994 /* SelfieCameraDelegateImpl.h in Headers */,
 				2B37DEF426B41A7F00CC5994 /* AcessoBioSelfieDelegate.h in Headers */,
-				2B37DF2026B442DC00CC5994 /* iAcessoBioTheme.h in Headers */,
+				2B37DF2026B442DC00CC5994 /* AcessoBioThemeDelegate.h in Headers */,
 				2BB67F6026B0A95E00D1B473 /* CIFaceFeatureNormalize.h in Headers */,
 				2BDD107E26AF3837008F7DC3 /* CircleUtilsDebug.h in Headers */,
 				2BF90D7C26B34B1200027D47 /* UnicoCheck.h in Headers */,

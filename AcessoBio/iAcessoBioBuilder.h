@@ -9,11 +9,11 @@
 #ifndef iAcessoBioBuilder_h
 #define iAcessoBioBuilder_h
 #import "AcessoBioCamera.h"
-#import "iAcessoBioTheme.h"
+#import "AcessoBioThemeDelegate.h"
 
 @protocol iAcessoBioBuilder <NSObject>
 
-- (id<iAcessoBioBuilder>) setTheme: (id<iAcessoBioTheme>)theme;
+- (id<iAcessoBioBuilder>) setTheme: (id<AcessoBioThemeDelegate>)theme;
 - (id<iAcessoBioBuilder>) setAutoCapture: (BOOL)isEnabled;
 - (id<iAcessoBioBuilder>) setSmartFrame: (BOOL)isEnabled;
 - (id<iAcessoBioBuilder>) setTimeoutSession: (double)timeoutInSeconds;

@@ -7,7 +7,7 @@
 //
 #import "AcessoBioManager.h"
 #import "AcessoBioDelegate.h"
-#import "iAcessoBioTheme.h"
+#import "AcessoBioThemeDelegate.h"
 #import "AcessoBioCamera.h"
 #import "AcessoBioCameraImpl.h"
 
@@ -18,18 +18,19 @@
 - (id)initWithViewController:(id)view{
     self = [super init];
     if(self) {
-        [self initWithViewController:view delegate:view];
+       self = [self initWithViewController:view delegate:view];
     }
     return self;
 }
 
-- (void)initWithViewController :(id)view delegate:(id)delegate {
+- (id)initWithViewController :(id)view delegate:(id)delegate {
     core = [[UnicoCheck alloc]initWithViewController:view delegates:delegate];
+    return self;
 }
 
 #pragma mark - iAcessoBioBuilder Delegates
 
-- (id<iAcessoBioBuilder>)setTheme:(id<iAcessoBioTheme>)theme {
+- (id<iAcessoBioBuilder>)setTheme:(id<AcessoBioThemeDelegate>)theme {
     [core setColorBackground:[theme getColorBackground]];
     return self;
 }

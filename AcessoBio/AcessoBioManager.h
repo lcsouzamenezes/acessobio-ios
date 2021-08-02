@@ -8,14 +8,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "UnicoCheck.h"
-#import "iAcessoBioTheme.h"
+#import "AcessoBioThemeDelegate.h"
 
 @interface AcessoBioManager : NSObject <iAcessoBioBuilder> {
     UnicoCheck *core;
 }
 
 - (id)initWithViewController:(id)view;
-- (void)initWithViewController :(id)view delegate:(id)delegate ;
+- (id)initWithViewController :(id)view delegate:(id)delegate ;
 
 
 @end

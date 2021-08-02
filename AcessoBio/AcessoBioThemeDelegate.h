@@ -6,10 +6,10 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#ifndef iAcessoBioTheme_h
-#define iAcessoBioTheme_h
+#ifndef AcessoBioThemeDelegate_h
+#define AcessoBioThemeDelegate_h
 
-@protocol iAcessoBioTheme <NSObject>
+@protocol AcessoBioThemeDelegate <NSObject>
 
 - (id) getColorBackground;
 - (id) getColorBoxMessage;

@@ -6,12 +6,12 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#ifndef iAcessoBioDocumentDelegate_h
-#define iAcessoBioDocumentDelegate_h
+#ifndef AcessoBioDocumentDelegate_h
+#define AcessoBioDocumentDelegate_h
 #import "ErrorBio.h"
 #import "DocumentResult.h"
 
-@protocol iAcessoBioDocumentDelegate <NSObject>
+@protocol AcessoBioDocumentDelegate <NSObject>
 
 - (void)onSuccessDocument: (DocumentResult *)result;
 - (void)onErrorDocument:(ErrorBio *)errorBio;
