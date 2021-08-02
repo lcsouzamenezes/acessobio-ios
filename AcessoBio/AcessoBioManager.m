@@ -23,7 +23,7 @@
     return self;
 }
 
-- (void)initWithViewController :(id)view delegate:(id<AcessoBioDelegate>)delegate {
+- (void)initWithViewController :(id)view delegate:(id)delegate {
     core = [[UnicoCheck alloc]initWithViewController:view delegates:delegate];
 }
 

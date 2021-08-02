@@ -15,7 +15,7 @@
 }
 
 - (id)initWithViewController:(id)view;
-- (void)initWithViewController :(id)view delegate:(id<AcessoBioDelegate>)delegate;
+- (void)initWithViewController :(id)view delegate:(id)delegate ;
 
 
 @end

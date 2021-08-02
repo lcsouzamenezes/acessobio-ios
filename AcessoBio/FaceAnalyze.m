@@ -44,12 +44,12 @@
 }
 
 - (void)initValuesDistance {
-    minDistance = 250.0f;
+    minDistance = 150.0f;
     if([DeviceUtils hasSmallScreen] || IS_RETINA) {
         minDistance = 160.0f;
     }
     
-    maxDistance = 300.0f;
+    maxDistance = 250.0f;
     if([DeviceUtils hasSmallScreen] || IS_RETINA) {
         maxDistance = 250.0f;
     }

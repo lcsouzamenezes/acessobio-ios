@@ -43,6 +43,7 @@
 
 - (void)setDefaultTimeoutFaceInference {
     defaultTimeoutToFaceInference = 15;
+    _secondsTimeoutToFaceInference = defaultTimeoutToFaceInference;
     minimumTimeoutToFaceInference = 5;
 }
 

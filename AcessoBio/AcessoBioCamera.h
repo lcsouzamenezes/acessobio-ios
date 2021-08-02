@@ -9,6 +9,9 @@
 #ifndef AcessoBioCamera_h
 #define AcessoBioCamera_h
 #import "SelfieCameraDelegate.h"
+#import "SelfieCameraDelegateImpl.h"
+#import "AcessoBioCameraOpener.h"
+
 @protocol AcessoBioCamera <NSObject>
 
 - (void)prepareSelfieCamera: (id <SelfieCameraDelegate>)delegate;

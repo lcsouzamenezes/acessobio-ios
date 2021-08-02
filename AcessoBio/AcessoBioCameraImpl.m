@@ -24,6 +24,11 @@
     [delegate onCameraReady:cameraOpener];
 }
 
+- (void)prepareSelfieCameraCompletion:(void (^)(SelfieCameraDelegateImpl *))completion {
+    AcessoBioCameraOpener *cameraOpener = [[AcessoBioCameraOpener alloc]initWithUnicoCheck:core];
+    [completion onCameraReady:cameraOpener];
+}
+
 - (void)prepareDocumentCamera {
     
 }

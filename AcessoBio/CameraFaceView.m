@@ -56,7 +56,9 @@ float marginOfSides_CameraFace = 80.0f;
     [self initialActionOfChangeState:NO];
     [self addFullBrightnessToScreen];
     [self triggerTimeoutProcess];
-    [self triggerTimeoutToFaceInference];
+    if(self.isEnableSmartCapture) {
+        [self triggerTimeoutToFaceInference];
+    }
     
     //sensorDevice = [[SensorsDevice alloc]init];
     
