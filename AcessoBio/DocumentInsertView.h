@@ -6,19 +6,11 @@
 //  Copyright © 2019 Matheus  domingos. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
-#import <CoreImage/CoreImage.h>
+@import Foundation;
+@import UIKit;
+@import CoreImage;
 #import "CameraMain.h"
-
-// intra-dependencies
-//#import "AFHTTPSessionManager.h"
-//#import "AFNetworking.h"
-//#import "AFHTTPSessionManager.h"
-//#import "JGProgressHUD.h"
-
-@class UnicoCheck;
-
+#import "UnicoCheck.h"
 
 typedef NS_ENUM(NSInteger, OperationType) {
     Default,
@@ -26,11 +18,9 @@ typedef NS_ENUM(NSInteger, OperationType) {
     Facematch
 };
 
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DocumentInsertView : CameraMain {
-  //  JGProgressHUD *HUD;
     UIButton *btClose;
     UIView *vFlash;
     UIActivityIndicatorView *spinFlash;
@@ -40,8 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UnicoCheck *core;
 
 @property (assign, nonatomic) OperationType operationType;
-
-@property (strong, nonatomic) NSString *base64SelfieToFaceMatch;
 
 @property (strong, nonatomic) UIColor *colorSilhoutte;
 @property (strong, nonatomic) UIColor *colorBackground;

@@ -5,8 +5,8 @@
 //  Created by Daniel Zanelatto on 13/05/19.
 //  Copyright © 2019 Matheus  domingos. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 #import "UnicoCheck.h"
 #import "AcessoBioThemeDelegate.h"
 

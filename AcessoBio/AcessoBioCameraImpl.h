@@ -6,7 +6,7 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "AcessoBioCamera.h"
 @class UnicoCheck;
 

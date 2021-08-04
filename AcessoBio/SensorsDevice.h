@@ -6,9 +6,9 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreMotion/CoreMotion.h>
-#import <AVFoundation/AVFoundation.h>
+@import Foundation;
+@import AVFoundation;
+@import CoreMotion;
 
 NS_ASSUME_NONNULL_BEGIN
 

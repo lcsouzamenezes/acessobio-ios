@@ -6,10 +6,12 @@
 //  Copyright © 2019 Matheus  domingos. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-#import <AVFoundation/AVFoundation.h>
-#import <CoreImage/CoreImage.h>
+@import AVFoundation;
+@import CoreImage;
+#import "UnicoCheck.h"
+
 #import "DeviceUtils.h"
 
 #define NAME_APPLICATION [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
@@ -37,12 +39,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-
-@interface CameraMain : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate> {
-    
-    NSString *unauthorized_error_bio;
-    
-}
+@interface CameraMain : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate>
 
 @property (strong, nonatomic)   AVCaptureVideoPreviewLayer *previewLayer;
 
@@ -74,6 +71,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) stopCamera;
 
 - (UIColor *)getColorPrimary;
+
+@property (readwrite) LanguageOrigin language;
+@property (strong, nonatomic) NSString *versionRelease;
+- (NSString *)getOrigin;
 
 @end
 

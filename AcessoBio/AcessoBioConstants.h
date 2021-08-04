@@ -6,7 +6,7 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #ifndef _AcessoBio_CONSTANTS_H
 #define _AcessoBio_CONSTANTS_H

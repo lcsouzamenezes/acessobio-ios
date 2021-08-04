@@ -31,6 +31,10 @@
      {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             
+            if(error) {
+                return;
+            }
+            
             /*
              CGFloat x = motion.gravity.x;
              CGFloat y = motion.gravity.y;
@@ -71,7 +75,7 @@
     return deviceYaw;
 }
 
-- (void)luminosity:(CMSampleBufferRef)sampleBuffer {
+- (float)luminosity:(CMSampleBufferRef)sampleBuffer {
 
         CFDictionaryRef metadataDict = CMCopyDictionaryOfAttachments(NULL,
                                                                      sampleBuffer, kCMAttachmentMode_ShouldPropagate);
@@ -80,8 +84,9 @@
         CFRelease(metadataDict);
         NSDictionary *exifMetadata = [[metadata
                                        objectForKey:(NSString *)kCGImagePropertyExifDictionary] mutableCopy];
-        float brightnessValue = [[exifMetadata
+    return [[exifMetadata
                                   objectForKey:(NSString *)kCGImagePropertyExifBrightnessValue] floatValue];
+    
 
 }
 

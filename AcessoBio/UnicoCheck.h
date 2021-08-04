@@ -5,8 +5,8 @@
 //  Created by Daniel Zanelatto on 13/05/19.
 //  Copyright © 2019 Matheus  domingos. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 #import "ErrorBio.h"
 
 #import "iAcessoBioBuilder.h"
@@ -63,14 +63,9 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 #pragma mark - Custom
 
 - (void)setAutoCapture:(BOOL)isEnabled;
-- (void)setSmartFrame: (BOOL)isEnabled;
+- (void)setSmartFrame:(BOOL)isEnabled;
 
-- (void)disableAutoCapture;
-- (void)disableSmartCamera;
 @property (readonly) BOOL isAutoCapture;
-
-- (void)enableAutoCapture;
-- (void)enableSmartCamera;
 @property (readonly) BOOL isSmartCamera;
 
 @property (nonatomic, strong) UIColor *colorSilhoutteNeutral;
@@ -102,22 +97,10 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 
 #pragma mark - Camera
 
-/** Deprecated
-//- (void)openLivenessX;
-//- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name;
-//- (void)openLivenessXWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone;
-*/
-
+#pragma mark Selfie
 - (void)openCameraSelfie:(id<AcessoBioSelfieDelegate>)delegate;
-- (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar criação de processo use via server-to-server.");
-- (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar criação de processo use via server-to-server.");
-
+#pragma mark Documents
 - (void)openCameraDocuments : (DocumentEnums) documentType delegate:(id<AcessoBioDocumentDelegate>)delegate;
-- (void)openCameraDocumentOCR : (DocumentEnums) documentType __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar o OCR use via server-to-server.");
-- (void)onErrorCameraDocument: (ErrorBio *)error;
-- (void)openCameraDocumentFacematch : (DocumentEnums) documentType;
-
-- (void)facesCompare: (NSString *)cpf __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar a comparação de face use via server-to-server.");
 
 #pragma mark - Callbacks
 

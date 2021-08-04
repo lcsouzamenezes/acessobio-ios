@@ -6,22 +6,22 @@
 //  Copyright © 2020 Matheus  domingos. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-#import <AVFoundation/AVFoundation.h>
-#import <CoreImage/CoreImage.h>
+@import AVFoundation;
+@import CoreImage;
 #import "UIImageUtils.h"
 
 #import "CameraMain.h"
 
 #import "UIViewWithHole.h"
 
-#import <CoreML/CoreML.h>
-#import <Vision/Vision.h>
+@import CoreML;
+@import Vision;
 //#import "CenterModelCrop.h"
 
 // gyroscope
-#import <CoreMotion/CoreMotion.h>
+@import CoreMotion;
 
 #import "AcessoBioManager.h"
 #import "SensorsDevice.h"
@@ -30,7 +30,6 @@
 
 @class CameraBio;
 
-@class UnicoCheck;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -211,10 +210,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Methods
 
-
-- (void)popupHidden;
-
-
 - (void)setIsDebug : (BOOL)debug;
 //- (void)successProcces : (NSString *)processId;
 
@@ -277,9 +272,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIColor *colorBackground;
 @property (strong, nonatomic) UIColor *colorBackgroundBoxStatus;
 @property (strong, nonatomic) UIColor *colorTextBoxStatus;
-
-@property (readwrite) LanguageOrigin language;
-@property (strong, nonatomic) NSString *versionRelease;
 
 @property (readwrite) double secondsTimeoutToInferenceFace;
 @property (readwrite) double secondsTimeoutSession;

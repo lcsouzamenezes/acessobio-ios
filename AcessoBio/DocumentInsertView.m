@@ -9,6 +9,7 @@
 #import "DocumentInsertView.h"
 #import "AcessoBioManager.h"
 #import "UIImageUtils.h"
+#import "Base64Utils.h"
 
 @interface DocumentInsertView ()
 
@@ -136,7 +137,7 @@
 - (void)actionAfterTakePicture : (NSString *)base64 {
         [self dismissViewControllerAnimated:YES completion:nil];
         DocumentResult *result = [DocumentResult new];
-        result.base64 = base64;
+        result.base64 = [Base64Utils base64WithUnicoData:[self getOrigin] version:self.versionRelease base64:base64];
         [self.core onSuccessDocument:result];
 }
 

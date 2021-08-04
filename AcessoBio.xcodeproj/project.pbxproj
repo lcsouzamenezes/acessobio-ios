@@ -45,6 +45,8 @@
 		2BB67F5D26B0A58200D1B473 /* CIFaceFeatureExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB67F5B26B0A58200D1B473 /* CIFaceFeatureExtensions.m */; };
 		2BB67F6026B0A95E00D1B473 /* CIFaceFeatureNormalize.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BB67F5E26B0A95E00D1B473 /* CIFaceFeatureNormalize.h */; };
 		2BB67F6126B0A95E00D1B473 /* CIFaceFeatureNormalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB67F5F26B0A95E00D1B473 /* CIFaceFeatureNormalize.m */; };
+		2BCE6A7F26BB1EBD00022AEE /* Base64Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BCE6A7D26BB1EBD00022AEE /* Base64Utils.h */; };
+		2BCE6A8026BB1EBD00022AEE /* Base64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BCE6A7E26BB1EBD00022AEE /* Base64Utils.m */; };
 		2BDD107626AF026A008F7DC3 /* SensorsDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BDD107426AF026A008F7DC3 /* SensorsDevice.h */; };
 		2BDD107726AF026A008F7DC3 /* SensorsDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BDD107526AF026A008F7DC3 /* SensorsDevice.m */; };
 		2BDD107A26AF2B8A008F7DC3 /* FaceAnalyze.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BDD107826AF2B8A008F7DC3 /* FaceAnalyze.h */; };
@@ -138,6 +140,8 @@
 		2BB67F5B26B0A58200D1B473 /* CIFaceFeatureExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIFaceFeatureExtensions.m; sourceTree = "<group>"; };
 		2BB67F5E26B0A95E00D1B473 /* CIFaceFeatureNormalize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CIFaceFeatureNormalize.h; sourceTree = "<group>"; };
 		2BB67F5F26B0A95E00D1B473 /* CIFaceFeatureNormalize.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CIFaceFeatureNormalize.m; sourceTree = "<group>"; };
+		2BCE6A7D26BB1EBD00022AEE /* Base64Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Base64Utils.h; sourceTree = "<group>"; };
+		2BCE6A7E26BB1EBD00022AEE /* Base64Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Base64Utils.m; sourceTree = "<group>"; };
 		2BDD107426AF026A008F7DC3 /* SensorsDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SensorsDevice.h; sourceTree = "<group>"; };
 		2BDD107526AF026A008F7DC3 /* SensorsDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SensorsDevice.m; sourceTree = "<group>"; };
 		2BDD107826AF2B8A008F7DC3 /* FaceAnalyze.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceAnalyze.h; sourceTree = "<group>"; };
@@ -309,6 +313,8 @@
 				2B37DF4426B763BA00CC5994 /* SelfieCameraDelegateImpl.m */,
 				2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */,
 				2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */,
+				2BCE6A7D26BB1EBD00022AEE /* Base64Utils.h */,
+				2BCE6A7E26BB1EBD00022AEE /* Base64Utils.m */,
 			);
 			path = AcessoBio;
 			sourceTree = "<group>";
@@ -404,6 +410,7 @@
 				2BDD107626AF026A008F7DC3 /* SensorsDevice.h in Headers */,
 				2B37DF3326B4890700CC5994 /* AcessoBioCameraImpl.h in Headers */,
 				2BF90D7926B341DB00027D47 /* iAcessoBioBuilder.h in Headers */,
+				2BCE6A7F26BB1EBD00022AEE /* Base64Utils.h in Headers */,
 				2BF90D7F26B34E0C00027D47 /* AcessoBioDelegate.h in Headers */,
 				16DBCD7F2461EE3C0040D4E8 /* UIImageUtils.h in Headers */,
 				2B59E4B826B88346001A0E52 /* DocumentCameraDelegate.h in Headers */,
@@ -536,6 +543,7 @@
 				16DBCD802461EE3C0040D4E8 /* UIImageUtils.m in Sources */,
 				16DBCD832461EE3C0040D4E8 /* UIColorExtensions.m in Sources */,
 				2B37DF3826B48A7700CC5994 /* AcessoBioCameraOpener.m in Sources */,
+				2BCE6A8026BB1EBD00022AEE /* Base64Utils.m in Sources */,
 				2BDD107F26AF3837008F7DC3 /* CircleUtilsDebug.m in Sources */,
 				2B66647D26A9E6EE0015C63D /* DeviceUtils.m in Sources */,
 				2BDD107B26AF2B8A008F7DC3 /* FaceAnalyze.m in Sources */,
@@ -690,6 +698,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COREML_CODEGEN_LANGUAGE = Automatic;
 				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = NO;
@@ -699,6 +708,8 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				INFOPLIST_FILE = AcessoBio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -716,6 +727,10 @@
 				SUPPORTS_MACCATALYST = NO;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Debug;
 		};
@@ -723,6 +738,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COREML_CODEGEN_LANGUAGE = Automatic;
 				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = NO;
@@ -732,6 +748,8 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				INFOPLIST_FILE = AcessoBio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -749,6 +767,10 @@
 				SUPPORTS_MACCATALYST = NO;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Release;
 		};

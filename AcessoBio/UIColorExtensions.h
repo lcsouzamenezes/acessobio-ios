@@ -6,8 +6,8 @@
 //  Copyright © 2018 Matheus Domingos. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 @interface UIColor (UIColorExtensions)
 

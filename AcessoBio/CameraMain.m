@@ -312,5 +312,17 @@
     return [UIColor colorWithRed:57.0f/255.0f green:74.0f/255.0f blue:98.0f/255.0f  alpha:1.0f];
 }
 
+- (NSString *)getOrigin {
+    
+    NSString *languageOrigin = @"ios-native";
+    if(self.language == Flutter) {
+        languageOrigin = @"ios-flutter";
+    }else if (self.language == ReactNative) {
+        languageOrigin = @"ios-reactnative";
+    }
+    return languageOrigin;
+    
+}
+
 
 @end

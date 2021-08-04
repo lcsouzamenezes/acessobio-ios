@@ -33,7 +33,7 @@
         circleView.alpha = 0.7;
         circleView.backgroundColor = color;
         circleView.tag = -1;
-        [viewContext addSubview:circleView];
+        [self->viewContext addSubview:circleView];
     });
     
 }
@@ -48,14 +48,12 @@
     CGRect circleRect = CGRectMake(POINT_X - (widht / 2), POINT_Y - (widht / 2), widht, widht);
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         UIView *circleView = [[UIView alloc] initWithFrame:circleRect];
         circleView.layer.cornerRadius = widht/2;
         circleView.alpha = 0.7;
         circleView.backgroundColor = color;
         circleView.tag = -1;
-        [viewContext addSubview:circleView];
-        
+        [self->viewContext addSubview:circleView];
     });
     
 }

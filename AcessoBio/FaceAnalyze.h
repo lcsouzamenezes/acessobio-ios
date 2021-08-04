@@ -6,9 +6,9 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreImage/CoreImage.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import CoreImage;
+@import UIKit;
 #import "CircleUtilsDebug.h"
 #import "CIFaceFeatureExtensions.h"
 #import "CIFaceFeatureNormalize.h"

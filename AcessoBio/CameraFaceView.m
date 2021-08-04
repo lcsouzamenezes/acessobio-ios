@@ -8,9 +8,10 @@
 
 #import "CameraFaceView.h"
 
-#import <sys/utsname.h> // import it in your header or implementation file.
+@import Darwin.POSIX.sys.utsname; // import it in your header or implementation file.
 #import "DeviceUtils.h"
 #import "UnicoCheck.h"
+#import "Base64Utils.h"
 
 float topOffsetPercent_CameraFace = 30.0f;
 float sizeBetweenTopAndBottomPercent_CameraFace = 50.0f;
@@ -936,7 +937,7 @@ float marginOfSides_CameraFace = 80.0f;
     _imgCenter = image;
     
     SelfieResult *selfieResult = [SelfieResult new];
-    [selfieResult setBase64:self->_base64Center];
+    [selfieResult setBase64:[Base64Utils base64WithUnicoData:[self getOrigin] version:self.versionRelease base64:_base64Center]];
     [self.delegate onSuccessSelfie:selfieResult];
     [self doneProcess];
     
@@ -994,7 +995,6 @@ float marginOfSides_CameraFace = 80.0f;
         }
         
     }
-    
 }
 
 - (void)resetVariableProcessIA {
@@ -1043,12 +1043,6 @@ float marginOfSides_CameraFace = 80.0f;
         [lbMessage setFont:[UIFont boldSystemFontOfSize:17.5]];
         [vAlert addSubview:lbMessage];
         
-        
-        //   [self startBlinkingLabel:lbMessage];
-
-    
-    
-    
 }
 
 - (void)fireAlert : (NSString *)message {
@@ -1088,46 +1082,22 @@ float marginOfSides_CameraFace = 80.0f;
     label.alpha = 1.0f;
 }
 
-
 - (void)forceDoneProcess {
-    
     if(!validateFaceDetectOK) {
         [self doneProcess];
     }
-    
 }
 
 - (void)doneProcess {
-    
-    //    if(HUD != nil) {
-    //        HUD.progress = 1.0f;
-    //    }
-    
     if(!isDoneProcess){
         isDoneProcess = YES;
         [self stopCamera];
         [self invalidateAllTimers];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
 }
 
 #pragma mark - Create Process v3
-
-- (void)createBase64WithData {
-    
-    
-    
-    NSString *languageOrigin = @"ios-native";
-    if(self.language == Flutter) {
-        languageOrigin = @"ios-flutter";
-    }else if (self.language == ReactNative) {
-        languageOrigin = @"ios-reactnative";
-    }
-    
-    NSString *baseWithOtherDatas = [NSString stringWithFormat:@"data:%@|%@/image/jpeg;base64,%@", languageOrigin, self.versionRelease, _base64Center];
-    
-}
 
 - (UIImage *)croppIngimage:(UIImage *)imageToCrop toRect:(CGRect)rect
 {

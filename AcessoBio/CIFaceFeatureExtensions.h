@@ -5,9 +5,9 @@
 //  Created by Matheus Domingos on 27/07/21.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreImage/CoreImage.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
+@import CoreImage;
 
 NS_ASSUME_NONNULL_BEGIN
 

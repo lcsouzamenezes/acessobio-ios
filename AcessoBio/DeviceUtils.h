@@ -5,8 +5,8 @@
 //  Created by Matheus Domingos on 19/07/21.
 //
 
-#import <Foundation/Foundation.h>
-#import <sys/utsname.h>
+@import Foundation;
+@import Darwin.POSIX.sys.utsname;
 
 NS_ASSUME_NONNULL_BEGIN
 

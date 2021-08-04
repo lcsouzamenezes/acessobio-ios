@@ -6,7 +6,7 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "AcessoBioCameraOpenerDelegate.h"
 @class UnicoCheck;
 NS_ASSUME_NONNULL_BEGIN
