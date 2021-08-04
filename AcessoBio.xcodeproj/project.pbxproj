@@ -57,6 +57,8 @@
 		2BF90D7C26B34B1200027D47 /* UnicoCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF90D7A26B34B1200027D47 /* UnicoCheck.h */; };
 		2BF90D7D26B34B1200027D47 /* UnicoCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90D7B26B34B1200027D47 /* UnicoCheck.m */; };
 		2BF90D7F26B34E0C00027D47 /* AcessoBioDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF90D7E26B34E0C00027D47 /* AcessoBioDelegate.h */; };
+		2BFAA06F26BAE1C9005AA9A5 /* DocumentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */; };
+		2BFAA07026BAE1C9005AA9A5 /* DocumentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */; };
 		E63F9B1125AE59B700F436D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E63F9B1025AE59B700F436D2 /* WebKit.framework */; };
 		E669E3F52469922900110BAC /* AcessoBioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E669E3EF2469922800110BAC /* AcessoBioManager.m */; platformFilter = ios; };
 		E669E3F62469922900110BAC /* AcessoBioManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E669E3F02469922800110BAC /* AcessoBioManager.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
@@ -156,6 +158,8 @@
 		2BF90D7A26B34B1200027D47 /* UnicoCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnicoCheck.h; sourceTree = "<group>"; };
 		2BF90D7B26B34B1200027D47 /* UnicoCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnicoCheck.m; sourceTree = "<group>"; };
 		2BF90D7E26B34E0C00027D47 /* AcessoBioDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioDelegate.h; sourceTree = "<group>"; };
+		2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentType.h; sourceTree = "<group>"; };
+		2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentType.m; sourceTree = "<group>"; };
 		97E59BE0256714BD0090575A /* ic_takepicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_takepicture.png; sourceTree = "<group>"; };
 		E63F9B1025AE59B700F436D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E669E3EF2469922800110BAC /* AcessoBioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcessoBioManager.m; sourceTree = "<group>"; };
@@ -303,6 +307,8 @@
 				16DBCD662461ED970040D4E8 /* Info.plist */,
 				2B37DF4326B763BA00CC5994 /* SelfieCameraDelegateImpl.h */,
 				2B37DF4426B763BA00CC5994 /* SelfieCameraDelegateImpl.m */,
+				2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */,
+				2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */,
 			);
 			path = AcessoBio;
 			sourceTree = "<group>";
@@ -415,6 +421,7 @@
 				2BB67F6026B0A95E00D1B473 /* CIFaceFeatureNormalize.h in Headers */,
 				2BDD107E26AF3837008F7DC3 /* CircleUtilsDebug.h in Headers */,
 				2BF90D7C26B34B1200027D47 /* UnicoCheck.h in Headers */,
+				2BFAA06F26BAE1C9005AA9A5 /* DocumentType.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,6 +541,7 @@
 				2BDD107B26AF2B8A008F7DC3 /* FaceAnalyze.m in Sources */,
 				2BDD107726AF026A008F7DC3 /* SensorsDevice.m in Sources */,
 				E669E3FD2469928800110BAC /* SelfieResult.m in Sources */,
+				2BFAA07026BAE1C9005AA9A5 /* DocumentType.m in Sources */,
 				2B37DF3426B4890700CC5994 /* AcessoBioCameraImpl.m in Sources */,
 				E6D86EB024E087DE00B24B12 /* DocumentResult.m in Sources */,
 				2B37DEFC26B426B800CC5994 /* AcessoBioConstants.m in Sources */,

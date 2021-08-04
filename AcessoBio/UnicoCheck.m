@@ -139,7 +139,6 @@
 }
 
 - (void)setColorBackground: (id)color {
-    
     if([color isKindOfClass:[UIColor class]]) {
         _colorBackground = color;
     }else if([color isKindOfClass:[NSString class]]) {
@@ -255,7 +254,7 @@
 - (void)openCameraSelfie:(id<AcessoBioSelfieDelegate>)delegate {
 
     if(delegate == nil) {
-        [self classIsNotImplemented:@"iAcessoBioSelfieDelegate"];
+        [self classIsNotImplemented:@"AcessoBioSelfieDelegate"];
         return;
     }
     self.selfieDelegate = delegate;
@@ -282,10 +281,16 @@
     
 }
 
-- (void)openCameraDocuments : (DocumentType) documentType {
+- (void)openCameraDocuments : (DocumentEnums) documentType delegate:(id<AcessoBioDocumentDelegate>)delegate {
+    
+    if(delegate == nil) {
+        [self classIsNotImplemented:@"AcessoBioDocumentDelegate"];
+        return;
+    }
+    self.documentDelegate = delegate;
     
     dView = [DocumentInsertView new];
-    
+    [dView setCore:self];
     if(documentType == DocumentCNH) {
         dView.type = 4;
     }else if(documentType == DocumentRGFrente || documentType == DocumentRG) {
@@ -311,7 +316,6 @@
 
 #pragma mark - Instances
 
-
 #pragma mark - Utils
 
 - (BOOL)verifyTarget {
@@ -324,7 +328,7 @@
 
 - (BOOL)verifyColorString : (NSString *)string{
     NSCharacterSet *chars = [[NSCharacterSet
-                              characterSetWithCharactersInString:@"#0123456789ABCDEF"] invertedSet];
+                              characterSetWithCharactersInString:@"#0123456789ABCDEFabcdef"] invertedSet];
     
     BOOL isValid = (NSNotFound == [string rangeOfCharacterFromSet:chars].location);
     if(string.length == 0) {
@@ -389,7 +393,7 @@
         if (self.documentDelegate && [self.documentDelegate respondsToSelector:@selector(onSuccessDocument:)]) {
             [self.documentDelegate onSuccessDocument:result];
         }
-        [self openCameraDocuments:DocumentRGVerso];
+        [self openCameraDocuments:DocumentRGVerso delegate:self.documentDelegate];
     }else{
         if (self.documentDelegate && [self.documentDelegate respondsToSelector:@selector(onSuccessDocument:)]) {
             [self.documentDelegate onSuccessDocument:result];

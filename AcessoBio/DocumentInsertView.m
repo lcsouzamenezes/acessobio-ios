@@ -98,7 +98,7 @@
 }
 
 - (void)close {
-    // *** [self.core userClosedCameraManually];
+    [self.core userClosedCameraManually];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -134,12 +134,10 @@
 }
 
 - (void)actionAfterTakePicture : (NSString *)base64 {
-    
         [self dismissViewControllerAnimated:YES completion:nil];
         DocumentResult *result = [DocumentResult new];
         result.base64 = base64;
-        // *** [self.core onSuccesCameraDocument:cameraResult];
-    
+        [self.core onSuccessDocument:result];
 }
 
 - (void)showHUB {

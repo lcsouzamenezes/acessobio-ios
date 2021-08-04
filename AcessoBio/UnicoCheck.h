@@ -17,13 +17,6 @@
 @class CameraFaceView;
 @class DocumentInsertView;
 
-typedef NS_ENUM(NSInteger, DocumentType) {
-    DocumentNone,
-    DocumentCNH,
-    DocumentRG,
-    DocumentRGFrente,
-    DocumentRGVerso
-};
 
 typedef NS_ENUM(NSInteger, LanguageOrigin) {
     Native,
@@ -42,7 +35,6 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
     
     BOOL isFacematchProcess;
     
-    DocumentType documentTypeFacematch;
     NSString * base64Facematch;
     
     UIImage *imageIconPopupError;
@@ -120,16 +112,20 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 - (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar criação de processo use via server-to-server.");
 - (void)openCameraFaceWithCreateProcess: (NSString *)code name:(NSString *) name gender: (NSString *)gender birthdate: (NSString *)birthdate email: (NSString *)email phone : (NSString *)phone __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar criação de processo use via server-to-server.");
 
-- (void)openCameraDocuments : (DocumentType) documentType;
-- (void)openCameraDocumentOCR : (DocumentType) documentType __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar o OCR use via server-to-server.");
+- (void)openCameraDocuments : (DocumentEnums) documentType delegate:(id<AcessoBioDocumentDelegate>)delegate;
+- (void)openCameraDocumentOCR : (DocumentEnums) documentType __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar o OCR use via server-to-server.");
 - (void)onErrorCameraDocument: (ErrorBio *)error;
-- (void)openCameraDocumentFacematch : (DocumentType) documentType;
+- (void)openCameraDocumentFacematch : (DocumentEnums) documentType;
 
 - (void)facesCompare: (NSString *)cpf __deprecated_msg("Este método está depreciado e será removido em breve. Para realizar a comparação de face use via server-to-server.");
 
 #pragma mark - Callbacks
 
+#pragma mark Selfie
 - (void)onSuccessSelfie:(SelfieResult *)result;
-
+- (void)onErrorSelfie:(ErrorBio *)error;
+#pragma mark Document
+- (void)onSuccessDocument: (DocumentResult *)result;
+- (void)onErrorDocument:(ErrorBio *)error;
 @end
 

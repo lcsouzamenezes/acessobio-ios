@@ -23,4 +23,8 @@
     [core openCameraSelfie:delegate];
 }
 
+- (void)openDocument:(DocumentEnums)documentType delegate:(id <AcessoBioDocumentDelegate>)delegate {
+    [core openCameraDocuments:documentType delegate:delegate];
+}
+
 @end

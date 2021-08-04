@@ -29,8 +29,9 @@
     [completion onCameraReady:cameraOpener];
 }
 
-- (void)prepareDocumentCamera {
-    
+- (void)prepareDocumentCamera:(id<DocumentCameraDelegate>)delegate {
+    AcessoBioCameraOpener *cameraOpener = [[AcessoBioCameraOpener alloc]initWithUnicoCheck:core];
+    [delegate onCameraReadyDocument:cameraOpener];
 }
 
 @end
