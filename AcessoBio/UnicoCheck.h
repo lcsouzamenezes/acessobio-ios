@@ -7,7 +7,7 @@
 //
 @import Foundation;
 @import UIKit;
-#import "ErrorBio.h"
+#import <ErrorBio.h>
 
 #import "iAcessoBioBuilder.h"
 #import "AcessoBioManagerDelegate.h"

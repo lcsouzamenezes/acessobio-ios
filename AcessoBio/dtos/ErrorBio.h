@@ -12,12 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ErrorBio : NSObject
 
-@property (assign, nonatomic) NSInteger Code;
-@property (strong, nonatomic) NSString *Method;
-@property (strong, nonatomic) NSString *Description;
+@property (assign, nonatomic) NSInteger code;
+@property (strong, nonatomic) NSString *method;
+@property (strong, nonatomic) NSString *desc;
 
-- (id)initCode:(NSInteger)code method:(NSString *)method description:(NSString *)description;
-
+- (id)initCode:(NSInteger)code method:(NSString *)method desc:(NSString *)desc;
 @end
 
 NS_ASSUME_NONNULL_END

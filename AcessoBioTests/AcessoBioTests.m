@@ -7,11 +7,11 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "../AcessoBio/AcessoBioManager.h"
+//#import "AcessoBio/onboarding/AcessoBioManager.h"
 
 @interface AcessoBioTests : XCTestCase
 
-@property AcessoBioManager *acessoBioManager;
+//@property AcessoBioManager *acessoBioManager;
 
 @end
 
@@ -19,7 +19,7 @@
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    self.acessoBioManager = [[AcessoBioManager alloc] init];
+   // self.acessoBioManager = [[AcessoBioManager alloc] init];
 }
 
 - (void)tearDown {

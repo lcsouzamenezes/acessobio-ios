@@ -11,14 +11,14 @@
 @implementation ErrorBio
 
 
-- (id)initCode:(NSInteger)code method:(NSString *)method description:(NSString *)description
+- (id)initCode:(NSInteger)code method:(NSString *)method desc:(NSString *)desc
 {
     
     self = [super init];
     if(self) {
-        self.Code = code;
-        self.Method = method;
-        self.Description = description;
+        self.code = code;
+        self.method = method;
+        self.desc = desc;
     }
     
     return self;

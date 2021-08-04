@@ -11,8 +11,6 @@
 
 #import "SelfieCameraDelegate.h"
 #import "DocumentCameraDelegate.h"
-
-#import "SelfieCameraDelegateImpl.h"
 #import "AcessoBioCameraOpener.h"
 
 @protocol AcessoBioCameraDelegate <NSObject>

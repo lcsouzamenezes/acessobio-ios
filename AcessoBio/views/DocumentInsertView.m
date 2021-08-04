@@ -193,7 +193,7 @@
     });
 }
 
-- (NSString *)strErrorFormatted: (NSString *)method description: (NSString *)description {
+- (NSString *)strErrorFormatted: (NSString *)method desc: (NSString *)description {
     return [NSString stringWithFormat:@"%@ - %@", method, description];
 }
 

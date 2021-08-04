@@ -10,7 +10,6 @@
 @import CoreImage;
 @import UIKit;
 #import "CircleUtilsDebug.h"
-#import "CIFaceFeatureExtensions.h"
 #import "CIFaceFeatureNormalize.h"
 
 typedef enum ErrorsFaceType : NSUInteger {
