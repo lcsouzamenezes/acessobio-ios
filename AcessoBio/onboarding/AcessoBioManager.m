@@ -6,13 +6,12 @@
 //  Copyright © 2019 Matheus  domingos. All rights reserved.
 //
 #import "AcessoBioManager.h"
-#import "AcessoBioDelegate.h"
+#import "AcessoBioManagerDelegate.h"
 #import "AcessoBioThemeDelegate.h"
-#import "AcessoBioCamera.h"
+#import "AcessoBioCameraDelegate.h"
 #import "AcessoBioCameraImpl.h"
 
 @implementation AcessoBioManager
-
 
 #pragma mark - Init instance
 - (id)initWithViewController:(id)view{
@@ -55,7 +54,7 @@
     return self;
 }
 
-- (id<AcessoBioCamera>)build {
+- (id<AcessoBioCameraDelegate>)build {
     AcessoBioCameraImpl *acessoBioCamera = [[AcessoBioCameraImpl alloc]initWithUnicoCheck:core];
     return acessoBioCamera;
 }

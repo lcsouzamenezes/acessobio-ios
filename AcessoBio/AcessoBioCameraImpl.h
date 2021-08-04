@@ -7,12 +7,12 @@
 //
 
 @import Foundation;
-#import "AcessoBioCamera.h"
+#import "AcessoBioCameraDelegate.h"
 @class UnicoCheck;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AcessoBioCameraImpl : NSObject <AcessoBioCamera> {
+@interface AcessoBioCameraImpl : NSObject <AcessoBioCameraDelegate> {
     UnicoCheck *core;
 }
 

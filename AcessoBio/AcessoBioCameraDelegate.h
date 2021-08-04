@@ -6,8 +6,8 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#ifndef AcessoBioCamera_h
-#define AcessoBioCamera_h
+#ifndef AcessoBioCameraDelegate_h
+#define AcessoBioCameraDelegate_h
 
 #import "SelfieCameraDelegate.h"
 #import "DocumentCameraDelegate.h"
@@ -15,7 +15,7 @@
 #import "SelfieCameraDelegateImpl.h"
 #import "AcessoBioCameraOpener.h"
 
-@protocol AcessoBioCamera <NSObject>
+@protocol AcessoBioCameraDelegate <NSObject>
 
 - (void)prepareSelfieCamera: (id <SelfieCameraDelegate>)delegate;
 - (void)prepareDocumentCamera: (id <DocumentCameraDelegate>)delegate;

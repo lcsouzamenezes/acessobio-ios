@@ -6,11 +6,11 @@
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#ifndef AcessoBioDelegate_h
-#define AcessoBioDelegate_h
+#ifndef AcessoBioManagerDelegate_h
+#define AcessoBioManagerDelegate_h
 #import "ErrorBio.h"
 
-@protocol AcessoBioDelegate <NSObject>
+@protocol AcessoBioManagerDelegate <NSObject>
 
 - (void)onErrorAcessoBioManager: (ErrorBio *)error;
 - (void)onUserClosedCameraManually;

@@ -11,15 +11,5 @@
 
 @interface UIColor (UIColorExtensions)
 
-- (UIColor *)bioPrimary;
-+ (UIColor*)camecSuperLightGray;
-+ (UIColor*)camecLightGray;
-+ (UIColor *)camecIconDefaultNavigation;
-+ (UIColor *)camecBlue;
-+ (UIColor *)remateTabIconSelected;
-+ (UIColor *)remateTextColor;
-+ (UIColor *)remateYellows;
-+ (UIColor *)remateGreen;
-+ (UIColor *)remateBlue;
 + (UIColor *)colorWithHexString:(NSString *)stringToConvert;
 @end

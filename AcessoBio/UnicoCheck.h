@@ -10,7 +10,7 @@
 #import "ErrorBio.h"
 
 #import "iAcessoBioBuilder.h"
-#import "AcessoBioDelegate.h"
+#import "AcessoBioManagerDelegate.h"
 #import "AcessoBioSelfieDelegate.h"
 #import "AcessoBioDocumentDelegate.h"
 
@@ -48,12 +48,12 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 }
 
 #pragma mark - Protocos (interface in Java/Kotlin)
-@property (nonatomic, weak) id <AcessoBioDelegate> acessoBioDelegate;
+@property (nonatomic, weak) id <AcessoBioManagerDelegate> acessoBioDelegate;
 @property (nonatomic, weak) id <AcessoBioSelfieDelegate> selfieDelegate;
 @property (nonatomic, weak) id <AcessoBioDocumentDelegate> documentDelegate;
 
 #pragma mark - Instance
-- (id)initWithViewController:(id)view delegates:(id<AcessoBioDelegate>)delegate;
+- (id)initWithViewController:(id)view delegates:(id<AcessoBioCameraDelegate>)delegate;
 
 #pragma mark - Language Origin
 

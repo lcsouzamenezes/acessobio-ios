@@ -27,7 +27,7 @@
 		2B37DEFB26B426B800CC5994 /* AcessoBioConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DEF926B426B800CC5994 /* AcessoBioConstants.h */; };
 		2B37DEFC26B426B800CC5994 /* AcessoBioConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B37DEFA26B426B800CC5994 /* AcessoBioConstants.m */; };
 		2B37DF2026B442DC00CC5994 /* AcessoBioThemeDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF1F26B442DC00CC5994 /* AcessoBioThemeDelegate.h */; };
-		2B37DF2926B4557C00CC5994 /* AcessoBioCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF2826B4557C00CC5994 /* AcessoBioCamera.h */; };
+		2B37DF2926B4557C00CC5994 /* AcessoBioCameraDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF2826B4557C00CC5994 /* AcessoBioCameraDelegate.h */; };
 		2B37DF2D26B4586500CC5994 /* AcessoBioCameraOpenerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF2C26B4586500CC5994 /* AcessoBioCameraOpenerDelegate.h */; };
 		2B37DF3326B4890700CC5994 /* AcessoBioCameraImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B37DF3126B4890700CC5994 /* AcessoBioCameraImpl.h */; };
 		2B37DF3426B4890700CC5994 /* AcessoBioCameraImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B37DF3226B4890700CC5994 /* AcessoBioCameraImpl.m */; };
@@ -58,7 +58,7 @@
 		2BF90D7926B341DB00027D47 /* iAcessoBioBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF90D7826B341DB00027D47 /* iAcessoBioBuilder.h */; };
 		2BF90D7C26B34B1200027D47 /* UnicoCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF90D7A26B34B1200027D47 /* UnicoCheck.h */; };
 		2BF90D7D26B34B1200027D47 /* UnicoCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90D7B26B34B1200027D47 /* UnicoCheck.m */; };
-		2BF90D7F26B34E0C00027D47 /* AcessoBioDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF90D7E26B34E0C00027D47 /* AcessoBioDelegate.h */; };
+		2BF90D7F26B34E0C00027D47 /* AcessoBioManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF90D7E26B34E0C00027D47 /* AcessoBioManagerDelegate.h */; };
 		2BFAA06F26BAE1C9005AA9A5 /* DocumentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */; };
 		2BFAA07026BAE1C9005AA9A5 /* DocumentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */; };
 		E63F9B1125AE59B700F436D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E63F9B1025AE59B700F436D2 /* WebKit.framework */; };
@@ -121,7 +121,7 @@
 		2B37DEF926B426B800CC5994 /* AcessoBioConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioConstants.h; sourceTree = "<group>"; };
 		2B37DEFA26B426B800CC5994 /* AcessoBioConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcessoBioConstants.m; sourceTree = "<group>"; };
 		2B37DF1F26B442DC00CC5994 /* AcessoBioThemeDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioThemeDelegate.h; sourceTree = "<group>"; };
-		2B37DF2826B4557C00CC5994 /* AcessoBioCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioCamera.h; sourceTree = "<group>"; };
+		2B37DF2826B4557C00CC5994 /* AcessoBioCameraDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioCameraDelegate.h; sourceTree = "<group>"; };
 		2B37DF2C26B4586500CC5994 /* AcessoBioCameraOpenerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioCameraOpenerDelegate.h; sourceTree = "<group>"; };
 		2B37DF3126B4890700CC5994 /* AcessoBioCameraImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioCameraImpl.h; sourceTree = "<group>"; };
 		2B37DF3226B4890700CC5994 /* AcessoBioCameraImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcessoBioCameraImpl.m; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 		2BF90D7826B341DB00027D47 /* iAcessoBioBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iAcessoBioBuilder.h; sourceTree = "<group>"; };
 		2BF90D7A26B34B1200027D47 /* UnicoCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnicoCheck.h; sourceTree = "<group>"; };
 		2BF90D7B26B34B1200027D47 /* UnicoCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnicoCheck.m; sourceTree = "<group>"; };
-		2BF90D7E26B34E0C00027D47 /* AcessoBioDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioDelegate.h; sourceTree = "<group>"; };
+		2BF90D7E26B34E0C00027D47 /* AcessoBioManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcessoBioManagerDelegate.h; sourceTree = "<group>"; };
 		2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentType.h; sourceTree = "<group>"; };
 		2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentType.m; sourceTree = "<group>"; };
 		97E59BE0256714BD0090575A /* ic_takepicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_takepicture.png; sourceTree = "<group>"; };
@@ -245,55 +245,25 @@
 		16DBCD642461ED970040D4E8 /* AcessoBio */ = {
 			isa = PBXGroup;
 			children = (
+				2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */,
+				2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */,
 				2B37DF3E26B4978B00CC5994 /* onboarding */,
 				2B37DF3D26B4973A00CC5994 /* extensions */,
 				2B37DF3C26B496EC00CC5994 /* dtos */,
 				2B37DF3B26B496BB00CC5994 /* views */,
 				2B37DF3A26B4967100CC5994 /* support */,
 				2B37DF3926B4965300CC5994 /* utils */,
-				16DBCD722461EE3B0040D4E8 /* UIImageUtils.h */,
-				16DBCD732461EE3B0040D4E8 /* UIImageUtils.m */,
-				2BDD107C26AF3837008F7DC3 /* CircleUtilsDebug.h */,
-				2BDD107D26AF3837008F7DC3 /* CircleUtilsDebug.m */,
-				2B66647A26A9E6EE0015C63D /* DeviceUtils.h */,
-				2B66647B26A9E6EE0015C63D /* DeviceUtils.m */,
-				2B37DEF926B426B800CC5994 /* AcessoBioConstants.h */,
-				2B37DEFA26B426B800CC5994 /* AcessoBioConstants.m */,
-				E669E4572469C30B00110BAC /* FixedValues.h */,
-				16DBCD742461EE3B0040D4E8 /* UIViewWithHole.h */,
-				16DBCD6D2461EE3B0040D4E8 /* UIViewWithHole.m */,
-				2BDD107426AF026A008F7DC3 /* SensorsDevice.h */,
-				2BDD107526AF026A008F7DC3 /* SensorsDevice.m */,
 				2BDD107826AF2B8A008F7DC3 /* FaceAnalyze.h */,
 				2BDD107926AF2B8A008F7DC3 /* FaceAnalyze.m */,
 				2BB67F5E26B0A95E00D1B473 /* CIFaceFeatureNormalize.h */,
 				2BB67F5F26B0A95E00D1B473 /* CIFaceFeatureNormalize.m */,
-				E69DB92924E1E0BC001A1C2A /* DocumentInsertView.h */,
-				E69DB92A24E1E0BC001A1C2A /* DocumentInsertView.m */,
-				E669E3F32469922900110BAC /* CameraFaceView.h */,
-				E669E3F12469922900110BAC /* CameraFaceView.m */,
-				16DBCD792461EE3B0040D4E8 /* CameraMain.h */,
-				16DBCD6E2461EE3B0040D4E8 /* CameraMain.m */,
-				2BDFCFDE264EC2AC009E7AB0 /* ErrorBio.h */,
-				2BDFCFDF264EC2AC009E7AB0 /* ErrorBio.m */,
-				E669E3FC2469928800110BAC /* SelfieResult.h */,
-				E669E3FB2469928800110BAC /* SelfieResult.m */,
-				E6D86EAD24E087DE00B24B12 /* DocumentResult.h */,
-				E6D86EAE24E087DE00B24B12 /* DocumentResult.m */,
-				2BB67F5A26B0A58200D1B473 /* CIFaceFeatureExtensions.h */,
-				2BB67F5B26B0A58200D1B473 /* CIFaceFeatureExtensions.m */,
-				16DBCD752461EE3B0040D4E8 /* UIColorExtensions.h */,
-				16DBCD762461EE3B0040D4E8 /* UIColorExtensions.m */,
-				2BF90D7826B341DB00027D47 /* iAcessoBioBuilder.h */,
 				2B37DF1F26B442DC00CC5994 /* AcessoBioThemeDelegate.h */,
 				2BF90D7A26B34B1200027D47 /* UnicoCheck.h */,
 				2BF90D7B26B34B1200027D47 /* UnicoCheck.m */,
 				2B37DEF326B41A7F00CC5994 /* AcessoBioSelfieDelegate.h */,
 				2B37DEF526B41E5100CC5994 /* AcessoBioDocumentDelegate.h */,
-				2BF90D7E26B34E0C00027D47 /* AcessoBioDelegate.h */,
-				E669E3F02469922800110BAC /* AcessoBioManager.h */,
-				E669E3EF2469922800110BAC /* AcessoBioManager.m */,
-				2B37DF2826B4557C00CC5994 /* AcessoBioCamera.h */,
+				2BF90D7E26B34E0C00027D47 /* AcessoBioManagerDelegate.h */,
+				2B37DF2826B4557C00CC5994 /* AcessoBioCameraDelegate.h */,
 				2B37DF2C26B4586500CC5994 /* AcessoBioCameraOpenerDelegate.h */,
 				2B37DF3526B48A7700CC5994 /* AcessoBioCameraOpener.h */,
 				2B37DF3626B48A7700CC5994 /* AcessoBioCameraOpener.m */,
@@ -311,10 +281,6 @@
 				16DBCD662461ED970040D4E8 /* Info.plist */,
 				2B37DF4326B763BA00CC5994 /* SelfieCameraDelegateImpl.h */,
 				2B37DF4426B763BA00CC5994 /* SelfieCameraDelegateImpl.m */,
-				2BFAA06D26BAE1C9005AA9A5 /* DocumentType.h */,
-				2BFAA06E26BAE1C9005AA9A5 /* DocumentType.m */,
-				2BCE6A7D26BB1EBD00022AEE /* Base64Utils.h */,
-				2BCE6A7E26BB1EBD00022AEE /* Base64Utils.m */,
 			);
 			path = AcessoBio;
 			sourceTree = "<group>";
@@ -322,6 +288,14 @@
 		2B37DF3926B4965300CC5994 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				2BDD107C26AF3837008F7DC3 /* CircleUtilsDebug.h */,
+				2BDD107D26AF3837008F7DC3 /* CircleUtilsDebug.m */,
+				2B66647A26A9E6EE0015C63D /* DeviceUtils.h */,
+				2B66647B26A9E6EE0015C63D /* DeviceUtils.m */,
+				2BCE6A7D26BB1EBD00022AEE /* Base64Utils.h */,
+				2BCE6A7E26BB1EBD00022AEE /* Base64Utils.m */,
+				16DBCD722461EE3B0040D4E8 /* UIImageUtils.h */,
+				16DBCD732461EE3B0040D4E8 /* UIImageUtils.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -329,6 +303,11 @@
 		2B37DF3A26B4967100CC5994 /* support */ = {
 			isa = PBXGroup;
 			children = (
+				E669E4572469C30B00110BAC /* FixedValues.h */,
+				2BDD107426AF026A008F7DC3 /* SensorsDevice.h */,
+				2BDD107526AF026A008F7DC3 /* SensorsDevice.m */,
+				2B37DEF926B426B800CC5994 /* AcessoBioConstants.h */,
+				2B37DEFA26B426B800CC5994 /* AcessoBioConstants.m */,
 			);
 			path = support;
 			sourceTree = "<group>";
@@ -336,6 +315,14 @@
 		2B37DF3B26B496BB00CC5994 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				16DBCD742461EE3B0040D4E8 /* UIViewWithHole.h */,
+				16DBCD6D2461EE3B0040D4E8 /* UIViewWithHole.m */,
+				E69DB92924E1E0BC001A1C2A /* DocumentInsertView.h */,
+				E69DB92A24E1E0BC001A1C2A /* DocumentInsertView.m */,
+				E669E3F32469922900110BAC /* CameraFaceView.h */,
+				E669E3F12469922900110BAC /* CameraFaceView.m */,
+				16DBCD792461EE3B0040D4E8 /* CameraMain.h */,
+				16DBCD6E2461EE3B0040D4E8 /* CameraMain.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -343,6 +330,12 @@
 		2B37DF3C26B496EC00CC5994 /* dtos */ = {
 			isa = PBXGroup;
 			children = (
+				E669E3FC2469928800110BAC /* SelfieResult.h */,
+				E669E3FB2469928800110BAC /* SelfieResult.m */,
+				E6D86EAD24E087DE00B24B12 /* DocumentResult.h */,
+				E6D86EAE24E087DE00B24B12 /* DocumentResult.m */,
+				2BDFCFDE264EC2AC009E7AB0 /* ErrorBio.h */,
+				2BDFCFDF264EC2AC009E7AB0 /* ErrorBio.m */,
 			);
 			path = dtos;
 			sourceTree = "<group>";
@@ -350,6 +343,10 @@
 		2B37DF3D26B4973A00CC5994 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2BB67F5A26B0A58200D1B473 /* CIFaceFeatureExtensions.h */,
+				2BB67F5B26B0A58200D1B473 /* CIFaceFeatureExtensions.m */,
+				16DBCD752461EE3B0040D4E8 /* UIColorExtensions.h */,
+				16DBCD762461EE3B0040D4E8 /* UIColorExtensions.m */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -357,6 +354,9 @@
 		2B37DF3E26B4978B00CC5994 /* onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				2BF90D7826B341DB00027D47 /* iAcessoBioBuilder.h */,
+				E669E3F02469922800110BAC /* AcessoBioManager.h */,
+				E669E3EF2469922800110BAC /* AcessoBioManager.m */,
 			);
 			path = onboarding;
 			sourceTree = "<group>";
@@ -400,7 +400,7 @@
 				2B37DF3726B48A7700CC5994 /* AcessoBioCameraOpener.h in Headers */,
 				E69DB92B24E1E0BD001A1C2A /* DocumentInsertView.h in Headers */,
 				E669E4582469C30B00110BAC /* FixedValues.h in Headers */,
-				2B37DF2926B4557C00CC5994 /* AcessoBioCamera.h in Headers */,
+				2B37DF2926B4557C00CC5994 /* AcessoBioCameraDelegate.h in Headers */,
 				2BB67F5C26B0A58200D1B473 /* CIFaceFeatureExtensions.h in Headers */,
 				E6D86EAF24E087DE00B24B12 /* DocumentResult.h in Headers */,
 				E669E3FE2469928800110BAC /* SelfieResult.h in Headers */,
@@ -411,7 +411,7 @@
 				2B37DF3326B4890700CC5994 /* AcessoBioCameraImpl.h in Headers */,
 				2BF90D7926B341DB00027D47 /* iAcessoBioBuilder.h in Headers */,
 				2BCE6A7F26BB1EBD00022AEE /* Base64Utils.h in Headers */,
-				2BF90D7F26B34E0C00027D47 /* AcessoBioDelegate.h in Headers */,
+				2BF90D7F26B34E0C00027D47 /* AcessoBioManagerDelegate.h in Headers */,
 				16DBCD7F2461EE3C0040D4E8 /* UIImageUtils.h in Headers */,
 				2B59E4B826B88346001A0E52 /* DocumentCameraDelegate.h in Headers */,
 				2BDD107A26AF2B8A008F7DC3 /* FaceAnalyze.h in Headers */,

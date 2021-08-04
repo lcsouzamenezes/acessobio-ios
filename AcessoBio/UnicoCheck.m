@@ -9,12 +9,12 @@
 #import "CameraFaceView.h"
 #import "DocumentInsertView.h"
 #import "UIColorExtensions.h"
-#import "AcessoBioDelegate.h"
 #import "AcessoBioConstants.h"
+#import "AcessoBioManagerDelegate.h"
 
 @implementation UnicoCheck
 
-- (id)initWithViewController:(id)view delegates:(id<AcessoBioDelegate>)delegate{
+- (id)initWithViewController:(id)view delegates:(id<AcessoBioManagerDelegate>)delegate{
     
     self = [super init];
     if(self) {

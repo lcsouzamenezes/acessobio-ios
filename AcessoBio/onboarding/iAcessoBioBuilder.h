@@ -8,7 +8,7 @@
 
 #ifndef iAcessoBioBuilder_h
 #define iAcessoBioBuilder_h
-#import "AcessoBioCamera.h"
+#import "AcessoBioCameraDelegate.h"
 #import "AcessoBioThemeDelegate.h"
 
 @protocol iAcessoBioBuilder <NSObject>
@@ -18,7 +18,7 @@
 - (id<iAcessoBioBuilder>) setSmartFrame: (BOOL)isEnabled;
 - (id<iAcessoBioBuilder>) setTimeoutSession: (double)timeoutInSeconds;
 - (id<iAcessoBioBuilder>) setTimeoutToFaceInference: (double)timeoutInSeconds;
-- (id<AcessoBioCamera>) build;
+- (id<AcessoBioCameraDelegate>) build;
 
 @end
 #endif /* IAcessoBioBuilder_h */
