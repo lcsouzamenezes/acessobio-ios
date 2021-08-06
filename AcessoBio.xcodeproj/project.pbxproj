@@ -229,7 +229,6 @@
 				E6D86EA524E07AAB00B24B12 /* frame_rg_verso.png */,
 				E67B7A592471B9CD00918066 /* ic_close.png */,
 				E67B7A50247195C000918066 /* ic_popup_face_error.png */,
-				2BCE6A8126BB397C00022AEE /* images */,
 				2B37DF3E26B4978B00CC5994 /* onboarding */,
 				2B37DF3D26B4973A00CC5994 /* extensions */,
 				2B37DF3C26B496EC00CC5994 /* dtos */,
@@ -344,13 +343,6 @@
 				2BA988E4268CB51A00F72029 /* Info.plist */,
 			);
 			path = AcessoBioTests;
-			sourceTree = "<group>";
-		};
-		2BCE6A8126BB397C00022AEE /* images */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = images;
 			sourceTree = "<group>";
 		};
 		E6CE357225ACC0DF004CCD29 /* Frameworks */ = {
