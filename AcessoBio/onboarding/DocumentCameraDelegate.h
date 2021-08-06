@@ -9,7 +9,7 @@
 #ifndef DocumentCameraDelegate_h
 #define DocumentCameraDelegate_h
 
-@protocol DocumentCameraDelegate <NSObject>
+@protocol DocumentCameraDelegate
 
 - (void)onCameraReadyDocument: (id <AcessoBioCameraOpenerDelegate>)cameraOpener;
 - (void)onCameraFailedDocument:(NSString*)message;

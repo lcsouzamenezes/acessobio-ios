@@ -2,8 +2,8 @@
 //  UIViewWithHole.m
 //  CaptureAcesso
 //
-//  Created by Daniel Zanelatto on 29/10/19.
-//  Copyright © 2019 Matheus  domingos. All rights reserved.
+//  Created by Matheus Domingos on 29/10/19.
+//  Created by unico idtech. All rights reserved.
 //
 
 #import "UIViewWithHole.h"

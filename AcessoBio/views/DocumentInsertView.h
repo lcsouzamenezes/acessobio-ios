@@ -2,8 +2,8 @@
 //  DocumentInsertView.h
 //  CaptureAcesso
 //
-//  Created by Daniel Zanelatto on 20/05/19.
-//  Copyright © 2019 Matheus  domingos. All rights reserved.
+//  Created by Matheus Domingos on 20/05/19.
+//  Created by unico idtech. All rights reserved.
 //
 
 @import Foundation;

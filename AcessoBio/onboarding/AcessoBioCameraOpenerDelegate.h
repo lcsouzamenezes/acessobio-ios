@@ -12,7 +12,7 @@
 #import "AcessoBioDocumentDelegate.h"
 #import "DocumentType.h"
 
-@protocol AcessoBioCameraOpenerDelegate <NSObject>
+@protocol AcessoBioCameraOpenerDelegate
 
 - (void)open:(id <AcessoBioSelfieDelegate>)delegate;
 - (void)openDocument:(DocumentEnums)documentType delegate:(id <AcessoBioDocumentDelegate>)delegate;

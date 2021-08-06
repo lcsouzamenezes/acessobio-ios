@@ -1,13 +1,13 @@
 //
-//  iAcessoBioSelfie.h
+//  AcessoBioSelfieDelegate.h
 //  AcessoBio
 //
 //  Created by Matheus Domingos on 30/07/21.
 //  Copyright © 2021 Matheus Domingos Acesso. All rights reserved.
 //
 
-#ifndef iAcessoBioSelfie_h
-#define iAcessoBioSelfie_h
+#ifndef AcessoBioSelfieDelegate_h
+#define AcessoBioSelfieDelegate_h
 #import "SelfieResult.h"
 #import "ErrorBio.h"
 

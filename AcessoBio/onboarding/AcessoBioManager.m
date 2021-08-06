@@ -2,8 +2,8 @@
 //  CameraBio.m
 //  CaptureAcesso
 //
-//  Created by Daniel Zanelatto on 13/05/19.
-//  Copyright © 2019 Matheus  domingos. All rights reserved.
+//  Created by Matheus Domingos on 13/05/19.
+//  Created by unico idtech. All rights reserved.
 //
 #import "AcessoBioManager.h"
 #import "AcessoBioManagerDelegate.h"

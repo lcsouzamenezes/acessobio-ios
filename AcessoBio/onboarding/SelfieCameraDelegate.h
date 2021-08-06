@@ -10,7 +10,7 @@
 #define SelfieCameraDelegate_h
 #import "AcessoBioCameraOpenerDelegate.h"
 
-@protocol SelfieCameraDelegate <NSObject>
+@protocol SelfieCameraDelegate
 
 - (void)onCameraReady: (id <AcessoBioCameraOpenerDelegate>)cameraOpener;
 - (void)onCameraFailed:(NSString*)message;
