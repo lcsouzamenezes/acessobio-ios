@@ -101,13 +101,13 @@ Pod::Spec.new do |spec|
   #  non-essential files like tests, examples and documentation.
   #
 
-   spec.resource  = "icon.png","AcessoBio/AcessoBio/*.{png}", "*.{png}", "AcessoBio/*.{png}", "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
-   spec.resources = "AcessoBio/AcessoBio/*.{png}", "*.{png}", "AcessoBio/*.{png}", "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
+   spec.resource  = "icon.png","AcessoBio/AcessoBio/*.{png}", "*.{png}", "AcessoBio/AcessoBio/images/*.{png}", "AcessoBio/*.{png}", "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
+   spec.resources = "AcessoBio/AcessoBio/*.{png}","AcessoBio/AcessoBio/images/*.{png}", "*.{png}", "AcessoBio/*.{png}", "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
    spec.exclude_files = "AcessoBio/AcessoBio/*.plist"
 
    #spec.preserve_paths  = "AcessoBio/AcessoBio/*.{mlmodel}", "*.{mlmodel}", "AcessoBio/*.{mlmodel}"
 
-   #spec.ios.resource_bundle = { 'AcessoBio' => "AcessoBio/AcessoBio/*.{mlmodel}" }
+   spec.ios.resource_bundle = { 'AcessoBio' => "AcessoBio/AcessoBio/*.{xcassets}" }
 
   # spec.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
