@@ -19,7 +19,7 @@
 {
     self = [super init];
     if (self) {
-        [self setDebug:NO];
+        [self setDebug:YES];
         frameSilhuette = pFrameSilhuette;
         [self valuesFromSilhoutte];
         viewContext = pViewContext;
@@ -85,6 +85,20 @@
     CGPoint leftEyePositionNormalized = [ciFaceFeatureNormalize normalizedPointForImage:imageFlipped fromPoint:face.leftEyePosition];
     CGPoint rightEyePositionNormalized = [ciFaceFeatureNormalize normalizedPointForImage:imageFlipped fromPoint:face.rightEyePosition];
     CGPoint mouthPositionNormalized = [ciFaceFeatureNormalize normalizedPointForImage:imageFlipped fromPoint:face.mouthPosition];
+    
+    if(![self verifyEyesAboveMouth:face yawFace:yawFace uiimage:uiimage]) {
+        
+        float leftEyeSpaceBetweenEyeAndMouth = leftEyePositionNormalized.y - mouthPositionNormalized.y;
+        float rightEyeSpaceBetweenEyeAndMouth = rightEyePositionNormalized.y - mouthPositionNormalized.y;
+        
+            
+        // leftEyeSpaceBetweenEyeAndMouth : 70
+        // rightEyeSpaceBetweenEyeAndMouth : 90
+
+        leftEyePositionNormalized.y = mouthPositionNormalized.y;
+        rightEyePositionNormalized.y = mouthPositionNormalized.y;
+        mouthPositionNormalized.y = mouthPositionNormalized.y - leftEyeSpaceBetweenEyeAndMouth;
+    }
     
     BOOL validFace = YES;
     
