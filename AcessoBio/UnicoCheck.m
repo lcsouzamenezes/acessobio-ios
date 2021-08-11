@@ -35,6 +35,7 @@
         options.debug = YES; // Enabled debug when first installing is always helpful
         options.enableAutoSessionTracking = YES;
     }];
+    [SentrySDK captureMessage:@"Init AcessoBio"];
     #endif
 #endif
 
