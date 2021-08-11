@@ -423,6 +423,8 @@
 			dependencies = (
 			);
 			name = AcessoBio;
+			packageProductDependencies = (
+			);
 			productName = AcessoBio;
 			productReference = 16DBCD622461ED970040D4E8 /* AcessoBio.framework */;
 			productType = "com.apple.product-type.framework";
@@ -471,6 +473,8 @@
 				Base,
 			);
 			mainGroup = 16DBCD582461ED960040D4E8;
+			packageReferences = (
+			);
 			productRefGroup = 16DBCD632461ED970040D4E8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

@@ -7,6 +7,11 @@
 //
 @import Foundation;
 @import UIKit;
+
+#if __has_include(<Sentry/Sentry.h>)
+#import <Sentry/Sentry.h>
+#endif
+
 #import <ErrorBio.h>
 
 #import "iAcessoBioBuilder.h"

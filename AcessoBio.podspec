@@ -126,7 +126,7 @@ Pod::Spec.new do |spec|
   # spec.libraries = "iconv", "xml2"
 
     #spec.dependency ""
-    #spec.dependency  ''
+    spec.dependency  'Sentry' 
     #spec.dependency  ""
 
     spec.static_framework = true
