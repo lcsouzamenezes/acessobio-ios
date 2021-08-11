@@ -54,6 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)initWithFrameSilhuette:(CGRect)pFrameSilhuette viewContext:(UIView *)pViewContext;
 
+
+-(BOOL)verifyEyesAboveMouth : (CIFaceFeature *)face yawFace: (float)yawFace uiimage: (UIImage *)uiimage;
+
 - (BOOL)validate : (CIFaceFeature *)face yawFace: (float)yawFace uiimage: (UIImage *)uiimage;
 
 @property (readwrite) int countError;

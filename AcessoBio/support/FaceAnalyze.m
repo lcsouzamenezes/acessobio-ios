@@ -62,6 +62,21 @@
     bottomMargin = frameSilhuette.size.height;
 }
 
+-(BOOL)verifyEyesAboveMouth : (CIFaceFeature *)face yawFace: (float)yawFace uiimage: (UIImage *)uiimage {
+    
+    UIImage *imageFlipped = uiimage.imageWithHorizontallyFlippedOrientation;
+    
+    CGPoint leftEyePositionNormalized = [ciFaceFeatureNormalize normalizedPointForImage:imageFlipped fromPoint:face.leftEyePosition];
+    CGPoint rightEyePositionNormalized = [ciFaceFeatureNormalize normalizedPointForImage:imageFlipped fromPoint:face.rightEyePosition];
+    CGPoint mouthPositionNormalized = [ciFaceFeatureNormalize normalizedPointForImage:imageFlipped fromPoint:face.mouthPosition];
+    
+    if([self eyesAboveMouth:leftEyePositionNormalized.y y_right_eye_point:rightEyePositionNormalized.y y_mouth_point:mouthPositionNormalized.y])
+        {
+            return YES;
+        }
+    return NO;
+}
+
 #pragma mark - validate
 - (BOOL)validate : (CIFaceFeature *)face yawFace: (float)yawFace uiimage: (UIImage *)uiimage {
             
@@ -108,13 +123,13 @@
         _countError ++;
         errorFaceType = EYE_BELOW_ERROR;
         validFace = NO;
-    }else if([self mouthAboveHalfSilhoutte:mouthPositionNormalized.y])
+    }
+    else if([self mouthAboveHalfSilhoutte:mouthPositionNormalized.y])
     {
          _countError ++;
         errorFaceType = MOUTH_ABOVE_ERROR;
         validFace = NO;
-     }
-    else if([self eyesOutLeftOrRightOfSilhoutte:rightEyePositionNormalized.x x_left_eye_point:leftEyePositionNormalized.x])
+     }else if([self eyesOutLeftOrRightOfSilhoutte:rightEyePositionNormalized.x x_left_eye_point:leftEyePositionNormalized.x])
     {
         _countError ++;
         errorFaceType = EYE_OUTSIDE_HORIZONTAL_ERROR;
@@ -170,13 +185,21 @@
     return NO;
 }
 
+- (BOOL)eyesAboveMouth: (float)y_left_eye_point y_right_eye_point:(float)y_right_eye_point y_mouth_point:(float)y_mouth_point {
+       if(fabs(y_mouth_point) < fabs(y_left_eye_point) ||
+           fabs(y_mouth_point) < fabs(y_right_eye_point)) {
+           return NO;
+           }
+    return YES;
+}
+
 -(void)debugShowPlots : (UIImage *)image face: (CIFaceFeature*)face {
         // left eye
         [circleUtilsDebug addCircleToPoint:[ciFaceFeatureNormalize  normalizedPointForImage:image fromPoint:face.leftEyePosition] color:[UIColor orangeColor]];
         // right eye
         [circleUtilsDebug addCircleToPoint:[ciFaceFeatureNormalize  normalizedPointForImage:image fromPoint:face.rightEyePosition] color:[UIColor redColor]];
         // mouth
-        [circleUtilsDebug addCircleToPoint:[ciFaceFeatureNormalize  normalizedPointForImage:image fromPoint:face.mouthPosition] color:[UIColor redColor]];
+        [circleUtilsDebug addCircleToPoint:[ciFaceFeatureNormalize  normalizedPointForImage:image fromPoint:face.mouthPosition] color:[UIColor blueColor]];
 }
 
 @end

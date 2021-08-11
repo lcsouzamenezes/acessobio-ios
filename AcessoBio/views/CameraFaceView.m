@@ -103,6 +103,7 @@ float marginOfSides_CameraFace = 80.0f;
     _isEnableSmartCapture = NO;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.btTakePic setHidden:NO];
         [self.btTakePic setAlpha:1];
         [self.btTakePic setEnabled:YES];
     });
@@ -727,7 +728,14 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)verifyFaceCenter : (CIFaceFeature *)face uiimage: (UIImage *)uiimage{
-    
+    if(![faceAnalyze verifyEyesAboveMouth:face yawFace:yawFace uiimage:uiimage]){
+        [self disableSmartCamera];
+        if(timerToTimoutFaceInference != nil) {
+            [timerToTimoutFaceInference invalidate];
+            timerToTimoutFaceInference = nil;
+        }
+        return;
+    }
     if(![faceAnalyze validate:face yawFace:yawFace uiimage:uiimage]) {
         [self faceIsNotOK:[faceAnalyze getErrorType]];
     }else{
