@@ -32,7 +32,7 @@
     #if __has_include(<Sentry/Sentry.h>)
     [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
         options.dsn = @"https://441ee1f9306d4117996c7dc03e01f295@o939397.ingest.sentry.io/5899055";
-        options.debug = YES; // Enabled debug when first installing is always helpful
+        options.debug = NO; // Enabled debug when first installing is always helpful
         options.enableAutoSessionTracking = YES;
     }];
     [SentrySDK captureMessage:@"Init AcessoBio"];
