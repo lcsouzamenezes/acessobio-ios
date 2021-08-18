@@ -50,12 +50,12 @@
     [core setColorBackgroundPopupError: [theme getColorBackgroundPopupError]];
     [core setColorTextPopupError: [theme getColorTextPopupError]];
     [core setColorBackgroundButtonPopupError: [theme getColorBackgroundButtonPopupError]];
-    [core setImageIconPopupError: [theme getImageIconPopupError]];
     [core setColorTextButtonPopupError: [theme getColorTextButtonPopupError]];
     
     // Shot Button
     [core setColorButtonIcon: [theme getColorIconTakePictureButton]];
     [core setColorButtonBackground: [theme getColorBackgroundTakePictureButton]];
+    
     
     return self;
 }

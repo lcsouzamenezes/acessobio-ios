@@ -374,6 +374,10 @@
     
     dView = [DocumentInsertView new];
     [dView setCore:self];
+    [dView setColorBottomDocumentText:self.colorBottomDocumentText];
+    [dView setColorBottomDocumentBackground:self.colorBottomDocumentBackground];
+    [dView setColorButtonIcon:self.colorButtonIcon];
+    [dView setColorButtonBackground:self.colorButtonBackground];
     if(documentType == DocumentCNH) {
         dView.type = 4;
     }else if(documentType == DocumentRGFrente || documentType == DocumentRG) {

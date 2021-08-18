@@ -55,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSLock *renderLock;
 @property (nonatomic) CIImage *latestFrame;
 
+@property (nonatomic, strong) UIColor *colorButtonIcon;
+@property (nonatomic, strong) UIColor *colorButtonBackground;
+
 - (AVCaptureDevice *) deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position;
 
 - (AVCaptureVideoOrientation) getCurrentOrientation;

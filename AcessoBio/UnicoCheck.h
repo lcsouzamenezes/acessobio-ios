@@ -93,7 +93,6 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 @property (nonatomic, strong) UIColor *colorButtonIcon;
 @property (nonatomic, strong) UIColor *colorButtonBackground;
 
-- (void)setImageIconPopupError: (id)image;
 
 #pragma mark - CloseCamera Manually
 
