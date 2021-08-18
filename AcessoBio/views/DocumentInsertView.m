@@ -93,12 +93,6 @@
     [self.btTakePic.layer setMasksToBounds:YES];
     [self.btTakePic.layer setCornerRadius:self.btTakePic.frame.size.height/2];
     [self.btTakePic addTarget:self action:@selector(invokeTakePicture) forControlEvents:UIControlEventTouchUpInside];
-//    if (self.colorButtonBackground != nil) {
-//        [self.btTakePic setBackgroundColor:self.colorButtonBackground];
-//    }
-//    if (self.colorButtonIcon != nil) {
-//        [self.btTakePic setTintColor:self.colorButtonIcon];
-//    }
     [self.view addSubview:self.btTakePic];
     
     [self addCloseButton];
