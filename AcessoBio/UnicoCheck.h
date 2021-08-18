@@ -76,13 +76,22 @@ typedef NS_ENUM(NSInteger, LanguageOrigin) {
 @property (nonatomic, strong) UIColor *colorSilhoutteNeutral;
 @property (nonatomic, strong) UIColor *colorSilhoutteSuccess;
 @property (nonatomic, strong) UIColor *colorSilhoutteError;
+
 @property (nonatomic, strong) UIColor *colorBackground;
+
 @property (nonatomic, strong) UIColor *colorBackgroundBoxStatus;
 @property (nonatomic, strong) UIColor *colorTextBoxStatus;
+
 @property (nonatomic, strong) UIColor *colorBackgroundPopupError;
 @property (nonatomic, strong) UIColor *colorTextPopupError;
 @property (nonatomic, strong) UIColor *colorBackgroundButtonPopupError;
-@property (nonatomic, strong) UIColor *colorTitleButtonPopupError;
+@property (nonatomic, strong) UIColor *colorTextButtonPopupError;
+
+@property (nonatomic, strong) UIColor *colorBottomDocumentBackground;
+@property (nonatomic, strong) UIColor *colorBottomDocumentText;
+
+@property (nonatomic, strong) UIColor *colorButtonIcon;
+@property (nonatomic, strong) UIColor *colorButtonBackground;
 
 - (void)setImageIconPopupError: (id)image;
 

@@ -18,6 +18,7 @@
 - (id) getColorTextPopupError;
 - (id) getColorBackgroundButtonPopupError;
 - (id) getColorTextButtonPopupError;
+- (id) getImageIconPopupError;
 - (id) getColorBackgroundTakePictureButton;
 - (id) getColorIconTakePictureButton;
 - (id) getColorBackgroundBottomDocument;
