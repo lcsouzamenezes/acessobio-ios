@@ -47,14 +47,25 @@
     [self.view addSubview:iv];
     
     UIView *viewBottom = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT - heightViewBottom, SCREEN_WIDTH, heightViewBottom)];
-    [viewBottom setBackgroundColor:[self getColorPrimary]];
+    if (self.colorBottomDocumentBackground != nil){
+        [viewBottom setBackgroundColor:self.colorBottomDocumentBackground];
+    }
+    else {
+        [viewBottom setBackgroundColor:[self getColorPrimary]];
+    }
+    
     [self.view addSubview:viewBottom];
     
     
     UILabel *lbStatus = [[UILabel alloc]initWithFrame:CGRectMake(0, (SCREEN_HEIGHT - (heightViewBottom/2)) - 10, SCREEN_WIDTH, 40)];
-    [lbStatus setTextColor:[UIColor whiteColor]];
+    if (self.colorBottomDocumentText != nil){
+        [lbStatus setTextColor: self.colorBottomDocumentText];
+    } else {
+        [lbStatus setTextColor:[UIColor whiteColor]];
+    }
     [lbStatus setTextAlignment:NSTextAlignmentCenter];
     [lbStatus setFont:[UIFont fontWithName:@"Avenir-Book" size:18.0]];
+    
     
     
     [self.view addSubview:lbStatus];

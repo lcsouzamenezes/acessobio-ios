@@ -273,6 +273,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIColor *colorBackgroundBoxStatus;
 @property (strong, nonatomic) UIColor *colorTextBoxStatus;
 
+
 @property (readwrite) double secondsTimeoutToInferenceFace;
 @property (readwrite) double secondsTimeoutSession;
 

@@ -142,9 +142,17 @@
     
     self.btTakePic = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH/2) - 40, SCREEN_HEIGHT - 100, 80, 80)];
     
-    [self.btTakePic setImage:[UIImage imageNamed:@"ic_takepicture" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    UIImage *image = [[UIImage imageNamed:@"ic_takepicture" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate];
+        
+    [self.btTakePic setImage: image forState:UIControlStateNormal];
     [self.btTakePic setAlpha:0.5];
     [self.btTakePic setEnabled:NO];
+    if (self.colorButtonBackground != nil) {
+        [self.btTakePic setBackgroundColor:self.colorButtonBackground];
+    }
+    if (self.colorButtonIcon != nil) {
+        [self.btTakePic setTintColor:self.colorButtonIcon];
+    }
     [self.view addSubview:self.btTakePic];
     
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];

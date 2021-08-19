@@ -30,7 +30,33 @@
 #pragma mark - iAcessoBioBuilder Delegates
 
 - (id<iAcessoBioBuilder>)setTheme:(id<AcessoBioThemeDelegate>)theme {
-    [core setColorBackground:[theme getColorBackground]];
+    
+    // Background
+    [core setColorBackground: [theme getColorBackground]];
+    
+    // Silhouette
+    [core setColorSilhoutteSuccess: [theme getColorSilhouetteSuccess]];
+    [core setColorSilhoutteError: [theme getColorSilhouetteError]];
+    
+    // Document
+    [core setColorBottomDocumentBackground: [theme getColorBackgroundBottomDocument]];
+    [core setColorBottomDocumentText: [theme getColorTextBottomDocument]];
+    
+    // Message
+    [core setColorBackgroundBoxStatus: [theme getColorBoxMessage]];
+    [core setColorTextBoxStatus: [theme getColorTextMessage]];
+    
+    // Error
+    [core setColorBackgroundPopupError: [theme getColorBackgroundPopupError]];
+    [core setColorTextPopupError: [theme getColorTextPopupError]];
+    [core setColorBackgroundButtonPopupError: [theme getColorBackgroundButtonPopupError]];
+    [core setColorTextButtonPopupError: [theme getColorTextButtonPopupError]];
+    
+    // Shot Button
+    [core setColorButtonIcon: [theme getColorIconTakePictureButton]];
+    [core setColorButtonBackground: [theme getColorBackgroundTakePictureButton]];
+    
+    
     return self;
 }
 

@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIColor *colorBackground;
 @property (strong, nonatomic) UIColor *colorBackgroundBoxStatus;
 @property (strong, nonatomic) UIColor *colorTextBoxStatus;
+@property (nonatomic, strong) UIColor *colorBottomDocumentBackground;
+@property (nonatomic, strong) UIColor *colorBottomDocumentText;
 
 @end
 
