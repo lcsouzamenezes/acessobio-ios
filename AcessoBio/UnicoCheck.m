@@ -106,6 +106,8 @@
 
 - (void)setColorSilhoutteNeutral: (id)color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorSilhoutteNeutral = color;
     }else if([color isKindOfClass:[NSString class]]) {
@@ -121,6 +123,8 @@
 }
 
 - (void)setColorSilhoutteSuccess: (id)color {
+    
+    if(color == nil) return;
     
     if([color isKindOfClass:[UIColor class]]) {
         _colorSilhoutteSuccess = color;
@@ -138,6 +142,8 @@
 
 - (void)setColorSilhoutteError: (id)color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorSilhoutteError = color;
     }else if([color isKindOfClass:[NSString class]]) {
@@ -153,6 +159,9 @@
 }
 
 - (void)setColorBackground: (id)color {
+    
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorBackground = color;
     }else if([color isKindOfClass:[NSString class]]) {
@@ -169,6 +178,8 @@
 
 - (void)setColorBackgroundBoxStatus: (id)color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorBackgroundBoxStatus = color;
     }else if([color isKindOfClass:[NSString class]]) {
@@ -184,6 +195,8 @@
 
 - (void)setColorTextBoxStatus: (id)color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorTextBoxStatus = color;
     }else if([color isKindOfClass:[NSString class]]) {
@@ -195,6 +208,8 @@
 }
 
 - (void)setColorBackgroundPopupError: (id)color {
+    
+    if(color == nil) return;
     
     if([color isKindOfClass:[UIColor class]]) {
         _colorBackgroundPopupError = color;
@@ -211,6 +226,9 @@
 }
 
 - (void)setColorTextPopupError: (id)color {
+    
+    if(color == nil) return;
+    
     _colorTextPopupError = color;
     
     if([color isKindOfClass:[UIColor class]]) {
@@ -229,6 +247,8 @@
 
 - (void)setColorBackgroundButtonPopupError:(id)color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorBackgroundButtonPopupError = color;
     }else if([color isKindOfClass:[NSString class]]) {
@@ -244,6 +264,8 @@
 }
 
 - (void)setColorTextButtonPopupError:(id)color {
+    
+    if(color == nil) return;
     
     if([color isKindOfClass:[UIColor class]]) {
         _colorTextButtonPopupError = color;
@@ -261,12 +283,13 @@
 
 - (void) setColorBottomDocumentBackground: (id) color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorBottomDocumentBackground = color;
     }
     
     else if([color isKindOfClass:[NSString class]] && [self verifyColorString:color]) {
-        
         _colorBottomDocumentBackground = [UIColor colorWithHexString:color];
     }
     
@@ -276,13 +299,14 @@
 }
 
 - (void) setColorBottomDocumentText: (id) color {
-
+    
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorBottomDocumentText = color;
     }
     
     else if([color isKindOfClass:[NSString class]] && [self verifyColorString:color]) {
-        
         _colorBottomDocumentText = [UIColor colorWithHexString:color];
     }
     
@@ -293,12 +317,13 @@
 
 - (void) setColorButtonIcon: (id) color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorButtonIcon = color;
     }
     
     else if([color isKindOfClass:[NSString class]] && [self verifyColorString:color]) {
-        
         _colorButtonIcon = [UIColor colorWithHexString:color];
     }
     
@@ -309,18 +334,20 @@
 
 - (void) setColorButtonBackground: (id) color {
     
+    if(color == nil) return;
+    
     if([color isKindOfClass:[UIColor class]]) {
         _colorButtonBackground = color;
     }
     
     else if([color isKindOfClass:[NSString class]] && [self verifyColorString:color]) {
-        
         _colorButtonBackground = [UIColor colorWithHexString:color];
     }
     
     else {
         [self onErrorAcessoBioManager:[[ErrorBio alloc]initCode:400 method:@"setColorButtonBackground" desc:kColorError]];
     }
+    
 }
 
 - (void)setImageIconPopupError: (id)image {
@@ -357,6 +384,8 @@
         
         [cView setColorBackgroundBoxStatus:_colorBackgroundBoxStatus];
         [cView setColorTextBoxStatus:_colorTextBoxStatus];
+        [cView setColorButtonBackground:_colorButtonBackground];
+        [cView setColorButtonIcon:_colorButtonIcon];
         
         [self presentView:cView];
         
