@@ -21,6 +21,22 @@
     return self;
 }
 
+- (void)startColect {
+    arrPitch = [NSMutableArray new];
+    arrRoll = [NSMutableArray new];
+    arrYaw = [NSMutableArray new];
+    isColect = YES;
+}
+
+- (void)stopColect {
+    isColect = NO;
+}
+
+- (NSDictionary *)getColect {
+    NSDictionary *dictColect = @{@"pitch": arrPitch, @"roll": arrRoll, @"yaw": arrYaw};
+    return dictColect;
+}
+
 #pragma mark - Sensors
 - (void)gyroscope {
 
@@ -54,9 +70,14 @@
                 self->devicePitch = pitch;
                 self->deviceRoll = roll;
                 self->deviceYaw = yaw;
+                
+                if(self->isColect) {
+                    [self->arrPitch addObject:[NSNumber numberWithDouble:pitch]];
+                    [self->arrRoll addObject:[NSNumber numberWithDouble:roll]];
+                    [self->arrYaw addObject:[NSNumber numberWithDouble:yaw]];
+                }
 
             }
-
 
         }];
     }];

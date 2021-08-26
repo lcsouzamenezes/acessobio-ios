@@ -17,11 +17,21 @@ NS_ASSUME_NONNULL_BEGIN
     float deviceRoll;
     float deviceYaw;
     CMMotionManager *motionManager;
+    
+    NSMutableArray *arrPitch;
+    NSMutableArray *arrRoll;
+    NSMutableArray *arrYaw;
+    BOOL isColect;
+
 }
 
 - (float)getPitch;
 - (float)getRoll;
 - (float)getYaw;
+
+- (void)startColect;
+- (void)stopColect;
+- (NSDictionary *)getColect;
 
 @end
 

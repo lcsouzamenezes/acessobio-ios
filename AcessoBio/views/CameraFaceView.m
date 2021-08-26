@@ -63,7 +63,8 @@ float marginOfSides_CameraFace = 80.0f;
         [self triggerTimeoutToFaceInference];
     }
     
-    //sensorDevice = [[SensorsDevice alloc]init];
+    sensorDevice = [[SensorsDevice alloc]init];
+    [sensorDevice startColect];
     
 }
 
@@ -470,8 +471,6 @@ float marginOfSides_CameraFace = 80.0f;
     }
 }
 
-
-
 - (void)addLabelToLog : (CGPoint) point type : (NSString * )type{
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -658,6 +657,21 @@ float marginOfSides_CameraFace = 80.0f;
 
 - (void)addMetataDataToImage : (CMSampleBufferRef)imageSampleBuffer  {
 
+    [sensorDevice stopColect];
+    NSDictionary *dict = [sensorDevice getColect];
+    
+    NSError *err;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
+                                                         error:&err];
+
+    NSString *jsonString;
+    
+    if (! jsonData) {
+        NSLog(@"Got an error: %@", err);
+    } else {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
     
     CFDictionaryRef metaDict = CMCopyDictionaryOfAttachments(NULL, imageSampleBuffer, kCMAttachmentMode_ShouldPropagate);
     
@@ -693,7 +707,7 @@ float marginOfSides_CameraFace = 80.0f;
     
     NSMutableDictionary *EXIFDictionary = (__bridge NSMutableDictionary*)CFDictionaryGetValue(mutable, kCGImagePropertyExifDictionary);
     
-    [EXIFDictionary setValue:@"teste som" forKey:(NSString *)kCGImagePropertyExifUserComment];
+    [EXIFDictionary setValue:jsonString forKey:(NSString *)kCGImagePropertyExifUserComment];
     
     CFDictionarySetValue(mutable, kCGImagePropertyExifDictionary, (__bridge void *)EXIFDictionary);
     
