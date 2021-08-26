@@ -12,6 +12,8 @@
 #import "DeviceUtils.h"
 #import "UnicoCheck.h"
 #import "Base64Utils.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "ExifUtils.h"
 
 float topOffsetPercent_CameraFace = 30.0f;
 float sizeBetweenTopAndBottomPercent_CameraFace = 50.0f;
@@ -283,7 +285,7 @@ float marginOfSides_CameraFace = 80.0f;
     
     [self.view addSubview:vHole];
     [self addButtonTakePicture:vHole];
-        
+    
 }
 
 - (void)addVHole: (CGRect) rect  {
@@ -528,6 +530,7 @@ float marginOfSides_CameraFace = 80.0f;
     
     AVCaptureConnection *connection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef sampleBuffer, NSError *error) {
+        
         if (error) {
             NSLog(@"%@", error);
         } else {
@@ -542,6 +545,10 @@ float marginOfSides_CameraFace = 80.0f;
             } else {
                 capturedImage = [UIImageUtils imageRotatedByDegrees:capturedImage deg:90];
             }
+            
+            [self addMetataDataToImage:sampleBuffer];
+            
+            [self addMetadataEXIFToImage:capturedImage];
             
             // [self stopCamera];
             //[self generateHashFromImage:capturedImage];
@@ -564,10 +571,220 @@ float marginOfSides_CameraFace = 80.0f;
             }
             
             [self stopCamera];
-        
+            
         }
     }];
     
+}
+
+- (void)insertEXIFSession {
+    ExifUtils *exifSession = [ExifUtils new];
+    
+}
+
+- (void)addMetadataEXIFToImage : (UIImage *)image {
+    
+    
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) UIImageJPEGRepresentation(image, 1.0 /* compression factor */), NULL);
+    NSDictionary* metadata = (NSDictionary *)CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,nil));
+    
+    //make the metadata dictionary mutable so we can add properties to it
+    NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
+    
+    NSMutableDictionary *EXIFDictionary = [[metadataAsMutable objectForKey:(NSString *)kCGImagePropertyExifDictionary]mutableCopy];
+    
+    NSMutableDictionary *GPSDictionary = [[metadataAsMutable objectForKey:(NSString *)kCGImagePropertyGPSDictionary]mutableCopy];
+    
+    if(!EXIFDictionary) {
+        //if the image does not have an EXIF dictionary (not all images do), then create one for us to use
+        EXIFDictionary = [NSMutableDictionary dictionary];
+    }
+    if(!GPSDictionary) {
+        GPSDictionary = [NSMutableDictionary dictionary];
+    }
+    
+    //Setup GPS dict
+    //        [GPSDictionary setValue:[NSNumber numberWithFloat:_lat] forKey:(NSString*)kCGImagePropertyGPSLatitude];
+    //        [GPSDictionary setValue:[NSNumber numberWithFloat:_lon] forKey:(NSString*)kCGImagePropertyGPSLongitude];
+    //        [GPSDictionary setValue:lat_ref forKey:(NSString*)kCGImagePropertyGPSLatitudeRef];
+    //        [GPSDictionary setValue:lon_ref forKey:(NSString*)kCGImagePropertyGPSLongitudeRef];
+    //        [GPSDictionary setValue:[NSNumber numberWithFloat:_alt] forKey:(NSString*)kCGImagePropertyGPSAltitude];
+    //        [GPSDictionary setValue:[NSNumber numberWithShort:alt_ref] forKey:(NSString*)kCGImagePropertyGPSAltitudeRef];
+    //        [GPSDictionary setValue:[NSNumber numberWithFloat:_heading] forKey:(NSString*)kCGImagePropertyGPSImgDirection];
+    //        [GPSDictionary setValue:[NSString stringWithFormat:@"%c",_headingRef] forKey:(NSString*)kCGImagePropertyGPSImgDirectionRef];
+    
+    [EXIFDictionary setValue:@"teste som" forKey:(NSString *)kCGImagePropertyExifUserComment];
+    //add our modified EXIF data back into the image’s metadata
+    [metadataAsMutable setObject:EXIFDictionary forKey:(NSString *)kCGImagePropertyExifDictionary];
+    // [metadataAsMutable setObject:GPSDictionary forKey:(NSString *)kCGImagePropertyGPSDictionary];
+    
+    CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
+    
+    //this will be the data CGImageDestinationRef will write into
+    NSMutableData *dest_data = [NSMutableData data];
+    
+    CGImageDestinationRef destination = CGImageDestinationCreateWithData((CFMutableDataRef)dest_data,UTI,1,NULL);
+    
+    if(!destination) {
+        NSLog(@"***Could not create image destination ***");
+    }
+    
+    //add the image contained in the image source to the destination, overidding the old metadata with our modified metadata
+    CGImageDestinationAddImageFromSource(destination,source,0, (CFDictionaryRef) metadataAsMutable);
+    
+    //tell the destination to write the image data and metadata into our data object.
+    //It will return false if something goes wrong
+    BOOL success = NO;
+    success = CGImageDestinationFinalize(destination);
+    
+    if(!success) {
+        NSLog(@"***Could not create data from image destination ***");
+    }
+    
+    //now we have the data ready to go, so do whatever you want with it
+    //here we just write it to disk at the same path we were passed
+    // [dest_data writeToFile:file atomically:YES];
+    
+    //cleanup
+    
+    CFRelease(destination);
+    CFRelease(source);
+    
+    CGImageSourceRef sourceNew = CGImageSourceCreateWithData((__bridge CFDataRef) UIImageJPEGRepresentation(image, 1.0 /* compression factor */), NULL);
+    NSDictionary* metadataNew = (NSDictionary *)CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(sourceNew,0,nil));
+    NSLog(@"%@", metadataNew);
+    
+}
+
+- (void)addMetataDataToImage : (CMSampleBufferRef)imageSampleBuffer  {
+
+    
+    CFDictionaryRef metaDict = CMCopyDictionaryOfAttachments(NULL, imageSampleBuffer, kCMAttachmentMode_ShouldPropagate);
+    
+    CFMutableDictionaryRef mutable = CFDictionaryCreateMutableCopy(NULL, 0, metaDict);
+    
+    
+    /*
+     // Create formatted date
+     NSTimeZone      *timeZone   = [NSTimeZone timeZoneWithName:@"UTC"];
+     NSDateFormatter *formatter  = [[NSDateFormatter alloc] init];
+     [formatter setTimeZone:timeZone];
+     [formatter setDateFormat:@"HH:mm:ss.SS"];
+     
+     // Create GPS Dictionary
+     NSDictionary *gpsDict   = [NSDictionary dictionaryWithObjectsAndKeys:
+     [NSNumber numberWithFloat:fabs(loc.coordinate.latitude)], kCGImagePropertyGPSLatitude
+     , ((loc.coordinate.latitude >= 0) ? @"N" : @"S"), kCGImagePropertyGPSLatitudeRef
+     , [NSNumber numberWithFloat:fabs(loc.coordinate.longitude)], kCGImagePropertyGPSLongitude
+     , ((loc.coordinate.longitude >= 0) ? @"E" : @"W"), kCGImagePropertyGPSLongitudeRef
+     , [formatter stringFromDate:[loc timestamp]], kCGImagePropertyGPSTimeStamp
+     , [NSNumber numberWithFloat:fabs(loc.altitude)], kCGImagePropertyGPSAltitude
+     , nil];
+     
+     // The gps info goes into the gps metadata part
+     
+     CFDictionarySetValue(mutable, kCGImagePropertyGPSDictionary, (__bridge void *)gpsDict);
+     
+     // Here just as an example im adding the attitude matrix in the exif comment metadata
+     
+     CMRotationMatrix m = att.rotationMatrix;
+     GLKMatrix4 attMat = GLKMatrix4Make(m.m11, m.m12, m.m13, 0, m.m21, m.m22, m.m23, 0, m.m31, m.m32, m.m33, 0, 0, 0, 0, 1);
+     */
+    
+    NSMutableDictionary *EXIFDictionary = (__bridge NSMutableDictionary*)CFDictionaryGetValue(mutable, kCGImagePropertyExifDictionary);
+    
+    [EXIFDictionary setValue:@"teste som" forKey:(NSString *)kCGImagePropertyExifUserComment];
+    
+    CFDictionarySetValue(mutable, kCGImagePropertyExifDictionary, (__bridge void *)EXIFDictionary);
+    
+    NSData *jpeg = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer] ;
+    
+
+    // -------
+    
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)jpeg, NULL);
+    
+    CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
+    
+    NSMutableData *dest_data = [NSMutableData data];
+    
+    
+    CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+    
+    if(!destination) {
+        NSLog(@"***Could not create image destination ***");
+    }
+    
+    //add the image contained in the image source to the destination, overidding the old metadata with our modified metadata
+    CGImageDestinationAddImageFromSource(destination,source,0, (CFDictionaryRef) mutable);
+    
+    //tell the destination to write the image data and metadata into our data object.
+    //It will return false if something goes wrong
+    BOOL success = CGImageDestinationFinalize(destination);
+    
+    if(!success) {
+        NSLog(@"***Could not create data from image destination ***");
+    }
+    
+    //now we have the data ready to go, so do whatever you want with it
+    //here we just write it to disk at the same path we were passed
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents folder
+    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:@"ImagesFolder"];
+    
+    NSError *error;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
+        [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error]; //Create folder
+    
+    //    NSString *imageName = @"ImageName";
+    
+    NSString *fullPath = [dataPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", @"myOwnImage"]]; //add our image to the path
+    
+    [dest_data writeToFile:fullPath atomically:YES];
+    
+
+    //cleanup
+    CFRelease(destination);
+    CFRelease(source);
+    
+    UIImage* image = [UIImage imageWithContentsOfFile:fullPath];
+    [self verifyEXIFFromImage:image];
+    [self verifyEXIF:dest_data];
+
+    
+}
+
+- (UIImage*)loadImage
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString* path = [documentsDirectory stringByAppendingPathComponent:
+                      @"myOwnImage.jpg" ];
+    UIImage* image = [UIImage imageWithContentsOfFile:path];
+    return image;
+}
+
+
+- (void)verifyEXIFFromImage : (UIImage *)image {
+    
+    NSString* base64;
+    base64 = [UIImageUtils getBase64Image: image];
+    
+    CGImageSourceRef sourceNew = CGImageSourceCreateWithData((__bridge CFDataRef) UIImageJPEGRepresentation(image, 1.0 /* compression factor */), NULL);
+    NSDictionary* metadataNew = (NSDictionary *)CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(sourceNew,0,nil));
+    NSLog(@"%@", metadataNew);
+}
+
+
+- (void)verifyEXIF : (NSData *)data {
+    
+    CGImageSourceRef sourceNew = CGImageSourceCreateWithData((__bridge CFDataRef) data, NULL);
+    NSDictionary* metadataNew = (NSDictionary *)CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(sourceNew,0,nil));
+    
+    NSString *base64 = [data base64EncodedStringWithOptions:0];
+    NSLog(@"%@", metadataNew);
 }
 
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
@@ -587,7 +804,7 @@ float marginOfSides_CameraFace = 80.0f;
                 }
                 
                 CIImage *personciImage = [CIImage imageWithCGImage:image.CGImage];
-
+                
                 [self detectFace:personciImage uiimage:image];
                 // [self detectFaceNew:personciImage];
                 
@@ -602,7 +819,7 @@ float marginOfSides_CameraFace = 80.0f;
 }
 
 - (void)detectFace:(CIImage*)image uiimage: (UIImage *)uiimage{
-        
+    
     NSDictionary *options = @{
         CIDetectorSmile : [NSNumber numberWithBool:YES],
         CIDetectorEyeBlink: [NSNumber numberWithBool:YES],
@@ -626,7 +843,7 @@ float marginOfSides_CameraFace = 80.0f;
             
             faceObj = [faceFeatures firstObject];
             lastImageObj = uiimage;
-
+            
             if(faceObj.hasMouthPosition) {
                 [self verifyFaceCenter:faceObj uiimage:uiimage];
             }else {
@@ -873,7 +1090,6 @@ float marginOfSides_CameraFace = 80.0f;
     
     lbMessage.text = @"";
     isResetRunning = NO;
-    
     self.base64Center = @"";
     
 }
@@ -885,10 +1101,8 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)resetSession {
     
     if(!isValidating) {
-        
         [self initSession];
         [self initialActionOfChangeState:YES];
-        
     }
     
 }
@@ -1014,43 +1228,43 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)createViewAlert {
     
     
-        vAlert = [[UIView alloc]initWithFrame:CGRectMake(20, (frameFaceCenter.origin.y - 25) , SCREEN_WIDTH - 40, 50)];
-        [vAlert setBackgroundColor:[UIColor colorWithRed:24.0f/255.0f green:30.0f/255.0f blue:45.0f/255.0f alpha:1.0]];
-        [vAlert setAlpha:1.0f];
-        [vAlert.layer setMasksToBounds:YES];
-        [vAlert.layer setCornerRadius:10.0];
-        [self.view addSubview:vAlert];
-        
-        //    vAlert.layer.shadowRadius  = 1.5f;
-        //    vAlert.layer.shadowColor   = [UIColor colorWithRed:0.f/255.f green:0.f/255.f blue:0.f/255.f alpha:1.f].CGColor;
-        //    vAlert.layer.shadowOffset  = CGSizeMake(0.0f, 0.0f);
-        //    vAlert.layer.shadowOpacity = 0.5f;
-        //    vAlert.layer.masksToBounds = NO;
-        //
-        //    UIEdgeInsets shadowInsets     = UIEdgeInsetsMake(0, 0, -1.5f, 0);
-        //    UIBezierPath *shadowPath      = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(vAlert.bounds, shadowInsets)];
-        //    vAlert.layer.shadowPath    = shadowPath.CGPath;
-        
-        lbMessage = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, vAlert.frame.size.width, 50)];
-        [lbMessage setText:@"Enquadre seu rosto"];
-        [lbMessage setMinimumScaleFactor:0.5];
-        UIColor *colorLbMessage = [UIColor whiteColor];
-        
-        if(self.colorTextBoxStatus != nil) {
-            colorLbMessage = self.colorTextBoxStatus;
-        }
-        [lbMessage setTextColor:colorLbMessage];
-        
-        UIColor *colorBackgroundBox = [UIColor colorWithRed:24.0f/255.0f green:30.0f/255.0f blue:45.0f/255.0f alpha:1.0];
-        if(self.colorBackgroundBoxStatus != nil) {
-            colorBackgroundBox = self.colorBackgroundBoxStatus;
-        }
-        
-        [lbMessage setBackgroundColor:colorBackgroundBox];
-        [lbMessage setTextAlignment:NSTextAlignmentCenter];
-        [lbMessage setFont:[UIFont boldSystemFontOfSize:17.5]];
-        [vAlert addSubview:lbMessage];
-        
+    vAlert = [[UIView alloc]initWithFrame:CGRectMake(20, (frameFaceCenter.origin.y - 25) , SCREEN_WIDTH - 40, 50)];
+    [vAlert setBackgroundColor:[UIColor colorWithRed:24.0f/255.0f green:30.0f/255.0f blue:45.0f/255.0f alpha:1.0]];
+    [vAlert setAlpha:1.0f];
+    [vAlert.layer setMasksToBounds:YES];
+    [vAlert.layer setCornerRadius:10.0];
+    [self.view addSubview:vAlert];
+    
+    //    vAlert.layer.shadowRadius  = 1.5f;
+    //    vAlert.layer.shadowColor   = [UIColor colorWithRed:0.f/255.f green:0.f/255.f blue:0.f/255.f alpha:1.f].CGColor;
+    //    vAlert.layer.shadowOffset  = CGSizeMake(0.0f, 0.0f);
+    //    vAlert.layer.shadowOpacity = 0.5f;
+    //    vAlert.layer.masksToBounds = NO;
+    //
+    //    UIEdgeInsets shadowInsets     = UIEdgeInsetsMake(0, 0, -1.5f, 0);
+    //    UIBezierPath *shadowPath      = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(vAlert.bounds, shadowInsets)];
+    //    vAlert.layer.shadowPath    = shadowPath.CGPath;
+    
+    lbMessage = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, vAlert.frame.size.width, 50)];
+    [lbMessage setText:@"Enquadre seu rosto"];
+    [lbMessage setMinimumScaleFactor:0.5];
+    UIColor *colorLbMessage = [UIColor whiteColor];
+    
+    if(self.colorTextBoxStatus != nil) {
+        colorLbMessage = self.colorTextBoxStatus;
+    }
+    [lbMessage setTextColor:colorLbMessage];
+    
+    UIColor *colorBackgroundBox = [UIColor colorWithRed:24.0f/255.0f green:30.0f/255.0f blue:45.0f/255.0f alpha:1.0];
+    if(self.colorBackgroundBoxStatus != nil) {
+        colorBackgroundBox = self.colorBackgroundBoxStatus;
+    }
+    
+    [lbMessage setBackgroundColor:colorBackgroundBox];
+    [lbMessage setTextAlignment:NSTextAlignmentCenter];
+    [lbMessage setFont:[UIFont boldSystemFontOfSize:17.5]];
+    [vAlert addSubview:lbMessage];
+    
 }
 
 - (void)fireAlert : (NSString *)message {
@@ -1061,8 +1275,8 @@ float marginOfSides_CameraFace = 80.0f;
 - (void)setMessageStatus: (NSString *)str {
     
     dispatch_async(dispatch_get_main_queue(), ^{
-            [self->vAlert setHidden:NO];
-            [self->lbMessage setText:str];
+        [self->vAlert setHidden:NO];
+        [self->lbMessage setText:str];
     });
     
 }
@@ -1147,18 +1361,15 @@ float marginOfSides_CameraFace = 80.0f;
     [self.view addSubview:self.btTakePic];
 }
 
-
 #pragma mark - General
 
 - (UIColor *)getColorPrimary {
     return [UIColor colorWithRed:41.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0];
 }
 
-
 - (UIColor *)getColorGreen {
     return [UIColor colorWithRed:59.0f/255.0f green:200.0f/255.0f blue:47.0f/255.0f alpha:1.0];
 }
-
 
 - (UIImage *)blurredImageWithImage:(UIImage *)sourceImage{
     
