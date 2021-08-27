@@ -12,8 +12,7 @@
 #import <Sentry/Sentry.h>
 #endif
 
-#import <ErrorBio.h>
-
+#import "ErrorBio.h"
 #import "iAcessoBioBuilder.h"
 #import "AcessoBioManagerDelegate.h"
 #import "AcessoBioSelfieDelegate.h"
